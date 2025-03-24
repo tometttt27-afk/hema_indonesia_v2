@@ -29,7 +29,8 @@ export default {
             center: true,
             padding: {
                 DEFAULT: "12px",
-                md: "32px",
+                sm: "9px",
+                md: "16px",
             },
         },
     },

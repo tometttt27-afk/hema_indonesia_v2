@@ -1,0 +1,42 @@
+:root {
+    --primary: #b17457;
+}
+
+.form-group {
+    position: relative;
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-icon {
+    position: absolute;
+    top: 80%;
+    right: 16px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.password-icon i {
+    font-size: 15px;
+    line-height: 1;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+/* confirm */
+.password-icon-c {
+    position: absolute;
+    top: 80%;
+    right: 16px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.password-icon-c i {
+    font-size: 15px;
+    line-height: 1;
+    color: #6b7280;
+    margin-bottom: 20px;
+}

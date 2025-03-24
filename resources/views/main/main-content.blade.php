@@ -1,4 +1,5 @@
 @extends('template.layout-main')
+@section('title_web', 'Hema.Indonesia')
 @section('content-main')
     <section id="hero" class="hero relative w-full h-[80dvh] lg:h-[60dvh] bg-[#f5f5f5] flex xl:flex-row flex-col">
         <main class="flex-1 swiper mySwiperHero w-full">

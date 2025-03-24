@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hema Indonesia</title>
+    <title>@yield('title_web')</title>
     {{-- main css --}}
     <link href="{{ asset('css/main.css') }}" rel="stylesheet" />
     {{-- font urbanist --}}
@@ -22,6 +22,9 @@
     <!-- header and navbar menu -->
     <header id="navbar" class="w-full left-0 top-0 z-50 shadow-sm border-b-[0.5px] border-gray-200">
         <nav class="container flex items-center justify-between h-16 sm:h-20">
+            <div class="text-lg sm:2xl cursor-pointer z-50 lg:hidden">
+                <i class="fa-solid fa-bars-staggered" id="hamburger"></i>
+            </div>
             <a href="" class="text-xl sm:text-2xl font-bold">
                 <span class="text-primary">Hema</span>.Indonesia
             </a>
@@ -45,8 +48,9 @@
                             class="nav-link">Order</a></li>
                 </ul>
             </div>
-            <div class="text-lg sm:2xl cursor-pointer z-50 lg:hidden">
-                <i class="fa-solid fa-bars-staggered" id="hamburger"></i>
+            <div class="text-lg sm:2xl cursor-pointer z-50 flex gap-5">
+                <i class="far fa-user"></i>
+                <i class="fas fa-cart-shopping"></i>
             </div>
         </nav>
     </header>
@@ -131,6 +135,25 @@
 
     <script src="{{ asset('library/swiper/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+
+    <script>
+        // navbar responsive
+        const hamburger = document.getElementById("hamburger");
+        const navMenu = document.getElementById("nav-menu");
+        const navLink = document.querySelectorAll(".nav-link");
+
+        hamburger.addEventListener("click", () => {
+            navMenu.classList.toggle("left-[0]");
+            hamburger.classList.toggle("fa-x");
+        });
+
+        navLink.forEach((link) => {
+            link.addEventListener("click", () => {
+                navMenu.classList.toggle("left-[0]");
+                hamburger.classList.toggle("fa-x");
+            });
+        });
+    </script>
 </body>
 
 </html>
