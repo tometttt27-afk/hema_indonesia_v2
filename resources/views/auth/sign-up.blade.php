@@ -5,9 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="success_auth" content="{{ session('success_auth') }}">
+    <meta name="error" content="{{ session('error') }}">
+    <meta name="isNotSignIn" content="{{ session('isNotSignIn') }}">
+    <meta name="errors" content='@json($errors->all())'>
     <title>Sign Up | Hema.Indonesia</title>
+    {{-- Auth css --}}
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    {{-- Font Urbanist --}}
     <link rel="stylesheet" href="{{ asset('library/font/urbanist.css') }}">
+    {{-- Sweetalert css --}}
+    <link rel="stylesheet" href="{{ asset('library/sweetalert/sweetalert2.min.css') }}">
+    {{-- Icon Fontawesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -25,7 +34,7 @@
                 <p class="text-gray-500 text-[13.3px] md:text-[14px]">Enter your personal data to create your account
                 </p>
             </div>
-            <form action="" method="post">
+            <form action="{{ route('isSignUp') }}" method="post">
                 @csrf
                 <div class="flex flex-col md:grid md:grid-cols-2 gap-4 mb-4">
                     <div class="form-group">
@@ -75,7 +84,9 @@
         </main>
     </section>
 
+    <script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/auth.js') }}"></script>
+
 </body>
 
 </html>

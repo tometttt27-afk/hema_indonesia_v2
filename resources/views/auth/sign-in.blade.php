@@ -5,9 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="success_auth" content="{{ session('success_auth') }}">
+    <meta name="error" content="{{ session('error') }}">
+    <meta name="isNotSignIn" content="{{ session('isNotSignIn') }}">
+    <meta name="errors" content='@json($errors->all())'>
     <title>Sign In | Hema.Indonesia</title>
+    {{-- Auth css --}}
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    {{-- Font Urbanist --}}
     <link rel="stylesheet" href="{{ asset('library/font/urbanist.css') }}">
+    {{-- Sweetalert css --}}
+    <link rel="stylesheet" href="{{ asset('library/sweetalert/sweetalert2.min.css') }}">
+    {{-- Icon Fontawesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -24,7 +33,7 @@
                 <h2 class="font-semibold md:text-xl text-lg">Sign in to your account</h2>
                 <p class="text-gray-500 text-[13.3px] md:text-[14px]">Enter your username and password</p>
             </div>
-            <form action="" method="post">
+            <form action="{{ route('isSignIn') }}" method="post">
                 @csrf
                 <div class="form-group mb-4">
                     <label
@@ -54,6 +63,7 @@
         </main>
     </section>
 
+    <script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 

@@ -25,7 +25,7 @@
             <div class="text-lg sm:2xl cursor-pointer z-50 lg:hidden">
                 <i class="fa-solid fa-bars-staggered" id="hamburger"></i>
             </div>
-            <a href="" class="text-xl sm:text-2xl font-bold">
+            <a href="{{ url('/') }}" class="text-xl sm:text-2xl font-bold">
                 <span class="text-primary">Hema</span>.Indonesia
             </a>
             <div id="nav-menu"
@@ -34,6 +34,9 @@
                     <h5 class="font-bold lg:hidden text-lg inline-block absolute top-6 left-6">
                         <span class="text-primary">Hema</span>.Indonesia
                     </h5>
+                    <div class="text-lg sm:2xl cursor-pointer z-50 lg:hidden inline-block absolute top-6 right-6">
+                        <i class="fa-solid fa-x" id="close_navbar"></i>
+                    </div>
                     <li class="mt-20 lg:mt-0 border-b-[0.5px] border-gray-300 lg:border-none w-full py-4"><a
                             href="" class="nav-link">Home</a></li>
                     <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4 outline-none">
@@ -48,9 +51,9 @@
                             class="nav-link">Order</a></li>
                 </ul>
             </div>
-            <div class="text-lg sm:2xl cursor-pointer z-50 flex gap-5">
-                <i class="far fa-user"></i>
-                <i class="fas fa-cart-shopping"></i>
+            <div class="text-lg sm:2xl cursor-pointer z-10 flex gap-5">
+                <a href="{{ url('auth/sign-in') }}"><i class="far fa-user"></i></a>
+                <a href="{{ url('/') }}"><i class="fas fa-cart-shopping"></i></a>
             </div>
         </nav>
     </header>
@@ -135,25 +138,6 @@
 
     <script src="{{ asset('library/swiper/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-
-    <script>
-        // navbar responsive
-        const hamburger = document.getElementById("hamburger");
-        const navMenu = document.getElementById("nav-menu");
-        const navLink = document.querySelectorAll(".nav-link");
-
-        hamburger.addEventListener("click", () => {
-            navMenu.classList.toggle("left-[0]");
-            hamburger.classList.toggle("fa-x");
-        });
-
-        navLink.forEach((link) => {
-            link.addEventListener("click", () => {
-                navMenu.classList.toggle("left-[0]");
-                hamburger.classList.toggle("fa-x");
-            });
-        });
-    </script>
 </body>
 
 </html>

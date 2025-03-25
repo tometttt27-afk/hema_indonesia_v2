@@ -12,5 +12,8 @@ Route::get('/', [MainController::class, 'index']);
 
 Route::prefix('auth')->group(function () {
     Route::get('/sign-in', [AuthenticationController::class, 'signIn']);
+    Route::post('/processSignIn', [AuthenticationController::class, 'proccessSignIn'])->name('isSignIn');
     Route::get('/sign-up', [AuthenticationController::class, 'signUp']);
+    Route::post('/processSignUp', [AuthenticationController::class, 'proccessSignUp'])->name('isSignUp');
+    Route::post('/sign-out', [AuthenticationController::class, 'signOut'])->name('logout');
 });
