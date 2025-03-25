@@ -49,11 +49,35 @@
                             class="nav-link">Galeri</a></li>
                     <li class="border-b-[0.5px] border-gray-300 lg:border-none w-full py-4"><a href=""
                             class="nav-link">Order</a></li>
+                    <li class="w-full inline-block mt-6 py-4">
+                        <div class="text-lg sm:2xl lg:hidden cursor-pointer z-10 flex gap-4">
+                            @if (auth()->check())
+                                <a class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
+                                    href="{{ url('/') }}"><i class="fas fa-cart-shopping"></i></a>
+                                <form
+                                    class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
+                                    action="{{ route('logout') }}" method="post">
+                                    @csrf
+                                    <button type="submit"><i class="fa-solid fa-right-from-bracket"></i></button>
+                                </form>
+                            @endif
+                        </div>
+                    </li>
                 </ul>
+
             </div>
             <div class="text-lg sm:2xl cursor-pointer z-10 flex gap-5">
-                <a href="{{ url('auth/sign-in') }}"><i class="far fa-user"></i></a>
-                <a href="{{ url('/') }}"><i class="fas fa-cart-shopping"></i></a>
+                @if (auth()->check())
+                    <a href="{{ url('/profile') }}"><i class="far fa-user"></i></a>
+                    <a class="hidden lg:inline-block" href="{{ url('/') }}"><i
+                            class="fas fa-cart-shopping"></i></a>
+                    <form class="hidden lg:inline-block" action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button type="submit"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    </form>
+                @else
+                    <a href="{{ url('/auth/sign-in') }}"><i class="far fa-user"></i></a>
+                @endif
             </div>
         </nav>
     </header>
@@ -138,6 +162,22 @@
 
     <script src="{{ asset('library/swiper/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+    <script>
+        const hamburger = document.getElementById("hamburger");
+        const closeNavbar = document.getElementById("close_navbar");
+        const navMenu = document.getElementById("nav-menu");
+        const navLink = document.querySelectorAll(".nav-link");
+
+        hamburger.addEventListener("click", () => {
+            navMenu.classList.add("left-[0]");
+            navMenu.classList.remove("left-[-100%]");
+        });
+
+        closeNavbar.addEventListener("click", () => {
+            navMenu.classList.add("left-[-100%]");
+            navMenu.classList.remove("left-[0]");
+        });
+    </script>
 </body>
 
 </html>

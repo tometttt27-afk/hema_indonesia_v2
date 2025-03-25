@@ -60,3 +60,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+// hapus history dan cache
+document.addEventListener("DOMContentLoaded", function () {
+    history.replaceState(null, null, location.href);
+    window.onunload = function () {
+        localStorage.clear();
+        sessionStorage.clear();
+    };
+});

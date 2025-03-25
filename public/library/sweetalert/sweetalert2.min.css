@@ -272,7 +272,7 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
     border: 0;
     border-radius: 0.25em;
     background: initia;
-    background-color: #2563eb;
+    background-color: #b17457;
     /* background: linear-gradient(to right, #38bdf8, #2563eb); */
     color: #fff;
     font-size: 1em;
@@ -280,7 +280,7 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
 div:where(.swal2-container)
     button:where(.swal2-styled):where(.swal2-confirm):focus-visible {
     /* box-shadow: 0 0 0 3px rgba(112, 102, 224, 0.5); */
-    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.5);
+    box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.5);
 }
 div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny) {
     border: 0;

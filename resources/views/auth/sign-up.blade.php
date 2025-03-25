@@ -43,7 +43,7 @@
                             Name</label>
                         <input type="text"
                             class="inline-block placeholder:text-[13.5px] md:placeholder:text-[14.7px] text-[13.5px] md:text-[14.7px] tracking-wide bg-white border-[1.8px] border-gray-600 w-full py-2.5 px-3 focus:border-primary outline-none rounded-md"
-                            name="text" placeholder="Enter your first name" id="first_name"
+                            name="first_name" placeholder="Enter your first name" id="first_name"
                             value="{{ Request::old('first_name') }}" autocomplete="off">
                     </div>
                     <div class="form-group">
@@ -52,7 +52,7 @@
                             Name</label>
                         <input type="text"
                             class="inline-block placeholder:text-[13.5px] md:placeholder:text-[14.7px] text-[13.5px] md:text-[14.7px] tracking-wide bg-white border-[1.8px] border-gray-600 w-full py-2.5 px-3 focus:border-primary outline-none rounded-md"
-                            name="text" placeholder="Enter your last name" id="last_name"
+                            name="last_name" placeholder="Enter your last name" id="last_name"
                             value="{{ Request::old('last_name') }}" autocomplete="off">
                     </div>
                 </div>

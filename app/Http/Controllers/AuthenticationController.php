@@ -20,12 +20,11 @@ class AuthenticationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|min:8'
+            'password' => 'required'
         ], [
             'email.required' => 'Input email harus diisi',
             'email.email' => 'Input email harus diisi format @',
             'password.required' => 'Input password harus diisi',
-            'password.min' => 'Input password minimal 8 karakter',
         ]);
 
         if ($validator->fails()) return redirect('/auth/sign-in')->withErrors($validator)->withInput();
@@ -46,7 +45,7 @@ class AuthenticationController extends Controller
                     return redirect('/');
                 }
             } else if ($user->status == 'inactive') {
-                Session::flash('error', 'Akun anda tidak aktif');
+                Session::flash('error', 'Maaf, akun anda tidak aktif');
                 return redirect('/auth/sign-in');
             } else if ($user->status == 'banned') {
                 Session::flash('error', 'Maaf, akun anda telah dibanned');
@@ -67,8 +66,8 @@ class AuthenticationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
-            'first_last' => 'required|string',
-            'email' => 'required|email',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8'
 
         ], [
@@ -78,6 +77,7 @@ class AuthenticationController extends Controller
             'last_name.string' => 'Input last name harus diisi dengan string',
             'email.required' => 'Input email harus diisi',
             'email.email' => 'Input email harus diisi format @',
+            'email.unique' => 'Email tersebut sudah tersedia',
             'password.required' => 'Input password harus diisi',
             'password.min' => 'Input password minimal 8 karakter'
         ]);
@@ -102,11 +102,16 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function signOut()
+    public function signOut(Request $request)
     {
         Auth::logout();
-        Session::flush();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         Session::flash('success_auth', 'Berhasil Sign Out');
-        return redirect('/auth/sign-in');
+        return redirect()->to('/auth/sign-in')->withHeaders([
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+            'Pragma' => 'no-cache',
+            'Expires' => '0'
+        ]);
     }
 }

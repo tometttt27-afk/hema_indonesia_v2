@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->char('no_telp')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
+            $table->bigInteger('age')->nullable();
             $table->enum('role', ['admin', 'customer'])->nullable();
             $table->text('address')->nullable();
             $table->string('profile_img')->nullable();

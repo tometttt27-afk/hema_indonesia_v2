@@ -1,18 +1,3 @@
-const hamburger = document.getElementById("hamburger");
-const closeNavbar = document.getElementById("close_navbar");
-const navMenu = document.getElementById("nav-menu");
-const navLink = document.querySelectorAll(".nav-link");
-
-hamburger.addEventListener("click", () => {
-    navMenu.classList.add("left-[0]");
-    navMenu.classList.remove("left-[-100%]");
-});
-
-closeNavbar.addEventListener("click", () => {
-    navMenu.classList.add("left-[-100%]");
-    navMenu.classList.remove("left-[0]");
-});
-
 // swiper hero
 var swiper = new Swiper(".mySwiperHero", {
     loop: true,
