@@ -2,8 +2,23 @@
 @section('title_web', 'FAQ | Hema.Indonesia')
 @section('content-main')
     <div class="header-hero bg-[#f5f5f5]">
-        <div class="container py-10">
-            <div class="">
+        <div class="container pt-10 pb-11">
+            <div class="block">
+                <nav aria-label="breadcrumb" class="w-full">
+                    <ol class="flex w-full flex-wrap items-center mb-2">
+                        <li
+                            class="flex cursor-pointer items-center text-sm text-gray-500 transition-colors duration-300 hover:text-slate-800">
+                            <a href="{{ url('/') }}">Beranda</a>
+                            <span class="pointer-events-none mx-2 text-slate-800">
+                                /
+                            </span>
+                        </li>
+                        <li
+                            class="flex cursor-pointer items-center text-sm text-gray-500 transition-colors duration-300 hover:text-slate-800">
+                            <a href="{{ url('/faq') }}">FAQ</a>
+                        </li>
+                    </ol>
+                </nav>
                 <h2 class="text-[20px] md:text-2xl font-bold">
                     FAQ | <span class="text-primary">Hema</span>.Indonesia
                 </h2>

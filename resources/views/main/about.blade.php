@@ -2,8 +2,23 @@
 @section('title_web', 'Tentang | Hema.Indonesia')
 @section('content-main')
     <div class="header-hero bg-[#f5f5f5]">
-        <div class="container py-10">
-            <div class="">
+        <div class="container pt-10 pb-11">
+            <div class="block">
+                <nav aria-label="breadcrumb" class="w-full">
+                    <ol class="flex w-full flex-wrap items-center mb-2">
+                        <li
+                            class="flex cursor-pointer items-center text-sm text-gray-500 transition-colors duration-300 hover:text-slate-800">
+                            <a href="{{ url('/') }}">Beranda</a>
+                            <span class="pointer-events-none mx-2 text-slate-800">
+                                /
+                            </span>
+                        </li>
+                        <li
+                            class="flex cursor-pointer items-center text-sm text-gray-500 transition-colors duration-300 hover:text-slate-800">
+                            <a href="{{ url('/about') }}">Tentang</a>
+                        </li>
+                    </ol>
+                </nav>
                 <h2 class="text-[20px] md:text-2xl font-bold">
                     Tentang <span class="text-primary">Hema</span>.Indonesia
                 </h2>
@@ -15,7 +30,8 @@
     <section class="about container py-24">
         <main class="content flex w-full gap-10 items-center flex-col-reverse xl:flex-row">
             <div class="flex-1">
-                <p class="text-justify">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum similique nobis enim,
+                <p class="text-justify">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum similique nobis
+                    enim,
                     in ipsum blanditiis Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit iste itaque excepturi
                     quas at reprehenderit harum adipisci reiciendis mollitia nulla? ipsum blanditiis Lorem ipsum dolor sit
                     amet, consectetur adipisicing elit. Odit iste itaque excepturi
