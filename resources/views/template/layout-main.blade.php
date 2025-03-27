@@ -47,7 +47,7 @@
                         <li class="mt-20 xl:mt-0 border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a
                                 href="{{ url('/') }}" class="nav-link">Beranda</a></li>
                         <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4">
-                            <a href="" class="nav-link">Produk</a>
+                            <a href="{{ url('/product') }}" class="nav-link">Produk</a>
                         </li>
                         <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a href=""
                                 class="nav-link">Pesanan</a></li>
@@ -127,7 +127,7 @@
                     <h4 class="font-medium mb-2">Permalinks</h4>
                     <div class="flex gap-2 flex-col text-sm">
                         <a href="{{ url('/') }}" class="nav-link hover:translate-x-1 duration-300">Beranda</a>
-                        <a href="" class="nav-link hover:translate-x-1 duration-300">Produk</a>
+                        <a href="{{ url('/product') }}" class="nav-link hover:translate-x-1 duration-300">Produk</a>
                         <a href="" class="nav-link hover:translate-x-1 duration-300">Pesanan</a>
                         <a href="{{ url('/about') }}" class="nav-link hover:translate-x-1 duration-300">Tentang</a>
                         <a href="{{ url('/gallery') }}" class="nav-link hover:translate-x-1 duration-300">Galeri</a>
@@ -179,6 +179,8 @@
     <script src="{{ asset('library/magic-grid/magic-grid.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/alert.js') }}"></script>
+    <script src="{{ asset('js/product.js') }}"></script>
+
     <script>
         const hamburger = document.getElementById("hamburger");
         const closeNavbar = document.getElementById("close_navbar");

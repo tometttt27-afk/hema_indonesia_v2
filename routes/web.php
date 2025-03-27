@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -18,6 +19,7 @@ Route::prefix('auth')->group(function () {
 
 Route::get('/', [MainController::class, 'index']);
 Route::post('/news-email', [MainController::class, 'news_email'])->name('newsEmailPost');
+Route::get('/product', [ProductController::class, 'index']);
 Route::get('/about', [MainController::class, 'about']);
 Route::get('/gallery', [MainController::class, 'gallery']);
 
