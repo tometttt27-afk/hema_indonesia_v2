@@ -22,6 +22,7 @@ Route::post('/news-email', [MainController::class, 'news_email'])->name('newsEma
 Route::get('/product', [ProductController::class, 'index']);
 Route::get('/about', [MainController::class, 'about']);
 Route::get('/gallery', [MainController::class, 'gallery']);
+Route::get('/faq', [MainController::class, 'faq']);
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {});

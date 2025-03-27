@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="{{ asset('library/swiper/swiper-bundle.min.css') }}" />
     <!-- sweetalert css -->
     <link rel="stylesheet" href="{{ asset('library/sweetalert/sweetalert2.min.css') }}" />
+    <!-- preline-ui css -->
+    <link rel="stylesheet" href="{{ asset('library/preline-ui/variants.css') }}" />
     <!-- link font icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
@@ -56,8 +58,8 @@
                         </li>
                         <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a
                                 href="{{ url('/gallery') }}" class="nav-link">Galeri</a></li>
-                        <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a href=""
-                                class="nav-link">FAQ</a></li>
+                        <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a
+                                href="{{ url('/faq') }}" class="nav-link">FAQ</a></li>
                         <li class="w-full inline-block mt-6 py-4">
                             <div class="text-lg sm:2xl xl:hidden cursor-pointer z-10 flex gap-4">
                                 @if (auth()->check())
@@ -131,7 +133,7 @@
                         <a href="" class="nav-link hover:translate-x-1 duration-300">Pesanan</a>
                         <a href="{{ url('/about') }}" class="nav-link hover:translate-x-1 duration-300">Tentang</a>
                         <a href="{{ url('/gallery') }}" class="nav-link hover:translate-x-1 duration-300">Galeri</a>
-                        <a href="" class="nav-link hover:translate-x-1 duration-300">FAQ</a>
+                        <a href="{{ url('/faq') }}" class="nav-link hover:translate-x-1 duration-300">FAQ</a>
                     </div>
                 </div>
                 <div class="block">
@@ -177,6 +179,7 @@
     <script src="{{ asset('library/swiper/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('library/magic-grid/magic-grid.min.js') }}"></script>
+    <script src="{{ asset('library/preline-ui/preline.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/alert.js') }}"></script>
     <script src="{{ asset('js/product.js') }}"></script>

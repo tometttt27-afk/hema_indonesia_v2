@@ -45,3 +45,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     magicGrid.listen();
 });
+
+// accordion faq
+function toggleAccordion(index) {
+    const downSVG = `<i class="fas fa-minus text-sm"></i>`;
+    const upSVG = `<i class="fas fa-plus text-sm"></i>`;
+    const content = document.getElementById(`content-${index}`);
+    const icon = document.getElementById(`icon-${index}`);
+
+    if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+        content.style.maxHeight = "0";
+        icon.innerHTML = upSVG;
+    } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+        icon.innerHTML = downSVG;
+    }
+}
