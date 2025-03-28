@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\MainAdminController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::get('/gallery', [MainController::class, 'gallery']);
 Route::get('/faq', [MainController::class, 'faq']);
 
 Route::middleware('auth')->group(function () {
-    Route::middleware('role:admin')->group(function () {});
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/dashboard', [MainAdminController::class, 'index']);
+    });
     Route::middleware('role:customer')->group(function () {});
 });
