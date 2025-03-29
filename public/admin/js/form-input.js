@@ -16,3 +16,15 @@ function generateCodeCategory(length) {
 document.addEventListener("DOMContentLoaded", function () {
     categoryCode.value = generateCodeCategory(4);
 });
+
+// upload file
+function updateFileName() {
+    const input = document.getElementById("file_drop");
+    const fileNameDisplay = document.getElementById("file-name");
+
+    if (input.files.length > 0) {
+        fileNameDisplay.textContent = "File: " + input.files[0].name;
+    } else {
+        fileNameDisplay.textContent = "Drag and drop a file to upload";
+    }
+}
