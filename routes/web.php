@@ -45,6 +45,15 @@ Route::middleware('auth')->group(function () {
             Route::put('/edit-customer/{email}', [DataMasterController::class, 'customerUpdate'])->name('customerPut');;
             Route::delete('/delete-customer/{email}', [DataMasterController::class, 'customerDestroy'])->name('customerDelete');;
         });
+        Route::get('/faq-company', [DataMasterController::class, 'faqCompanyIndex']);
+        Route::prefix('faq-company')->group(function () {
+            Route::get('/add-faq-company', [DataMasterController::class, 'faqCompanyAdd']);
+            Route::post('/add-faq-company', [DataMasterController::class, 'faqCompanyStore'])->name('faqCompanyPost');
+            Route::get('/edit-faq-company/{code_faq}', [DataMasterController::class, 'faqCompanyEdit']);
+            Route::put('/edit-faq-company/{code_faq}', [DataMasterController::class, 'faqCompanyUpdate'])->name('faqCompanyPut');;
+            Route::delete('/delete-faq-company/{code_faq}', [DataMasterController::class, 'faqCompanyDestroy'])->name('faqCompanyDelete');;
+            Route::put('/status-faq-company/{code_faq}', [DataMasterController::class, 'faqCompanyStatusUpdate'])->name('faqCompanyStatusPut');;
+        });
     });
     Route::middleware('role:customer')->group(function () {});
 });

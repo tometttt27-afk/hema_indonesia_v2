@@ -285,9 +285,9 @@
                                     Data Master</span> <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="{{ url('/customer') }}">Data Pelanggan</a></li>
-                                <li><a href="userlists.html">Data Galeri</a></li>
+                                <li><a href="{{ url('gallery') }}">Data Galeri</a></li>
                                 <li><a href="{{ url('/categories') }}">Data Kategori</a></li>
-                                <li><a href="userlists.html">Data FAQ</a></li>
+                                <li><a href="{{ url('/faq-company') }}">Data FAQ</a></li>
                             </ul>
                         </li>
                         <li class="submenu">

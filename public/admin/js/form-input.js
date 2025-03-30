@@ -1,6 +1,7 @@
+const charactersCode = "0123456789";
+
 // Generate string/code in id category_code
 const categoryCode = document.getElementById("category_code");
-const charactersCode = "0123456789";
 
 function generateCodeCategory(length) {
     let string = "HEMA";
@@ -14,7 +15,25 @@ function generateCodeCategory(length) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    categoryCode.value = generateCodeCategory(4);
+    categoryCode.value = generateCodeCategory(5);
+});
+
+// Generate string/code in id category_code
+const faqCompanyCode = document.getElementById("code_faq");
+
+function generateCodeFaqCompany(length) {
+    let string = "FAQCOMPANY";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+        result += charactersCode.charAt(
+            Math.floor(Math.random() * charactersCode.length)
+        );
+    }
+    return string + result;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    faqCompanyCode.value = generateCodeFaqCompany(5);
 });
 
 // upload file

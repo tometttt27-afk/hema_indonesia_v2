@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategoriesModel;
+use App\Models\FaqCompanyModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -206,5 +207,84 @@ class DataMasterController extends Controller
         $data->delete();
         Session::flash('success', 'Hapus kategori produk berhasil');
         return redirect('/categories');
+    }
+
+    public function faqCompanyIndex()
+    {
+        $data = FaqCompanyModel::all();
+        return view('faq_company.index', compact(['data']));
+    }
+
+    public function faqCompanyAdd()
+    {
+        return view('faq_company.add');
+    }
+
+    public function faqCompanyStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'code_faq' => 'unique:faq_company,code_faq',
+            'description' => 'required',
+            'is_active' => 'required'
+        ], [
+            'title.required' => 'Input judul FAQ harus diisi',
+            'code_faq.unique' => 'Kode FAQ tersebut sudah tersedia',
+            'description.required' => 'Input deskripsi FAQ harus diisi',
+            'is_active.required' => 'Input Status FAQ harus diisi',
+        ]);
+
+        if ($validator->fails()) return redirect('/faq-company/add-faq-company')->withErrors($validator)->withInput();
+
+        FaqCompanyModel::create([
+            'title' => $request->input('title'),
+            'code_faq' => $request->input('code_faq'),
+            'description' => $request->input('description'),
+            'is_active' => $request->input('is_active')
+        ]);
+
+        return redirect('/faq-company')->with('success', 'Tambah data FAQ perusahaan berhasil');
+    }
+
+    public function faqCompanyEdit($code_faq)
+    {
+        $data = FaqCompanyModel::where('code_faq', $code_faq)->firstOrFail();
+        return view('faq_company.edit', compact('data'));
+    }
+
+    public function faqCompanyUpdate(Request $request, $code_faq)
+    {
+        $data = FaqCompanyModel::where('code_faq', $code_faq)->firstOrFail();
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required'
+        ], [
+            'title.required' => 'Input judul FAQ harus diisi',
+            'description.required' => 'Input deskripsi FAQ harus diisi',
+        ]);
+
+        if ($validator->fails()) return redirect('/faq-company/edit-faq-company/' . strtolower($data->code_faq))->withErrors($validator)->withInput();
+
+        $data->update([
+            'title' => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return redirect('/faq-company')->with('success', 'Ubah data FAQ perusahaan berhasil');
+    }
+
+    public function faqCompanyStatusUpdate(Request $request, $code_faq)
+    {
+        $data = FaqCompanyModel::where('code_faq', $code_faq)->firstOrFail();
+        $data->update(['is_active' => $request->has('is_active') && $request->is_active == '1' ? 0 : 1]);
+        return redirect('/faq-company')->with('success', 'Ubah status data FAQ perusahaan berhasil');
+    }
+
+    public function faqCompanyDestroy($code_faq)
+    {
+        $data = FaqCompanyModel::where('code_faq', $code_faq)->firstOrFail();
+        $data->delete();
+        return redirect('/faq-company')->with('success', 'Hapus data FAQ perusahaan berhasil');
     }
 }
