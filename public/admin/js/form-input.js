@@ -4,7 +4,7 @@ const charactersCode = "0123456789";
 const categoryCode = document.getElementById("category_code");
 
 function generateCodeCategory(length) {
-    let string = "HEMA";
+    let string = "HEMACATEGORY";
     let result = "";
     for (let i = 0; i < length; i++) {
         result += charactersCode.charAt(
@@ -18,11 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
     categoryCode.value = generateCodeCategory(5);
 });
 
-// Generate string/code in id category_code
+// Generate string/code in id faqCompany
 const faqCompanyCode = document.getElementById("code_faq");
 
 function generateCodeFaqCompany(length) {
-    let string = "FAQCOMPANY";
+    let string = "HEMAFAQ";
     let result = "";
     for (let i = 0; i < length; i++) {
         result += charactersCode.charAt(
@@ -34,6 +34,24 @@ function generateCodeFaqCompany(length) {
 
 document.addEventListener("DOMContentLoaded", function () {
     faqCompanyCode.value = generateCodeFaqCompany(5);
+});
+
+// Generate string/code in id galleryCompanyCode
+const galleryCompanyCode = document.getElementById("code_gallery");
+
+function generateCodeGalleryCompany(length) {
+    let string = "HEMAGALLERY";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+        result += charactersCode.charAt(
+            Math.floor(Math.random() * charactersCode.length)
+        );
+    }
+    return string + result;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    galleryCompanyCode.value = generateCodeGalleryCompany(5);
 });
 
 // upload file

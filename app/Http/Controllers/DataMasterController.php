@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoriesModel;
 use App\Models\FaqCompanyModel;
+use App\Models\GalleryModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -286,5 +287,108 @@ class DataMasterController extends Controller
         $data = FaqCompanyModel::where('code_faq', $code_faq)->firstOrFail();
         $data->delete();
         return redirect('/faq-company')->with('success', 'Hapus data FAQ perusahaan berhasil');
+    }
+
+    public function galleryCompanyIndex()
+    {
+        $data = GalleryModel::all();
+        return view('gallery.index', compact(['data']));
+    }
+
+    public function galleryCompanyAdd()
+    {
+        return view('gallery.add');
+    }
+
+    public function galleryCompanyStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required',
+            'code_gallery' => 'unique:gallery,code_gallery',
+            'is_active' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:1024',
+        ], [
+            'title.required' => 'Input judul galeri harus diisi',
+            'description.required' => 'Input deskripsi galeri harus diisi',
+            'code_gallery.unique' => 'Kode galeri tersebut sudah tersedia',
+            'is_active.required' => 'Input status galeri harus diisi',
+            'image.required' => 'Input gambar galeri harus diisi',
+            'image.image' => 'File harus berupa gambar.',
+            'image.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
+            'image.max' => 'Ukuran gambar maksimal 1MB.',
+        ]);
+
+        if ($validator->fails()) return redirect('/gallery-company/add-gallery-company')->withErrors($validator)->withInput();
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $name_gallery = 'gallery_' . uniqid() . '_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $file->move('uploads/gallery', $name_gallery);
+        }
+
+        GalleryModel::create([
+            'title' => $request->title,
+            'code_gallery' => $request->code_gallery,
+            'description' => $request->description,
+            'is_active' => $request->is_active,
+            'image' => $name_gallery ?? 'not-photo.jpg'
+        ]);
+
+        return redirect('/gallery-company')->with('success', 'Tambah data galeri berhasil');
+    }
+
+    public function galleryCompanyEdit($code_gallery)
+    {
+        $data = GalleryModel::where('code_gallery', $code_gallery)->firstOrFail();
+        return view('gallery.edit', compact('data'));
+    }
+
+    public function galleryCompanyUpdate(Request $request, $code_gallery)
+    {
+        $data = GalleryModel::where('code_gallery', $code_gallery)->firstOrFail();
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg|max:1024',
+        ], [
+            'title.required' => 'Input judul galeri harus diisi',
+            'description.required' => 'Input deskripsi galeri harus diisi',
+            'image.image' => 'File harus berupa gambar.',
+            'image.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
+            'image.max' => 'Ukuran gambar maksimal 1MB.',
+        ]);
+
+        if ($validator->fails()) return redirect('/gallery-company/edit-gallery-company/' . strtolower($data->code_gallery))->withErrors($validator)->withInput();
+
+        $name_gallery = $data->image;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $name_gallery = 'gallery_' . uniqid() . '_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $file->move('uploads/gallery', $name_gallery);
+        }
+
+        $data->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $name_gallery
+        ]);
+
+        return redirect('/gallery-company')->with('success', 'Ubah data galeri berhasil');
+    }
+
+    public function galleryCompanyStatusUpdate(Request $request, $code_gallery)
+    {
+        $data = GalleryModel::where('code_gallery', $code_gallery)->firstOrFail();
+        $data->update(['is_active' => $request->has('is_active') && $request->is_active == '1' ? 0 : 1]);
+        return redirect('/gallery-company')->with('success', 'Ubah status data galeri berhasil');
+    }
+
+    public function galleryCompanyDestroy($code_gallery)
+    {
+        $data = GalleryModel::where('code_gallery', $code_gallery)->firstOrFail();
+        $data->delete();
+        return redirect('/gallery-company')->with('success', 'Hapus data galeri berhasil');
     }
 }

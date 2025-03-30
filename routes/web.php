@@ -54,6 +54,15 @@ Route::middleware('auth')->group(function () {
             Route::delete('/delete-faq-company/{code_faq}', [DataMasterController::class, 'faqCompanyDestroy'])->name('faqCompanyDelete');;
             Route::put('/status-faq-company/{code_faq}', [DataMasterController::class, 'faqCompanyStatusUpdate'])->name('faqCompanyStatusPut');;
         });
+        Route::get('/gallery-company', [DataMasterController::class, 'galleryCompanyIndex']);
+        Route::prefix('gallery-company')->group(function () {
+            Route::get('/add-gallery-company', [DataMasterController::class, 'galleryCompanyAdd']);
+            Route::post('/add-gallery-company', [DataMasterController::class, 'galleryCompanyStore'])->name('galleryCompanyPost');
+            Route::get('/edit-gallery-company/{code_gallery}', [DataMasterController::class, 'galleryCompanyEdit']);
+            Route::put('/edit-gallery-company/{code_gallery}', [DataMasterController::class, 'galleryCompanyUpdate'])->name('galleryCompanyPut');;
+            Route::delete('/delete-gallery-company/{code_gallery}', [DataMasterController::class, 'galleryCompanyDestroy'])->name('galleryCompanyDelete');;
+            Route::put('/status-gallery-company/{code_gallery}', [DataMasterController::class, 'galleryCompanyStatusUpdate'])->name('galleryCompanyStatusPut');;
+        });
     });
     Route::middleware('role:customer')->group(function () {});
 });
