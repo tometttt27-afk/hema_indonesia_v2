@@ -29,13 +29,13 @@ Route::get('/faq', [MainController::class, 'faq']);
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [MainAdminController::class, 'index']);
-        Route::get('/categories', [DataMasterController::class, 'categoriesIndex']);
+        Route::get('/categories', [ProductsController::class, 'categoriesIndex']);
         Route::prefix('categories')->group(function () {
-            Route::get('/add-categories', [DataMasterController::class, 'categoriesAdd']);
-            Route::post('/add-categories', [DataMasterController::class, 'categoriesStore'])->name('categoryPost');
-            Route::get('/edit-categories/{category_code}', [DataMasterController::class, 'categoriesEdit']);
-            Route::put('/edit-categories/{category_code}', [DataMasterController::class, 'categoriesUpdate'])->name('categoryPut');;
-            Route::delete('/delete-categories/{category_code}', [DataMasterController::class, 'categoriesDestroy'])->name('categoryDelete');;
+            Route::get('/add-categories', [ProductsController::class, 'categoriesAdd']);
+            Route::post('/add-categories', [ProductsController::class, 'categoriesStore'])->name('categoryPost');
+            Route::get('/edit-categories/{category_code}', [ProductsController::class, 'categoriesEdit']);
+            Route::put('/edit-categories/{category_code}', [ProductsController::class, 'categoriesUpdate'])->name('categoryPut');;
+            Route::delete('/delete-categories/{category_code}', [ProductsController::class, 'categoriesDestroy'])->name('categoryDelete');;
         });
         Route::get('/customer', [DataMasterController::class, 'customerIndex']);
         Route::prefix('customer')->group(function () {

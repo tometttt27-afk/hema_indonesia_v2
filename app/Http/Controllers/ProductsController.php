@@ -147,4 +147,73 @@ class ProductsController extends Controller
         $data->delete();
         return redirect('/product-list')->with('success', 'Hapus data produk berhasil');
     }
+
+    public function categoriesIndex()
+    {
+        $data = CategoriesModel::all();
+        return view('categories.index', compact(['data']));
+    }
+
+    public function categoriesAdd()
+    {
+        return view('categories.add');
+    }
+
+    public function categoriesStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'category_code' => 'unique:categories,category_code',
+            'description' => 'required'
+        ], [
+            'name.required' => 'Input nama kategori harus diisi',
+            'category_code.unique' => 'Kode kategori tersebut sudah tersedia',
+            'description.required' => 'Input deskripsi kategori harus diisi',
+        ]);
+
+        if ($validator->fails()) return redirect('/categories/add-categories')->withErrors($validator)->withInput();
+
+        CategoriesModel::create([
+            'name' => $request->input('name'),
+            'category_code' => $request->input('category_code'),
+            'description' => $request->input('description')
+        ]);
+
+        return redirect('/categories')->with('success', 'Tambah kategori produk berhasil');
+    }
+
+    public function categoriesEdit($category_code)
+    {
+        $data = CategoriesModel::where('category_code', $category_code)->firstOrFail();
+        return view('categories.edit', compact('data'));
+    }
+
+    public function categoriesUpdate(Request $request, $category_code)
+    {
+        $data = CategoriesModel::where('category_code', $category_code)->firstOrFail();
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required'
+        ], [
+            'name.required' => 'Input nama kategori harus diisi',
+            'description.required' => 'Input deskripsi kategori harus diisi',
+        ]);
+
+        if ($validator->fails()) return redirect('/categories/edit-categories/' . strtolower($data->category_code))->withErrors($validator)->withInput();
+
+        $data->update([
+            'name' => $request->name,
+            'description' => $request->description
+        ]);
+
+        return redirect('/categories')->with('success', 'Ubah kategori produk berhasil');
+    }
+
+    public function categoriesDestroy($category_code)
+    {
+        $data = CategoriesModel::where('category_code', $category_code)->firstOrFail();
+        $data->delete();
+        return redirect('/categories')->with('success', 'Hapus kategori produk berhasil');
+    }
 }
