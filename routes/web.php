@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\MainAdminController;
 use App\Http\Controllers\MainController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductsController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -21,7 +21,7 @@ Route::prefix('auth')->group(function () {
 
 Route::get('/', [MainController::class, 'index']);
 Route::post('/news-email', [MainController::class, 'news_email'])->name('newsEmailPost');
-Route::get('/product', [ProductController::class, 'index']);
+Route::get('/product', [ProductsController::class, 'index']);
 Route::get('/about', [MainController::class, 'about']);
 Route::get('/gallery', [MainController::class, 'gallery']);
 Route::get('/faq', [MainController::class, 'faq']);
@@ -63,14 +63,14 @@ Route::middleware('auth')->group(function () {
             Route::delete('/delete-gallery-company/{code_gallery}', [DataMasterController::class, 'galleryCompanyDestroy'])->name('galleryCompanyDelete');;
             Route::put('/status-gallery-company/{code_gallery}', [DataMasterController::class, 'galleryCompanyStatusUpdate'])->name('galleryCompanyStatusPut');;
         });
-        Route::get('/product-list', [DataMasterController::class, 'productListIndex']);
+        Route::get('/product-list', [ProductsController::class, 'productsListIndex']);
         Route::prefix('product-list')->group(function () {
-            Route::get('/add-product-list', [DataMasterController::class, 'productListAdd']);
-            Route::post('/add-product-list', [DataMasterController::class, 'productListStore'])->name('productListPost');
-            Route::get('/edit-product-list/{code_product}', [DataMasterController::class, 'productListEdit']);
-            Route::put('/edit-product-list/{code_product}', [DataMasterController::class, 'productListUpdate'])->name('productListPut');;
-            Route::delete('/delete-product-list/{code_product}', [DataMasterController::class, 'productListDestroy'])->name('productListDelete');;
-            Route::put('/status-product-list/{code_product}', [DataMasterController::class, 'productListStatusUpdate'])->name('productListStatusPut');;
+            Route::get('/add-product-list', [ProductsController::class, 'productsListAdd']);
+            Route::post('/add-product-list', [ProductsController::class, 'productsListStore'])->name('productsListPost');
+            Route::get('/edit-product-list/{code_product}', [ProductsController::class, 'productsListEdit']);
+            Route::put('/edit-product-list/{code_product}', [ProductsController::class, 'productsListUpdate'])->name('productsListPut');;
+            Route::delete('/delete-product-list/{code_product}', [ProductsController::class, 'productsListDestroy'])->name('productsListDelete');;
+            Route::put('/status-product-list/{code_product}', [ProductsController::class, 'productsListStatusUpdate'])->name('productsListStatusPut');;
         });
     });
     Route::middleware('role:customer')->group(function () {});

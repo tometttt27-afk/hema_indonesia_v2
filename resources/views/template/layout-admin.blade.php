@@ -329,6 +329,7 @@
     <script src="{{ asset('admin/plugins/apexchart/apexcharts.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/apexchart/chart-data.js') }}"></script>
     <script src="{{ asset('admin/plugins/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/select2/js/custom-select.js') }}"></script>
     <script src="{{ asset('admin/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/sweetalert/sweetalerts.min.js') }}"></script>
     <script src="{{ asset('admin/js/script.js') }}"></script>

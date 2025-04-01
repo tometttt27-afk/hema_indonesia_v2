@@ -54,6 +54,24 @@ document.addEventListener("DOMContentLoaded", function () {
     galleryCompanyCode.value = generateCodeGalleryCompany(5);
 });
 
+// Generate string/code in id ProductsListCode
+const ProductsListCode = document.getElementById("code_product");
+
+function generateCodeProductsList(length) {
+    let string = "HEMAPRODUCTS";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+        result += charactersCode.charAt(
+            Math.floor(Math.random() * charactersCode.length)
+        );
+    }
+    return string + result;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    ProductsListCode.value = generateCodeProductsList(8);
+});
+
 // upload file
 function updateFileName() {
     const input = document.getElementById("file_drop");
