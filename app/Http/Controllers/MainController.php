@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FaqCompanyModel;
 use App\Models\NewsEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -38,6 +39,8 @@ class MainController extends Controller
 
     public function faq()
     {
-        return view('main.faq');
+        $data = FaqCompanyModel::where('is_active', 1)->get();
+        $count_faq = $data->count();
+        return view('main.faq', compact(['data', 'count_faq']));
     }
 }

@@ -29,146 +29,30 @@
 
     <section class="about container py-24">
         <main class="content flex w-full gap-[1rem] items-start justify-start flex-wrap">
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(1)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">What is Material Tailwind?</span>
-                    <span id="icon-1" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-1" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        Material Tailwind is a framework that enhances Tailwind CSS with additional styles and components.
+            @if ($count_faq > 0)
+                @foreach ($data as $faq)
+                    <div class="border shadow-sm break-all w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
+                        <button onclick="toggleAccordion({{ $faq->id }})"
+                            class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
+                            <p class="text-left">{{ $faq->title }}</p>
+                            <span id="icon-1" class="text-slate-800 transition-transform duration-300">
+                                <i class="fas fa-plus text-sm"></i>
+                            </span>
+                        </button>
+                        <div id="content-{{ $faq->id }}"
+                            class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
+                                <span>{{ $faq->description }}</span>
+                            </div>
+                        </div>
                     </div>
+                @endforeach
+            @else
+                <div
+                    class="border shadow-sm text-center flex justify-center items-center w-full lg:w-full border-slate-200 p-5">
+                    <p>Data FAQ tidak dapat ditemukan!</p>
                 </div>
-            </div>
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(2)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">How to use Material Tailwind?</span>
-                    <span id="icon-2" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-2" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        You can use Material Tailwind by importing its components into your Tailwind CSS project.
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(3)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">What can I do with Material Tailwind?</span>
-                    <span id="icon-3" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-3" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        Material Tailwind allows you to quickly build modern, responsive websites with a focus on design.
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(4)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">What is Material Tailwind?</span>
-                    <span id="icon-4" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-4" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        Material Tailwind is a framework that enhances Tailwind CSS with additional styles and components.
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(5)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">How to use Material Tailwind?</span>
-                    <span id="icon-5" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-5" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        You can use Material Tailwind by importing its components into your Tailwind CSS project.
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(6)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">What can I do with Material Tailwind?</span>
-                    <span id="icon-6" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-6" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        Material Tailwind allows you to quickly build modern, responsive websites with a focus on design.
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(7)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">What is Material Tailwind?</span>
-                    <span id="icon-7" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-7" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        Material Tailwind is a framework that enhances Tailwind CSS with additional styles and components.
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(8)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">How to use Material Tailwind?</span>
-                    <span id="icon-8" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-8" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        You can use Material Tailwind by importing its components into your Tailwind CSS project.
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(9)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">What can I do with Material Tailwind?</span>
-                    <span id="icon-9" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-9" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        Material Tailwind allows you to quickly build modern, responsive websites with a focus on design.
-                    </div>
-                </div>
-            </div>
-            <div class="border shadow-sm w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                <button onclick="toggleAccordion(10)"
-                    class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                    <span class="text-left">What can I do with Material Tailwind?</span>
-                    <span id="icon-10" class="text-slate-800 transition-transform duration-300">
-                        <i class="fas fa-plus text-sm"></i>
-                    </span>
-                </button>
-                <div id="content-10" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                        Material Tailwind allows you to quickly build modern, responsive websites with a focus on design.
-                    </div>
-                </div>
-            </div>
+            @endif
         </main>
     </section>
 @endsection
