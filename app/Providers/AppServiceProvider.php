@@ -16,6 +16,29 @@ class AppServiceProvider extends ServiceProvider
     {
         /*
         |--------------------------------------------------------------
+        | SESSION COOKIE SEPARATION — Admin vs Customer
+        |--------------------------------------------------------------
+        | Admin dan customer menggunakan cookie session berbeda:
+        |   - Admin   : {app_name}_admin_session
+        |   - Customer: {app_name}_session  (default)
+        |
+        | Ini mencegah satu browser tab menimpa login tab lain
+        | meski keduanya mengakses domain yang sama.
+        |--------------------------------------------------------------
+        */
+        $request = app('request');
+        $isAdminRoute = $request->is(
+            'dashboard*', 'product-list*', 'categories*',
+            'order-list*', 'customer*', 'gallery-company*',
+            'faq-company*', 'about-company*'
+        );
+
+        if ($isAdminRoute) {
+            $appName = str_replace(' ', '_', strtolower(config('app.name', 'laravel')));
+            config(['session.cookie' => $appName . '_admin_session']);
+        }
+        /*
+        |--------------------------------------------------------------
         | VIEW COMPOSER — cartCount & wishlistCount
         |--------------------------------------------------------------
         | Di-share ke SEMUA view yang extend layout-main.
