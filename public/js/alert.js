@@ -89,11 +89,14 @@ function swalConfirm({ title, html, confirmText, confirmClass }) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   EVENT DELEGATION — satu listener di document menangkap
-   SEMUA klik, termasuk elemen yang baru di-render DataTables.
-   Tidak ada querySelectorAll, tidak ada forEach, tidak perlu
-   DOMContentLoaded untuk tombol-tombol ini.
+   EVENT DELEGATION — dipasang saat window 'load' (bukan
+   DOMContentLoaded) agar sweetalert2.min.js sudah pasti
+   terdefinisi dan DataTables sudah selesai render.
+   Satu listener di document menangkap SEMUA klik termasuk
+   elemen yang di-render ulang oleh DataTables.
 ════════════════════════════════════════════════════════════ */
+window.addEventListener('load', function () {
+
 document.addEventListener('click', async function (e) {
 
     /* ── 1. Konfirmasi HAPUS (.btn-delete) ────────────────────
@@ -201,6 +204,8 @@ document.addEventListener('click', async function (e) {
         }
     }
 });
+
+}); // end window.addEventListener('load')
 
 /* ════════════════════════════════════════════════════════════
    FLASH MESSAGES — dari Laravel session via <meta> di layout
