@@ -1,58 +1,68 @@
 @extends('template.layout-main')
 @section('title_web', 'FAQ | Hema.Indonesia')
 @section('content-main')
-    <div class="header-hero bg-[#f5f5f5]">
-        <div class="container pt-10 pb-11">
-            <div class="block">
-                <nav aria-label="breadcrumb" class="w-full">
-                    <ol class="flex w-full flex-wrap items-center mb-2">
-                        <li
-                            class="flex cursor-pointer items-center text-sm text-gray-500 transition-colors duration-300 hover:text-slate-800">
-                            <a href="{{ url('/') }}">Beranda</a>
-                            <span class="pointer-events-none mx-2 text-slate-800">
-                                /
-                            </span>
-                        </li>
-                        <li
-                            class="flex cursor-pointer items-center text-sm text-gray-500 transition-colors duration-300 hover:text-slate-800">
-                            <a href="{{ url('/faq') }}">FAQ</a>
-                        </li>
-                    </ol>
-                </nav>
-                <h2 class="text-[20px] md:text-2xl font-bold">
-                    FAQ | <span class="text-primary">Hema</span>.Indonesia
-                </h2>
-                <p class="text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, id?</p>
-            </div>
-        </div>
-    </div>
 
-    <section class="about container py-24">
-        <main class="content flex w-full gap-[1rem] items-start justify-start flex-wrap">
-            @if ($count_faq > 0)
-                @foreach ($data as $faq)
-                    <div class="border shadow-sm break-all w-full lg:w-[calc(100%_/_2_-_1rem)] border-slate-200 px-5">
-                        <button onclick="toggleAccordion({{ $faq->id }})"
-                            class="w-full flex justify-between items-center gap-5 py-5 text-slate-800">
-                            <p class="text-left">{{ $faq->title }}</p>
-                            <span id="icon-1" class="text-slate-800 transition-transform duration-300">
-                                <i class="fas fa-plus text-sm"></i>
-                            </span>
-                        </button>
-                        <div id="content-{{ $faq->id }}"
-                            class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                            <div class="pb-5 text-[14.5px] tracking-wide text-slate-500 text-justify">
-                                <span>{{ $faq->description }}</span>
-                            </div>
+<div class="page-hero">
+    <div class="container">
+        <ol class="breadcrumb-list"><li><a href="{{ url('/') }}">Beranda</a></li><li>FAQ</li></ol>
+        <h2 class="page-hero">Pertanyaan <span style="color:#b17457;">Umum</span></h2>
+        <p>Temukan jawaban atas pertanyaan yang sering ditanyakan</p>
+    </div>
+</div>
+
+<section class="container py-16">
+    <div class="max-w-3xl mx-auto">
+        @if($count_faq > 0)
+            <div class="flex flex-col gap-3">
+                @foreach($data as $faq)
+                <div class="rounded-xl overflow-hidden" style="border:1.5px solid #ede3db;background:#fff;">
+                    <button onclick="toggleFaq({{ $faq->id }})"
+                        class="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
+                        style="background:transparent;border:none;cursor:pointer;">
+                        <span class="font-semibold text-gray-800" style="font-size:15px;">{{ $faq->title }}</span>
+                        <span id="faq-icon-{{ $faq->id }}"
+                            class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"
+                            style="background:rgba(177,116,87,.1);color:#b17457;">
+                            <i class="fas fa-plus text-xs"></i>
+                        </span>
+                    </button>
+                    <div id="faq-body-{{ $faq->id }}"
+                        class="overflow-hidden transition-all duration-300 ease-in-out"
+                        style="max-height:0;">
+                        <div class="px-6 pb-5" style="border-top:1px solid #f5ede6;">
+                            <p class="text-gray-600 leading-relaxed text-sm mt-4">{{ $faq->description }}</p>
                         </div>
                     </div>
-                @endforeach
-            @else
-                <div
-                    class="border shadow-sm text-center flex justify-center items-center w-full lg:w-full border-slate-200 p-5">
-                    <p>Data FAQ tidak dapat ditemukan!</p>
                 </div>
-            @endif
-        </main>
-    </section>
+                @endforeach
+            </div>
+        @else
+            <div class="empty-state">
+                <i class="fas fa-question-circle"></i>
+                <p>FAQ belum tersedia. Silakan hubungi kami langsung.</p>
+            </div>
+        @endif
+    </div>
+</section>
+
+<script>
+function toggleFaq(id) {
+    const body = document.getElementById('faq-body-' + id);
+    const icon = document.getElementById('faq-icon-' + id);
+    const isOpen = body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
+    // Close all
+    document.querySelectorAll('[id^="faq-body-"]').forEach(el => { el.style.maxHeight = '0'; });
+    document.querySelectorAll('[id^="faq-icon-"]').forEach(el => {
+        el.style.background = 'rgba(177,116,87,.1)'; el.style.transform = 'rotate(0deg)';
+        el.innerHTML = '<i class="fas fa-plus text-xs"></i>';
+    });
+    if (!isOpen) {
+        body.style.maxHeight = body.scrollHeight + 40 + 'px';
+        icon.style.background = 'linear-gradient(135deg,#b17457,#c29470)';
+        icon.style.color = '#fff';
+        icon.innerHTML = '<i class="fas fa-minus text-xs"></i>';
+    }
+}
+</script>
+
 @endsection

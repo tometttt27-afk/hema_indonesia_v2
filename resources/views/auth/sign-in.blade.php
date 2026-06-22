@@ -1,75 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="success" content="{{ session('success') }}">
     <meta name="error" content="{{ session('error') }}">
     <meta name="errors" content='@json($errors->all())'>
-    <title>Sign In | Hema.Indonesia</title>
-    {{-- Auth css --}}
+    <title>Masuk | Hema.Indonesia</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    {{-- Font Urbanist --}}
     <link rel="stylesheet" href="{{ asset('library/font/urbanist.css') }}">
-    {{-- Sweetalert css --}}
     <link rel="stylesheet" href="{{ asset('library/sweetalert/sweetalert2.min.css') }}">
-    {{-- Icon Fontawesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite('resources/css/app.css')
 </head>
+<body>
 
-<body class="bg-[#f5f5f5] font-urbanist">
-    <section class="container w-full py-6 h-dvh flex justify-center items-center auth">
-        <main class="content bg-white p-5 md:p-8 rounded w-full md:1/3 xl:w-1/2">
-            <h1 class="lg:text-3xl md:text-2xl text-xl text-center font-bold mb-2">
-                <span class="text-primary">Hema</span>.Indonesia
-            </h1>
-            <div class="my-6">
-                <h2 class="font-semibold md:text-xl text-lg">Sign in to your account</h2>
-                <p class="text-gray-500 text-[13.3px] md:text-[14px]">Enter your username and password</p>
+<div class="auth-wrapper">
+
+    {{-- ═══ LEFT PANEL ═══ --}}
+    <div class="auth-left">
+        <a href="{{ url('/') }}" class="auth-left-logo"><span>Hema</span>.Indonesia</a>
+
+        <div class="auth-left-content">
+            <h2>Selamat Datang<br>Kembali 👋</h2>
+            <p>Masuk untuk melanjutkan perjalanan belanja Anda dan temukan koleksi gamis premium terbaru kami.</p>
+        </div>
+
+        <div class="auth-left-features">
+            @foreach([
+                ['fas fa-bag-shopping','Belanja Mudah & Aman'],
+                ['fas fa-truck','Pengiriman ke Seluruh Indonesia'],
+                ['far fa-heart','Simpan Produk Favorit'],
+                ['fas fa-rotate-left','Garansi Retur 7 Hari'],
+            ] as $f)
+            <div class="auth-left-feature">
+                <span class="auth-left-feature-icon"><i class="{{ $f[0] }}"></i></span>
+                {{ $f[1] }}
             </div>
-            <form action="{{ route('isSignIn') }}" method="post">
+            @endforeach
+        </div>
+    </div>
+
+    {{-- ═══ RIGHT PANEL ═══ --}}
+    <div class="auth-right">
+        <div class="auth-card">
+
+            <a href="{{ url('/') }}" class="auth-card-logo"><span>Hema</span>.Indonesia</a>
+
+            <h2>Masuk ke Akun</h2>
+            <p class="subtitle">Masukkan email dan kata sandi Anda</p>
+
+            <form action="{{ route('isSignIn') }}" method="post" autocomplete="off">
                 @csrf
-                <div class="form-group mb-4">
-                    <label
-                        class="label-form block mb-1 text-gray-800 text-[13.5px] md:text-[14.7px] tracking-wider">Email</label>
-                    <input type="text"
-                        class="inline-block placeholder:text-[13.5px] md:placeholder:text-[14.7px] text-[13.5px] md:text-[14.7px] tracking-wide bg-white border-[1.8px] border-gray-600 w-full py-2.5 px-3 focus:border-primary outline-none rounded-md"
-                        name="email" placeholder="Enter your email" id="email" value="{{ Request::old('email') }}"
-                        autocomplete="off">
+
+                <div class="auth-form-group">
+                    <label class="auth-label">Email</label>
+                    <input class="auth-input" type="email" name="email"
+                        placeholder="contoh@email.com" value="{{ old('email') }}">
                 </div>
-                <div class="form-group mb-6 relative">
-                    <label
-                        class="label-form block mb-1 text-gray-800 text-[13.5px] md:text-[14.7px] tracking-wider">Password</label>
-                    <input type="password"
-                        class="inline-block placeholder:text-[13.5px] md:placeholder:text-[14.7px] text-[13.5px] md:text-[14.7px] tracking-wide bg-white border-[1.8px] border-gray-600 w-full py-2.5 px-3 focus:border-primary outline-none rounded-md"
-                        name="password" placeholder="Enter your password" value="{{ Request::old('password') }}"
-                        id="password" autocomplete="off">
-                    <span class="password-icon"><i class="fas fa-eye-slash"></i></span>
+
+                <div class="auth-form-group">
+                    <label class="auth-label">Kata Sandi</label>
+                    <div class="auth-input-wrap">
+                        <input class="auth-input" type="password" id="password" name="password"
+                            placeholder="Masukkan kata sandi">
+                        <button type="button" class="auth-eye" onclick="togglePwd('password','eye-pw')">
+                            <i class="fas fa-eye-slash" id="eye-pw"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="text-right mb-4">
-                    <a href="{{ url('auth/forgot-password') }}"
-                        class="text-primary font-medium text-[13.5px] md:text-sm">Forgot password?</a>
+
+                <div class="flex justify-between items-center mb-5" style="font-size:13px;">
+                    <label class="flex items-center gap-2 text-gray-600 cursor-pointer">
+                        <input type="checkbox" name="remember" style="accent-color:#b17457;"> Ingat saya
+                    </label>
+                    <a href="{{ url('auth/forgot-password') }}" class="auth-link">Lupa kata sandi?</a>
                 </div>
-                <div class="form-group">
-                    <button
-                        class="inline-block text-[13.5px] md:text-[14.7px] font-medium tracking-widest text-center rounded-md bg-gradient-to-r from-primary to-secondary text-white py-2.5 px-3 w-full hover:opacity-[90%]"
-                        type="submit">Sign In</button>
-                </div>
-                <p class="text-center text-[13.5px] md:text-sm mt-4 text-gray-500">Don't have an account? <a
-                        href="{{ url('auth/sign-up') }}" class="text-primary font-medium">Sign Up</a></p>
+
+                <button type="submit" class="auth-btn">Masuk Sekarang</button>
+
+                <p class="auth-footer-text">
+                    Belum punya akun? <a href="{{ url('auth/sign-up') }}" class="auth-link">Daftar</a>
+                </p>
             </form>
-        </main>
-    </section>
+        </div>
+    </div>
+</div>
 
-    <script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('js/auth.js') }}"></script>
-    <script src="{{ asset('js/alert.js') }}"></script>
-
+<script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('js/auth.js') }}"></script>
+<script src="{{ asset('js/alert.js') }}"></script>
+<script>
+function togglePwd(id, iconId) {
+    const input = document.getElementById(id);
+    const icon  = document.getElementById(iconId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye-slash','fa-eye');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye','fa-eye-slash');
+    }
+}
+</script>
 </body>
-
 </html>
