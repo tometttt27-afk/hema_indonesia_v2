@@ -12,7 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'role' => \App\Http\Middleware\checkRole::class,
+            'role'           => \App\Http\Middleware\checkRole::class,
+            'guest.redirect' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         ]);
         $middleware->redirectGuestsTo('/auth/sign-in');
         $middleware->validateCsrfTokens(except: [

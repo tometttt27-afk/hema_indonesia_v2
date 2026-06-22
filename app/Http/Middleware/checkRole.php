@@ -23,6 +23,8 @@ class checkRole
         // Sudah login tapi role tidak sesuai
         if ($user->role !== $role) {
             Session::flash('error', 'Anda tidak memiliki akses ke halaman ini');
+            // Admin yang coba buka halaman customer → ke dashboard admin
+            // Customer yang coba buka halaman admin → ke beranda customer
             return redirect($user->role === 'admin' ? '/dashboard' : '/');
         }
 
