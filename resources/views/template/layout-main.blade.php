@@ -52,8 +52,8 @@
                         <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4">
                             <a href="{{ url('/product') }}" class="nav-link">Produk</a>
                         </li>
-                        <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a href=""
-                                class="nav-link">Pesanan</a></li>
+                        <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4"><a
+                                href="{{ url('/orders') }}" class="nav-link">Pesanan</a></li>
                         <li class="border-b-[0.5px] border-gray-300 xl:border-none w-full py-4 outline-none">
                             <a href="{{ url('/about') }}" class="nav-link">Tentang</a>
                         </li>
@@ -152,7 +152,7 @@
                     <div class="flex gap-2 flex-col text-sm">
                         <a href="{{ url('/') }}" class="nav-link hover:translate-x-1 duration-300">Beranda</a>
                         <a href="{{ url('/product') }}" class="nav-link hover:translate-x-1 duration-300">Produk</a>
-                        <a href="" class="nav-link hover:translate-x-1 duration-300">Pesanan</a>
+                        <a href="{{ url('/orders') }}" class="nav-link hover:translate-x-1 duration-300">Pesanan</a>
                         <a href="{{ url('/about') }}" class="nav-link hover:translate-x-1 duration-300">Tentang</a>
                         <a href="{{ url('/gallery') }}" class="nav-link hover:translate-x-1 duration-300">Galeri</a>
                         <a href="{{ url('/faq') }}" class="nav-link hover:translate-x-1 duration-300">FAQ</a>
