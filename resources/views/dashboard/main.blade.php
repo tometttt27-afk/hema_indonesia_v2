@@ -93,6 +93,61 @@
     </div>
 
     <div class="row">
+        <div class="col-12 d-flex">
+            <div class="card flex-fill">
+                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">Stok Menipis & Habis</h4>
+                    <div>
+                        <span class="badge bg-danger me-1">{{ $outOfStockCount ?? 0 }} habis</span>
+                        <span class="badge bg-warning">ambang &le; {{ $lowStockThreshold ?? 5 }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (empty($lowStockProducts) || $lowStockProducts->isEmpty())
+                        <p class="mb-0 text-muted">Semua stok produk dalam kondisi aman.</p>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Produk</th>
+                                        <th>Kategori</th>
+                                        <th>Stok</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($lowStockProducts as $p)
+                                        <tr>
+                                            <td>{{ $p->name }}</td>
+                                            <td>{{ optional($p->categories)->name }}</td>
+                                            <td>{{ $p->stock }}</td>
+                                            <td>
+                                                @if ($p->stock <= 0)
+                                                    <span class="badge bg-danger">Habis</span>
+                                                @else
+                                                    <span class="badge bg-warning">Menipis</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-sm btn-primary"
+                                                    href="{{ url('/product-list/edit-product-list/' . strtolower($p->code_product)) }}">
+                                                    <i class="bi bi-plus-lg"></i> Tambah Stok
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-lg-7 col-sm-12 col-12 d-flex">
             <div class="card flex-fill">
                 <div class="card-header pb-0 d-flex justify-content-between align-items-center">

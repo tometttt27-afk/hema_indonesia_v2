@@ -89,7 +89,17 @@
 
                             @php
                                 $sizes = $product->size ? array_map('trim', explode(',', $product->size)) : [];
+                                $stock = $product->stock;
+                                $isOut = !is_null($stock) && $stock <= 0;
+                                $isLow = !is_null($stock) && $stock > 0 && $stock <= 5;
                             @endphp
+                            @if ($isOut)
+                                <span class="text-[11px] md:text-xs font-medium px-2 py-1 rounded-full bg-red-100 text-red-600">Stok
+                                    Habis</span>
+                            @elseif ($isLow)
+                                <span class="text-[11px] md:text-xs font-medium px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">Sisa
+                                    {{ $stock }}</span>
+                            @endif
                             <form action="{{ route('cartStore') }}" method="post"
                                 class="w-full flex flex-col items-center gap-3">
                                 @csrf
@@ -105,7 +115,12 @@
                                         </label>
                                     @endforeach
                                 </div>
-                                @auth
+                                @if ($isOut)
+                                    <button type="button" disabled
+                                        class="w-full bg-gray-300 text-white text-[11px] md:text-sm font-medium rounded-sm py-2 cursor-not-allowed">
+                                        Stok Habis
+                                    </button>
+                                @elseif (auth()->check())
                                     <button type="submit"
                                         class="w-full bg-gradient-to-r from-primary to-secondary text-white text-[11px] md:text-sm font-medium rounded-sm py-2 hover:opacity-90">
                                         <i class="fas fa-cart-shopping"></i> Tambah ke Keranjang
@@ -115,7 +130,7 @@
                                         class="w-full text-center bg-gradient-to-r from-primary to-secondary text-white text-[11px] md:text-sm font-medium rounded-sm py-2 hover:opacity-90">
                                         <i class="fas fa-cart-shopping"></i> Login untuk Beli
                                     </a>
-                                @endauth
+                                @endif
                             </form>
                         </div>
                     </div>
