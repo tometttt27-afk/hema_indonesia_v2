@@ -28,30 +28,80 @@
     </div>
 
     <section id="product_section" class="product container pt-12 pb-24">
-        <div class="header-title flex lg:flex-row flex-col justify-between items-start lg:items-center">
+        <div class="header-title flex lg:flex-row flex-col justify-between items-start lg:items-center gap-4">
             <div class="title flex items-center gap-3">
-                <h1 class="text-xl font-semibold">Sale Produk</h1>
+                <h1 class="text-xl font-semibold">Produk</h1>
                 <h4 class="px-3 rounded-sm font-semibold text-white py-1.5 bg-gradient-to-r from-primary to-secondary">
                     {{ $count_product }}
                 </h4>
             </div>
-            <div class="filter">
-                <input oninput="filterSearchProduct(event)"
-                    class="text-sm focus:border-primary tracking-wider inline-block cursor-pointer mt-3 px-4 py-[8px] outline-none rounded-sm  border-[1.5px] border-[#f1f1f1]"
-                    autocomplete="off" type="search" name="search" id="search_product" placeholder="Searching...">
-                <select onchange="filterSelectCategory(event)"
-                    class="text-sm bg-white focus:border-primary tracking-wider inline-block cursor-pointer mt-3 px-4 py-[8px] outline-none rounded-sm  border-[1.5px] border-[#f1f1f1]"
-                    name="category_product" id="category_product">
-                    <option value="all">All</option>
+        </div>
+
+        <form method="GET" action="{{ url('/product') }}"
+            class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-3 items-end bg-[#f9f9f9] border border-gray-100 rounded p-4">
+            <div class="xl:col-span-2">
+                <label class="block text-[12px] text-gray-500 mb-1">Cari Produk</label>
+                <input type="search" name="q" value="{{ request('q') }}" placeholder="Nama atau deskripsi..."
+                    autocomplete="off"
+                    class="w-full text-sm focus:border-primary px-3 py-[8px] outline-none rounded-sm border-[1.5px] border-gray-200">
+            </div>
+            <div>
+                <label class="block text-[12px] text-gray-500 mb-1">Kategori</label>
+                <select name="category"
+                    class="w-full bg-white text-sm focus:border-primary px-3 py-[8px] outline-none rounded-sm border-[1.5px] border-gray-200">
+                    <option value="">Semua</option>
                     @foreach ($categories_product as $category)
-                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        <option value="{{ $category->category_code }}"
+                            {{ request('category') == $category->category_code ? 'selected' : '' }}>
+                            {{ $category->name }}</option>
                     @endforeach
                 </select>
             </div>
-        </div>
+            <div>
+                <label class="block text-[12px] text-gray-500 mb-1">Harga Min</label>
+                <input type="number" name="min_price" value="{{ request('min_price') }}" min="0" placeholder="0"
+                    class="w-full text-sm focus:border-primary px-3 py-[8px] outline-none rounded-sm border-[1.5px] border-gray-200">
+            </div>
+            <div>
+                <label class="block text-[12px] text-gray-500 mb-1">Harga Max</label>
+                <input type="number" name="max_price" value="{{ request('max_price') }}" min="0" placeholder="-"
+                    class="w-full text-sm focus:border-primary px-3 py-[8px] outline-none rounded-sm border-[1.5px] border-gray-200">
+            </div>
+            <div>
+                <label class="block text-[12px] text-gray-500 mb-1">Urutkan</label>
+                <select name="sort"
+                    class="w-full bg-white text-sm focus:border-primary px-3 py-[8px] outline-none rounded-sm border-[1.5px] border-gray-200">
+                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Terbaru</option>
+                    <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Terlama</option>
+                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Harga Termurah
+                    </option>
+                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Harga Termahal
+                    </option>
+                    <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama (A-Z)</option>
+                </select>
+            </div>
+            <div class="xl:col-span-4 flex flex-wrap items-center gap-4">
+                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                    <input type="checkbox" name="in_stock" value="1" {{ request('in_stock') ? 'checked' : '' }}>
+                    Hanya yang tersedia
+                </label>
+                <label class="flex items-center gap-2 text-sm cursor-pointer">
+                    <input type="checkbox" name="on_sale" value="1" {{ request('on_sale') ? 'checked' : '' }}>
+                    Sedang diskon
+                </label>
+            </div>
+            <div class="xl:col-span-2 flex gap-2 justify-end">
+                <a href="{{ url('/product') }}"
+                    class="text-sm border border-gray-300 text-gray-600 rounded-sm px-5 py-[9px] hover:bg-gray-100">Reset</a>
+                <button type="submit"
+                    class="text-sm bg-gradient-to-r from-primary to-secondary text-white font-medium rounded-sm px-6 py-[9px] hover:opacity-90">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+            </div>
+        </form>
         <div class="content" id="product main">
             <main id="product_list" class="grid grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8 mt-12">
-                @foreach ($data as $product)
+                @forelse ($data as $product)
                     <div class="product_box shadow-sm shadow-gray-200 border border-gray-100 hover:shadow-primary"
                         data-category="{{ $product->categories->name }}" id="product_box">
                         <div class="img w-full relative">
@@ -134,24 +184,45 @@
                             </form>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-span-2 xl:col-span-3"></div>
+                @endforelse
             </main>
-            <div class="w-full text-[13px] md:text[14.5px] lg:text-[16px] hidden px-3 py-6 justify-center items-center text-center shadow-sm border-[0.5px] border-gray-200 rounded"
-                id="product_not_found">
-                <p class="tracking-wider"><i class="fas fa-magnifying-glass"></i> Pencarian produk tidak ditemukan!</p>
-            </div>
-            <div id="main_product_pagination" class="w-full border-t border-gray-200 font-mono mt-16">
-                <nav id="product_pagination" class="pagination flex flex-wrap justify-center text-gray-700 -mt-px">
-                    <button type="button" id="prev-product"
-                        class="px-2 text-[12px] md:text-sm py-[11px] lg:py-3 xl:py-2.5 mx-1 border-t border-transparent hover:border-gray-700">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <button id="next-product" type="button"
-                        class="px-2 text-[12px] md:text-sm py-[11px] lg:py-3 xl:py-2.5 mx-1 border-t border-transparent hover:border-gray-700">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </nav>
-            </div>
+
+            @if ($data->isEmpty())
+                <div class="w-full text-[13px] md:text-[14.5px] lg:text-[16px] px-3 py-6 flex justify-center items-center text-center shadow-sm border-[0.5px] border-gray-200 rounded mt-12"
+                    id="product_not_found">
+                    <p class="tracking-wider"><i class="fas fa-magnifying-glass"></i> Produk tidak ditemukan. Coba ubah
+                        kata kunci atau filter.</p>
+                </div>
+            @endif
+
+            @if ($data->hasPages())
+                <div class="w-full border-t border-gray-200 mt-16 pt-6 flex flex-wrap justify-center items-center gap-2">
+                    @if ($data->onFirstPage())
+                        <span
+                            class="px-3 py-2 text-sm rounded-sm border border-gray-200 text-gray-300 cursor-not-allowed"><i
+                                class="fa-solid fa-chevron-left"></i></span>
+                    @else
+                        <a href="{{ $data->previousPageUrl() }}"
+                            class="px-3 py-2 text-sm rounded-sm border border-gray-200 hover:bg-primary hover:text-white"><i
+                                class="fa-solid fa-chevron-left"></i></a>
+                    @endif
+
+                    <span class="px-4 py-2 text-sm text-gray-600">Halaman {{ $data->currentPage() }} dari
+                        {{ $data->lastPage() }}</span>
+
+                    @if ($data->hasMorePages())
+                        <a href="{{ $data->nextPageUrl() }}"
+                            class="px-3 py-2 text-sm rounded-sm border border-gray-200 hover:bg-primary hover:text-white"><i
+                                class="fa-solid fa-chevron-right"></i></a>
+                    @else
+                        <span
+                            class="px-3 py-2 text-sm rounded-sm border border-gray-200 text-gray-300 cursor-not-allowed"><i
+                                class="fa-solid fa-chevron-right"></i></span>
+                    @endif
+                </div>
+            @endif
         </div>
     </section>
 @endsection

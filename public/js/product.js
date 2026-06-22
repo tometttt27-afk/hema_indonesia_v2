@@ -17,6 +17,20 @@ document.addEventListener("DOMContentLoaded", function () {
     let filteredProducts = [...productList];
     let totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
+    // Filtering & pagination kini ditangani server-side pada halaman produk.
+    // Hentikan skrip ini bila elemen lama tidak ditemukan agar tidak terjadi error.
+    if (
+        !searchInput ||
+        !categorySelect ||
+        !paginationContainer ||
+        !prevButton ||
+        !nextButton ||
+        !productNotFound ||
+        !mainProductPagination
+    ) {
+        return;
+    }
+
     function scrollToSearch() {
         upProductBtn.scrollIntoView({ behavior: "auto", block: "start" });
     }

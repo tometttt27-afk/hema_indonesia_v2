@@ -9,11 +9,70 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $categories_product = CategoriesModel::all();
-        $data = ProductsModel::with('categories')->get();
-        $count_product = $data->count();
+
+        $query = ProductsModel::with('categories')->where('is_active', 1);
+
+        // Pencarian (nama atau deskripsi)
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($sub) use ($q) {
+                $sub->where('name', 'like', "%{$q}%")
+                    ->orWhere('description', 'like', "%{$q}%");
+            });
+        }
+
+        // Filter kategori (berdasarkan category_code)
+        if ($request->filled('category')) {
+            $query->whereHas('categories', function ($c) use ($request) {
+                $c->where('category_code', $request->category);
+            });
+        }
+
+        // Filter rentang harga (memakai harga akhir/final_price)
+        if ($request->filled('min_price')) {
+            $query->where('final_price', '>=', (float) $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('final_price', '<=', (float) $request->max_price);
+        }
+
+        // Hanya produk diskon
+        if ($request->boolean('on_sale')) {
+            $query->where('discount', '>', 0);
+        }
+
+        // Hanya yang tersedia (stok null dianggap tak terbatas)
+        if ($request->boolean('in_stock')) {
+            $query->where(function ($s) {
+                $s->whereNull('stock')->orWhere('stock', '>', 0);
+            });
+        }
+
+        // Urutkan
+        switch ($request->sort) {
+            case 'price_asc':
+                $query->orderBy('final_price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('final_price', 'desc');
+                break;
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $data = $query->paginate(12)->withQueryString();
+        $count_product = $data->total();
+
         return view('product.main', compact(['data', 'count_product', 'categories_product']));
     }
 
