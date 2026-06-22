@@ -1,133 +1,49 @@
 @extends('template.layout-admin')
-@section('title_web', 'Kategori | Hema.Indonesia')
+@section('title_web', 'Kategori Produk | Hema.Indonesia')
 @section('content-admin')
     <div class="page-header">
         <div class="page-title">
-            <h4>Produk Kategori List</h4>
-            <h6>View/Search produk kategori</h6>
+            <h4>Kategori Produk</h4>
+            <h6>Kelola kategori produk</h6>
         </div>
         <div class="page-btn">
             <a href="{{ url('/categories/add-categories') }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-1"></i> Tambah Category
+                <i class="bi bi-plus-lg me-1"></i> Tambah Kategori
             </a>
         </div>
     </div>
 
     <div class="card">
         <div class="card-body">
-            <div class="table-top">
-                <div class="search-set">
-                    <div class="search-path">
-                        <a class="btn btn-filter" id="filter_search">
-                            <img src="{{ asset('admin/img/icons/filter.svg') }}" alt="img">
-                            <span><img src="{{ asset('admin/img/icons/closes.svg') }}" alt="img"></span>
-                        </a>
-                    </div>
-                    <div class="search-input">
-                        <a class="btn btn-searchset"><img src="{{ asset('admin/img/icons/search-white.svg') }}"
-                                alt="img"></a>
-                    </div>
-                </div>
-                <div class="wordset">
-                    <ul>
-                        <li>
-                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf"><img
-                                    src="{{ asset('admin/img/icons/pdf.svg') }}" alt="img"></a>
-                        </li>
-                        <li>
-                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img
-                                    src="{{ asset('admin/img/icons/excel.svg') }}" alt="img"></a>
-                        </li>
-                        <li>
-                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="print"><img
-                                    src="{{ asset('admin/img/icons/printer.svg') }}" alt="img"></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card" id="filter_inputs">
-                <div class="card-body pb-0">
-                    <div class="row">
-                        <div class="col-lg-2 col-sm-6 col-12">
-                            <div class="form-group">
-                                <select class="select">
-                                    <option>Choose Category</option>
-                                    <option>Computers</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-sm-6 col-12">
-                            <div class="form-group">
-                                <select class="select">
-                                    <option>Choose Sub Category</option>
-                                    <option>Fruits</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-sm-6 col-12">
-                            <div class="form-group">
-                                <select class="select">
-                                    <option>Choose Sub Brand</option>
-                                    <option>Iphone</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-1 col-sm-6 col-12 ms-auto">
-                            <div class="form-group">
-                                <a class="btn btn-filters ms-auto"><img
-                                        src="{{ asset('admin/img/icons/search-whites.svg') }}" alt="img"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="table-responsive">
                 <table class="table datanew">
                     <thead>
                         <tr>
-                            <th>
-                                <label class="checkboxs">
-                                    <input type="checkbox" id="select-all">
-                                    <span class="checkmarks"></span>
-                                </label>
-                            </th>
                             <th>Nama Kategori</th>
-                            <th>Kode Kategori</th>
+                            <th>Kode</th>
                             <th>Deskripsi</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $category)
                             <tr>
+                                <td class="fw-500">{{ $category->name }}</td>
+                                <td><span class="badge" style="background:#f3ede9;color:#b17457;border:1px solid #e8ddd7;">{{ $category->category_code }}</span></td>
+                                <td class="text-muted">{{ Str::limit($category->description, 50) }}</td>
                                 <td>
-                                    <label class="checkboxs">
-                                        <input type="checkbox">
-                                        <span class="checkmarks"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    {{ $category->name }}
-                                </td>
-                                <td>{{ $category->category_code }}</td>
-                                <td>{{ Str::limit($category->description, 30) }}</td>
-
-                                <td style="display: flex; align-items: center">
-                                    <a class="me-3"
-                                        href="{{ url('/categories/edit-categories/' . strtolower($category->category_code)) }}">
-                                        <img src="{{ asset('admin/img/icons/edit.svg') }}" alt="img">
-                                    </a>
-                                    <form action="{{ route('categoryDelete', strtolower($category->category_code)) }}"
-                                        method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="me-3 confirm-text"
-                                            style="background: transparent; padding: 0; border: none; outline: none"
-                                            type="submit">
-                                            <img src="{{ asset('admin/img/icons/delete.svg') }}" alt="img"></button>
-                                    </form>
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <a href="{{ url('/categories/edit-categories/' . strtolower($category->category_code)) }}"
+                                            class="btn btn-sm" style="background:#f3ede9;border:1px solid #e8ddd7;" title="Edit">
+                                            <i class="bi bi-pencil" style="color:#b17457;"></i>
+                                        </a>
+                                        <form action="{{ route('categoryDelete', strtolower($category->category_code)) }}" method="post">
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm confirm-text" style="background:#fdf2f2;border:1px solid #f5c6cb;" title="Hapus" type="submit">
+                                                <i class="bi bi-trash" style="color:#dc3545;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -135,7 +51,5 @@
                 </table>
             </div>
         </div>
-    </div>
-
     </div>
 @endsection

@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{{ asset('admin/plugins/lightbox/glightbox.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/sweetalert/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/css/hema-admin.css') }}">
 </head>
 
 <body>

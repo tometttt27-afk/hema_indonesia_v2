@@ -2,17 +2,17 @@
 @section('title_web', 'Data Pesanan | Hema.Indonesia')
 @section('content-admin')
     @php
-        $badge = [
-            'pending' => 'badge bg-warning',
-            'paid' => 'badge bg-info',
-            'shipped' => 'badge bg-primary',
-            'completed' => 'badge bg-success',
-            'cancelled' => 'badge bg-danger',
+        $badgeClass = [
+            'pending'   => 'bg-warning text-dark',
+            'paid'      => 'bg-info text-white',
+            'shipped'   => 'bg-primary',
+            'completed' => 'bg-success',
+            'cancelled' => 'bg-danger',
         ];
         $label = [
-            'pending' => 'Menunggu Pembayaran',
-            'paid' => 'Dibayar',
-            'shipped' => 'Dikirim',
+            'pending'   => 'Menunggu Pembayaran',
+            'paid'      => 'Dibayar',
+            'shipped'   => 'Dikirim',
             'completed' => 'Selesai',
             'cancelled' => 'Dibatalkan',
         ];
@@ -20,7 +20,7 @@
     <div class="page-header">
         <div class="page-title">
             <h4>Data Pesanan</h4>
-            <h6>Kelola pesanan pelanggan</h6>
+            <h6>Kelola semua pesanan pelanggan</h6>
         </div>
     </div>
 
@@ -30,27 +30,36 @@
                 <table class="table datanew">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>#</th>
                             <th>Pelanggan</th>
                             <th>Total</th>
                             <th>Tanggal</th>
+                            <th>Pembayaran</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $order)
                             <tr>
-                                <td>#{{ $order->id }}</td>
-                                <td>{{ optional($order->user)->first_name }} {{ optional($order->user)->last_name }}</td>
-                                <td>Rp. {{ number_format($order->total_price, 0, ',', '.') }}</td>
-                                <td>{{ $order->created_at->format('d M Y H:i') }}</td>
-                                <td><span
-                                        class="{{ $badge[$order->status] ?? 'badge bg-secondary' }}">{{ $label[$order->status] ?? $order->status }}</span>
+                                <td class="fw-500">#{{ $order->id }}</td>
+                                <td>
+                                    <div>
+                                        <p class="mb-0 fw-500">{{ optional($order->user)->first_name }} {{ optional($order->user)->last_name }}</p>
+                                        <small class="text-muted">{{ optional($order->user)->email }}</small>
+                                    </div>
+                                </td>
+                                <td><strong>Rp. {{ number_format($order->total_price, 0, ',', '.') }}</strong></td>
+                                <td class="text-muted" style="font-size:13px;">{{ $order->created_at->format('d M Y H:i') }}</td>
+                                <td>{{ $order->payment_type ? ucfirst(str_replace('_', ' ', $order->payment_type)) : '-' }}</td>
+                                <td>
+                                    <span class="badge {{ $badgeClass[$order->status] ?? 'bg-secondary' }}">
+                                        {{ $label[$order->status] ?? $order->status }}
+                                    </span>
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-primary" href="{{ url('/order-list/' . $order->id) }}">
-                                        <i class="bi bi-eye"></i> Detail
+                                        <i class="bi bi-eye me-1"></i> Detail
                                     </a>
                                 </td>
                             </tr>

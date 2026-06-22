@@ -1,113 +1,56 @@
 @extends('template.layout-admin')
 @section('title_web', 'Dashboard | Hema.Indonesia')
 @section('content-admin')
-    <div class="row">
-        <div class="col-lg-3 col-sm-6 col-12">
-            <div class="dash-widget">
-                <div class="dash-widgetimg">
-                    <span><i class="fa-solid fa-cart-shopping"></i></span>
-                </div>
-                <div class="dash-widgetcontent">
-                    <h5>$<span class="counters" data-count="307144.00">$307,144.00</span></h5>
-                    <h6>Total Purchase Due</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12">
-            <div class="dash-widget dash1">
-                <div class="dash-widgetimg">
-                    <span><i class="fa-solid fa-money-bill-wave"></i></span>
-                </div>
-                <div class="dash-widgetcontent">
-                    <h5>$<span class="counters" data-count="4385.00">$4,385.00</span></h5>
-                    <h6>Total Sales Due</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12">
-            <div class="dash-widget dash2">
-                <div class="dash-widgetimg">
-                    <span><i class="fas fa-sort-amount-up-alt"></i></span>
-                </div>
-                <div class="dash-widgetcontent">
-                    <h5>$<span class="counters" data-count="385656.50">385,656.50</span></h5>
-                    <h6>Total Sale Amount</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12">
-            <div class="dash-widget dash3">
-                <div class="dash-widgetimg">
-                    <span><i class="fas fa-sort-amount-down-alt"></i></span>
-                </div>
-                <div class="dash-widgetcontent">
-                    <h5>$<span class="counters" data-count="40000.00">400.00</span></h5>
-                    <h6>Total Sale Amount</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12 d-flex">
-            <div class="dash-count">
-                <div class="dash-counts">
-                    <h4>100</h4>
-                    <h5>Customers</h5>
-                </div>
-                <div class="dash-imgs">
-                    <i data-feather="user"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12 d-flex">
-            <div class="dash-count das1">
-                <div class="dash-counts">
-                    <h4>100</h4>
-                    <h5>Suppliers</h5>
-                </div>
-                <div class="dash-imgs">
-                    <i data-feather="user-check"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12 d-flex">
-            <div class="dash-count das2">
-                <div class="dash-counts">
-                    <h4>100</h4>
-                    <h5>Purchase Invoice</h5>
-                </div>
-                <div class="dash-imgs">
-                    <i data-feather="file-text"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6 col-12 d-flex">
-            <div class="dash-count das3">
-                <div class="dash-counts">
-                    <h4>105</h4>
-                    <h5>Sales Invoice</h5>
-                </div>
-                <div class="dash-imgs">
-                    <i data-feather="file"></i>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Stok Menipis & Habis</h4>
-                    <div>
-                        <span class="badge bg-danger me-1">{{ $outOfStockCount ?? 0 }} habis</span>
-                        <span class="badge bg-warning">ambang &le; {{ $lowStockThreshold ?? 5 }}</span>
+    {{-- ── Stat Cards ── --}}
+    <div class="row g-3 mb-4">
+        @php
+            $stats = [
+                ['icon' => 'fas fa-boxes-stacked', 'label' => 'Total Produk',  'value' => $totalProducts ?? 0,       'color' => '#b17457'],
+                ['icon' => 'fas fa-shopping-bag',  'label' => 'Pesanan Masuk', 'value' => $totalOrders ?? 0,         'color' => '#c29470'],
+                ['icon' => 'fas fa-users',          'label' => 'Pelanggan',     'value' => $totalCustomers ?? 0,      'color' => '#9a6040'],
+                ['icon' => 'fas fa-triangle-exclamation', 'label' => 'Stok Habis', 'value' => $outOfStockCount ?? 0, 'color' => '#dc3545'],
+            ];
+        @endphp
+        @foreach ($stats as $s)
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="card h-100 mb-0" style="border-left: 4px solid {{ $s['color'] }} !important;">
+                    <div class="card-body d-flex align-items-center gap-3 py-3">
+                        <div style="width:46px;height:46px;border-radius:50%;background:{{ $s['color'] }}22;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="{{ $s['icon'] }}" style="color:{{ $s['color'] }};font-size:18px;"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0" style="font-size:22px;font-weight:700;color:{{ $s['color'] }};line-height:1.2;">{{ $s['value'] }}</p>
+                            <p class="mb-0" style="font-size:12px;color:#7a6255;">{{ $s['label'] }}</p>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body">
+            </div>
+        @endforeach
+    </div>
+
+    {{-- ── Stok Menipis & Habis ── --}}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-triangle-exclamation me-2" style="color:#b17457;"></i>Stok Menipis &amp; Habis
+                    </h5>
+                    <div class="d-flex gap-2">
+                        <span class="badge bg-danger">{{ $outOfStockCount ?? 0 }} habis</span>
+                        <span class="badge bg-warning text-dark">ambang &le; {{ $lowStockThreshold ?? 5 }}</span>
+                    </div>
+                </div>
+                <div class="card-body p-0">
                     @if (empty($lowStockProducts) || $lowStockProducts->isEmpty())
-                        <p class="mb-0 text-muted">Semua stok produk dalam kondisi aman.</p>
+                        <div class="text-center py-5 text-muted">
+                            <i class="fas fa-circle-check fa-2x mb-2" style="color:#b17457;opacity:.5;"></i>
+                            <p class="mb-0">Semua stok produk dalam kondisi aman.</p>
+                        </div>
                     @else
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table mb-0">
                                 <thead>
                                     <tr>
                                         <th>Produk</th>
@@ -120,20 +63,20 @@
                                 <tbody>
                                     @foreach ($lowStockProducts as $p)
                                         <tr>
-                                            <td>{{ $p->name }}</td>
+                                            <td class="fw-500">{{ $p->name }}</td>
                                             <td>{{ optional($p->categories)->name }}</td>
-                                            <td>{{ $p->stock }}</td>
+                                            <td><strong>{{ $p->stock }}</strong></td>
                                             <td>
                                                 @if ($p->stock <= 0)
                                                     <span class="badge bg-danger">Habis</span>
                                                 @else
-                                                    <span class="badge bg-warning">Menipis</span>
+                                                    <span class="badge bg-warning text-dark">Menipis</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 <a class="btn btn-sm btn-primary"
                                                     href="{{ url('/product-list/edit-product-list/' . strtolower($p->code_product)) }}">
-                                                    <i class="bi bi-plus-lg"></i> Tambah Stok
+                                                    <i class="bi bi-plus-lg me-1"></i>Tambah Stok
                                                 </a>
                                             </td>
                                         </tr>
@@ -147,118 +90,36 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-7 col-sm-12 col-12 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Purchase & Sales</h5>
-                    <div class="graph-sets">
-                        <ul>
-                            <li>
-                                <span>Sales</span>
-                            </li>
-                            <li>
-                                <span>Purchase</span>
-                            </li>
-                        </ul>
-                        <div class="dropdown">
-                            <button class="btn btn-white btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                2022 <i class="fas fa-chevron-down ms-2"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li>
-                                    <a href="javascript:void(0);" class="dropdown-item">2022</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0);" class="dropdown-item">2021</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0);" class="dropdown-item">2020</a>
-                                </li>
-                            </ul>
-                        </div>
+    {{-- ── Shortcut Menu ── --}}
+    <div class="row g-3">
+        @php
+            $shortcuts = [
+                ['url' => '/product-list',   'icon' => 'fas fa-shirt',        'label' => 'Data Produk'],
+                ['url' => '/categories',     'icon' => 'fas fa-tags',          'label' => 'Kategori'],
+                ['url' => '/order-list',     'icon' => 'fas fa-shopping-bag',  'label' => 'Pesanan'],
+                ['url' => '/customer',       'icon' => 'fas fa-users',          'label' => 'Pelanggan'],
+                ['url' => '/gallery-company','icon' => 'fas fa-images',         'label' => 'Galeri'],
+                ['url' => '/faq-company',    'icon' => 'fas fa-circle-question','label' => 'FAQ'],
+                ['url' => '/about-company',  'icon' => 'fas fa-building',       'label' => 'Perusahaan'],
+                ['url' => '/profile',        'icon' => 'fas fa-user-circle',    'label' => 'Profil Saya'],
+            ];
+        @endphp
+        @foreach ($shortcuts as $sc)
+            <div class="col-lg-3 col-sm-6 col-6">
+                <a href="{{ url($sc['url']) }}" class="card text-center text-decoration-none h-100 mb-0"
+                    style="transition:box-shadow .2s,transform .2s;">
+                    <div class="card-body py-4">
+                        <i class="{{ $sc['icon'] }} fa-2x mb-2" style="color:#b17457;"></i>
+                        <p class="mb-0 fw-600" style="font-size:13px;color:#2c1f17;">{{ $sc['label'] }}</p>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div id="sales_charts"></div>
-                </div>
+                </a>
             </div>
-        </div>
-        <div class="col-lg-5 col-sm-12 col-12 d-flex">
-            <div class="card flex-fill">
-                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                    <h4 class="card-title mb-0">Recently Added Products</h4>
-                    <div class="dropdown">
-                        <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false" class="dropset">
-                            <i class="fa fa-ellipsis-v"></i>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li>
-                                <a href="productlist.html" class="dropdown-item">Product List</a>
-                            </li>
-                            <li>
-                                <a href="addproduct.html" class="dropdown-item">Product Add</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive dataview">
-                        <table class="table datatable ">
-                            <thead>
-                                <tr>
-                                    <th>Sno</th>
-                                    <th>Products</th>
-                                    <th>Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td class="productimgname">
-                                        <a href="productlist.html" class="product-img">
-                                            <img src="assets/img/product/product22.jpg" alt="product">
-                                        </a>
-                                        <a href="productlist.html">Apple Earpods</a>
-                                    </td>
-                                    <td>$891.2</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td class="productimgname">
-                                        <a href="productlist.html" class="product-img">
-                                            <img src="assets/img/product/product23.jpg" alt="product">
-                                        </a>
-                                        <a href="productlist.html">iPhone 11</a>
-                                    </td>
-                                    <td>$668.51</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td class="productimgname">
-                                        <a href="productlist.html" class="product-img">
-                                            <img src="assets/img/product/product24.jpg" alt="product">
-                                        </a>
-                                        <a href="productlist.html">samsung</a>
-                                    </td>
-                                    <td>$522.29</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td class="productimgname">
-                                        <a href="productlist.html" class="product-img">
-                                            <img src="assets/img/product/product6.jpg" alt="product">
-                                        </a>
-                                        <a href="productlist.html">Macbook Pro</a>
-                                    </td>
-                                    <td>$291.01</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
+
+    <style>
+        .card:hover { box-shadow: 0 6px 20px rgba(177,116,87,.18) !important; transform: translateY(-2px); }
+        .fw-500 { font-weight: 500; }
+        .fw-600 { font-weight: 600; }
+    </style>
 @endsection
