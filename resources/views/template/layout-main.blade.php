@@ -64,10 +64,20 @@
                         <li class="w-full inline-block mt-6 py-4">
                             <div class="text-lg sm:2xl xl:hidden cursor-pointer z-10 flex gap-4">
                                 @if (auth()->check())
-                                    <a class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
-                                        href="{{ url('/') }}"><i class="fas fa-cart-shopping"></i></a>
-                                    <a class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
-                                        href="{{ url('/') }}"><i class="far fa-heart"></i></a>
+                                    <a class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded relative"
+                                        href="{{ url('/cart') }}"><i class="fas fa-cart-shopping"></i>
+                                        @if (!empty($cartCount) && $cartCount > 0)
+                                            <span
+                                                class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-semibold rounded-full w-4 h-4 flex items-center justify-center">{{ $cartCount }}</span>
+                                        @endif
+                                    </a>
+                                    <a class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded relative"
+                                        href="{{ url('/wishlist') }}"><i class="far fa-heart"></i>
+                                        @if (!empty($wishlistCount) && $wishlistCount > 0)
+                                            <span
+                                                class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-semibold rounded-full w-4 h-4 flex items-center justify-center">{{ $wishlistCount }}</span>
+                                        @endif
+                                    </a>
                                     <form
                                         class="w-10 h-10 text-sm flex justify-center items-center bg-gradient-to-r from-primary to-secondary text-white rounded"
                                         action="{{ route('logout') }}" method="post">
@@ -83,9 +93,20 @@
             <div class="text-lg sm:2xl cursor-pointer z-10 flex gap-5">
                 @if (auth()->check())
                     <a href="{{ url('/profile') }}"><i class="far fa-user"></i></a>
-                    <a class="hidden xl:inline-block" href="{{ url('/') }}"><i
-                            class="fas fa-cart-shopping"></i></a>
-                    <a class="hidden xl:inline-block" href="{{ url('/') }}"><i class="far fa-heart"></i></a>
+                    <a class="hidden xl:inline-block relative" href="{{ url('/cart') }}"><i
+                            class="fas fa-cart-shopping"></i>
+                        @if (!empty($cartCount) && $cartCount > 0)
+                            <span
+                                class="absolute -top-2 -right-2 bg-primary text-white text-[10px] font-semibold rounded-full w-4 h-4 flex items-center justify-center">{{ $cartCount }}</span>
+                        @endif
+                    </a>
+                    <a class="hidden xl:inline-block relative" href="{{ url('/wishlist') }}"><i
+                            class="far fa-heart"></i>
+                        @if (!empty($wishlistCount) && $wishlistCount > 0)
+                            <span
+                                class="absolute -top-2 -right-2 bg-primary text-white text-[10px] font-semibold rounded-full w-4 h-4 flex items-center justify-center">{{ $wishlistCount }}</span>
+                        @endif
+                    </a>
                     <form class="hidden xl:inline-block" action="{{ route('logout') }}" method="post">
                         @csrf
                         <button type="submit"><i class="fa-solid fa-right-from-bracket"></i></button>

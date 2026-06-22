@@ -54,9 +54,19 @@
                 @foreach ($data as $product)
                     <div class="product_box shadow-sm shadow-gray-200 border border-gray-100 hover:shadow-primary"
                         data-category="{{ $product->categories->name }}" id="product_box">
-                        <div class="img w-full">
+                        <div class="img w-full relative">
                             <img class="w-full h-[200px] md:h-[500px] object-cover"
                                 src="{{ asset('uploads/products/' . $product->image) }}" alt="">
+                            @auth
+                                <form action="{{ route('wishlistStore', $product->id) }}" method="post"
+                                    class="absolute top-2 right-2 z-10">
+                                    @csrf
+                                    <button type="submit" title="Tambah ke wishlist"
+                                        class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/90 hover:bg-primary hover:text-white flex items-center justify-center shadow">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </form>
+                            @endauth
                         </div>
                         <div class="detail flex flex-col items-center justify-center w-full gap-3 py-5 px-3.5 text-center">
                             <h3 class="text-sm md:text-[16px] font-medium">{{ $product->name }}</h3>
@@ -78,16 +88,35 @@
                             @endif
 
                             @php
-                                $sizes = $product->size ? explode(',', $product->size) : [];
+                                $sizes = $product->size ? array_map('trim', explode(',', $product->size)) : [];
                             @endphp
-                            <div class="size flex items-center gap-2 cursor-default text-[9.5px] md:text-xs">
-                                @foreach ($sizes as $size)
-                                    <div
-                                        class="w-4 h-4 rounded-sm md:w-6 md:h-6 font-medium flex justify-center items-center text-white bg-gradient-to-r from-primary to-secondary">
-                                        <p>{{ strtoupper($size) }}</p>
-                                    </div>
-                                @endforeach
-                            </div>
+                            <form action="{{ route('cartStore') }}" method="post"
+                                class="w-full flex flex-col items-center gap-3">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="qty" value="1">
+                                <div class="size flex flex-wrap justify-center items-center gap-2 text-[9.5px] md:text-xs">
+                                    @foreach ($sizes as $i => $size)
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="size" value="{{ $size }}" class="peer hidden"
+                                                {{ $i === 0 ? 'checked' : '' }}>
+                                            <span
+                                                class="w-5 h-5 md:w-7 md:h-7 rounded-sm font-medium flex justify-center items-center text-white bg-gray-300 peer-checked:bg-gradient-to-r peer-checked:from-primary peer-checked:to-secondary">{{ strtoupper($size) }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                                @auth
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-primary to-secondary text-white text-[11px] md:text-sm font-medium rounded-sm py-2 hover:opacity-90">
+                                        <i class="fas fa-cart-shopping"></i> Tambah ke Keranjang
+                                    </button>
+                                @else
+                                    <a href="{{ url('/auth/sign-in') }}"
+                                        class="w-full text-center bg-gradient-to-r from-primary to-secondary text-white text-[11px] md:text-sm font-medium rounded-sm py-2 hover:opacity-90">
+                                        <i class="fas fa-cart-shopping"></i> Login untuk Beli
+                                    </a>
+                                @endauth
+                            </form>
                         </div>
                     </div>
                 @endforeach

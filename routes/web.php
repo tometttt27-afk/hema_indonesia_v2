@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\MainAdminController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -89,5 +91,17 @@ Route::middleware('auth')->group(function () {
             Route::put('/status-product-list/{code_product}', [ProductsController::class, 'productsListStatusUpdate'])->name('productsListStatusPut');;
         });
     });
-    Route::middleware('role:customer')->group(function () {});
+    Route::middleware('role:customer')->group(function () {
+        // Wishlist
+        Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+        Route::post('/wishlist/{product_id}', [WishlistController::class, 'store'])->name('wishlistStore');
+        Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlistDestroy');
+
+        // Keranjang (cart)
+        Route::get('/cart', [CartController::class, 'index'])->name('cart');
+        Route::post('/cart', [CartController::class, 'store'])->name('cartStore');
+        Route::put('/cart/{key}', [CartController::class, 'update'])->name('cartUpdate');
+        Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cartClear');
+        Route::delete('/cart/{key}', [CartController::class, 'remove'])->name('cartRemove');
+    });
 });
