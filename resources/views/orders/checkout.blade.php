@@ -1,99 +1,123 @@
 @extends('template.layout-main')
 @section('title_web', 'Checkout | Hema.Indonesia')
 @section('content-main')
-    <div id="hero" class="header-hero bg-[#f5f5f5]">
-        <div class="container pt-10 pb-11">
-            <nav aria-label="breadcrumb" class="w-full">
-                <ol class="flex w-full flex-wrap items-center mb-2">
-                    <li class="flex items-center text-sm text-gray-500 hover:text-slate-800">
-                        <a href="{{ url('/cart') }}">Keranjang</a>
-                        <span class="pointer-events-none mx-2 text-slate-800">/</span>
-                    </li>
-                    <li class="flex items-center text-sm text-gray-500 hover:text-slate-800">
-                        <a href="{{ url('/checkout') }}">Checkout</a>
-                    </li>
-                </ol>
-            </nav>
-            <h2 class="text-[20px] md:text-2xl font-bold">Checkout <span class="text-primary">Pesanan</span></h2>
-            <p class="text-gray-500">Periksa kembali pesanan anda sebelum konfirmasi</p>
+
+<div class="page-hero">
+    <div class="container">
+        <ol class="breadcrumb-list">
+            <li><a href="{{ url('/cart') }}">Keranjang</a></li>
+            <li>Checkout</li>
+        </ol>
+        <h2 class="page-hero">Checkout <span style="color:#b17457;">Pesanan</span></h2>
+        <p>Periksa kembali pesanan sebelum konfirmasi</p>
+    </div>
+</div>
+
+<section class="container py-14">
+
+    {{-- Step indicator --}}
+    <div class="flex items-center justify-center gap-2 mb-10">
+        @foreach([['1','Keranjang','cart'],['2','Checkout','checkout'],['3','Pembayaran','payment']] as $i => $step)
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
+                {{ $step[0]=='2' ? 'text-white' : 'text-gray-400 bg-gray-100' }}"
+                style="{{ $step[0]=='2' ? 'background:linear-gradient(135deg,#b17457,#c29470);' : '' }}">
+                {{ $step[0] }}
+            </div>
+            <span class="text-sm font-medium {{ $step[0]=='2' ? 'text-gray-800' : 'text-gray-400' }}">{{ $step[1] }}</span>
         </div>
+        @if($i < 2)
+            <div class="w-12 h-px bg-gray-200 mx-1"></div>
+        @endif
+        @endforeach
     </div>
 
-    <section class="container py-16">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 flex flex-col gap-6">
-                <div class="border border-gray-200 rounded p-6">
-                    <h3 class="font-semibold text-lg mb-4">Alamat Pengiriman</h3>
-                    <div class="text-sm text-gray-700 space-y-1">
-                        <p><span class="font-medium">Nama:</span> {{ $user->first_name }} {{ $user->last_name }}</p>
-                        <p><span class="font-medium">Email:</span> {{ $user->email }}</p>
-                        <p><span class="font-medium">No. Telp:</span> {{ $user->no_telp ?? '-' }}</p>
-                        <p><span class="font-medium">Alamat:</span> {{ $user->address ?? '-' }}</p>
-                    </div>
-                    @if (empty($user->address) || empty($user->no_telp))
-                        <p class="text-[12px] text-red-500 mt-3">Lengkapi alamat & no. telepon anda di
-                            <a href="{{ url('/profile') }}" class="underline font-medium">halaman profil</a> untuk
-                            kelancaran pengiriman.
-                        </p>
-                    @endif
-                </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 flex flex-col gap-6">
 
-                <div class="border border-gray-200 rounded p-6 overflow-x-auto">
-                    <h3 class="font-semibold text-lg mb-4">Ringkasan Produk</h3>
-                    <table class="w-full text-sm">
-                        <thead class="text-left border-b border-gray-200">
-                            <tr>
-                                <th class="py-2">Produk</th>
-                                <th class="py-2">Ukuran</th>
-                                <th class="py-2">Harga</th>
-                                <th class="py-2">Qty</th>
-                                <th class="py-2">Subtotal</th>
-                            </tr>
-                        </thead>
+            {{-- Shipping address --}}
+            <div class="profile-form-card">
+                <h3>
+                    <i class="fas fa-location-dot me-2" style="color:#b17457;"></i>Alamat Pengiriman
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3" style="font-size:14px;">
+                    @foreach([
+                        ['Nama', $user->first_name.' '.$user->last_name],
+                        ['Email', $user->email],
+                        ['No. Telp', $user->no_telp ?? '-'],
+                    ] as $row)
+                    <div class="flex gap-2">
+                        <span class="font-semibold text-gray-500 shrink-0" style="min-width:64px;">{{ $row[0] }}</span>
+                        <span class="text-gray-800">{{ $row[1] }}</span>
+                    </div>
+                    @endforeach
+                    <div class="flex gap-2 md:col-span-2">
+                        <span class="font-semibold text-gray-500 shrink-0" style="min-width:64px;">Alamat</span>
+                        <span class="text-gray-800">{{ $user->address ?? '-' }}</span>
+                    </div>
+                </div>
+                @if(empty($user->address) || empty($user->no_telp))
+                    <div class="mt-4 flex items-start gap-2 p-3 rounded-lg" style="background:#fef9c3;border:1px solid #fde68a;">
+                        <i class="fas fa-triangle-exclamation text-amber-500 mt-0.5"></i>
+                        <p class="text-sm text-amber-700">
+                            Lengkapi alamat & no. telepon di
+                            <a href="{{ url('/profile') }}" class="font-semibold underline">halaman profil</a>.
+                        </p>
+                    </div>
+                @endif
+            </div>
+
+            {{-- Products --}}
+            <div class="profile-form-card">
+                <h3><i class="fas fa-bag-shopping me-2" style="color:#b17457;"></i>Ringkasan Produk</h3>
+                <div class="overflow-x-auto">
+                    <table class="data-table w-full">
+                        <thead><tr><th>Produk</th><th>Ukuran</th><th>Harga</th><th>Qty</th><th>Subtotal</th></tr></thead>
                         <tbody>
-                            @foreach ($cart as $item)
-                                <tr class="border-b border-gray-100">
-                                    <td class="py-2">
-                                        <div class="flex items-center gap-2">
-                                            <img class="w-10 h-10 object-cover rounded"
-                                                src="{{ asset('uploads/products/' . $item['image']) }}" alt="">
-                                            <span>{{ $item['name'] }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="py-2 uppercase">{{ $item['size'] }}</td>
-                                    <td class="py-2">Rp. {{ number_format($item['price'], 0, ',', '.') }}</td>
-                                    <td class="py-2">{{ $item['qty'] }}</td>
-                                    <td class="py-2">Rp.
-                                        {{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}</td>
-                                </tr>
+                            @foreach($cart as $item)
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-3">
+                                        <img class="rounded-lg object-cover shrink-0"
+                                            style="width:44px;height:44px;border:1px solid #ede3db;"
+                                            src="{{ asset('uploads/products/'.$item['image']) }}" alt="">
+                                        <span class="font-medium text-sm text-gray-800">{{ $item['name'] }}</span>
+                                    </div>
+                                </td>
+                                <td class="uppercase text-xs font-bold text-gray-500">{{ $item['size'] }}</td>
+                                <td>Rp. {{ number_format($item['price'],0,',','.') }}</td>
+                                <td>{{ $item['qty'] }}</td>
+                                <td class="font-bold" style="color:#b17457;">Rp. {{ number_format($item['price']*$item['qty'],0,',','.') }}</td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
+        </div>
 
-            <div class="lg:col-span-1">
-                <div class="border border-gray-200 rounded p-6">
-                    <h3 class="font-semibold text-lg mb-4">Total Pembayaran</h3>
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-gray-500">Total Item</span>
-                        <span>{{ collect($cart)->sum('qty') }}</span>
-                    </div>
-                    <div class="flex justify-between font-semibold border-t border-gray-200 pt-3 mt-3">
-                        <span>Total</span>
-                        <span class="text-primary">Rp. {{ number_format($total, 0, ',', '.') }}</span>
-                    </div>
-                    <form action="{{ route('orderStore') }}" method="post" class="mt-6">
-                        @csrf
-                        <button type="submit"
-                            class="w-full bg-gradient-to-r from-primary to-secondary text-white text-sm font-medium rounded-sm py-[10px] hover:opacity-90">
-                            Konfirmasi Pesanan
-                        </button>
-                    </form>
-                    <p class="text-[11px] text-gray-400 text-center mt-2">Pesanan dibuat dengan status "Menunggu
-                        Pembayaran". Pembayaran online tersedia pada Tahap 4.</p>
+        {{-- Order summary --}}
+        <div>
+            <div class="summary-panel">
+                <h3>Total Pembayaran</h3>
+                <div class="summary-row"><span class="label">Total Item</span><span>{{ collect($cart)->sum('qty') }}</span></div>
+                <div class="summary-row"><span class="label">Pengiriman</span><span class="text-xs text-gray-400">Gratis</span></div>
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span class="amount">Rp. {{ number_format($total,0,',','.') }}</span>
                 </div>
+                <form action="{{ route('orderStore') }}" method="post" class="mt-5">
+                    @csrf
+                    <button type="submit" class="btn-brand w-full py-3 text-sm text-center block rounded-xl">
+                        <i class="fas fa-check-circle text-xs"></i> Konfirmasi Pesanan
+                    </button>
+                </form>
+                <p class="text-xs text-gray-400 text-center mt-3">
+                    Pesanan dibuat dengan status "Menunggu Pembayaran".
+                </p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 @endsection

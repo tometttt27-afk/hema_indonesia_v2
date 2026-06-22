@@ -1,62 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="success" content="{{ session('success') }}">
     <meta name="error" content="{{ session('error') }}">
     <meta name="errors" content='@json($errors->all())'>
-    <title>Forgot Password | Hema.Indonesia</title>
-    {{-- Auth css --}}
+    <title>Lupa Kata Sandi | Hema.Indonesia</title>
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
-    {{-- Font Urbanist --}}
     <link rel="stylesheet" href="{{ asset('library/font/urbanist.css') }}">
-    {{-- Sweetalert css --}}
     <link rel="stylesheet" href="{{ asset('library/sweetalert/sweetalert2.min.css') }}">
-    {{-- Icon Fontawesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite('resources/css/app.css')
 </head>
+<body>
 
-<body class="bg-[#f5f5f5] font-urbanist">
-    <section class="container w-full py-6 h-dvh flex justify-center items-center auth">
-        <main class="content bg-white p-5 md:p-8 rounded w-full md:1/3 xl:w-1/2">
-            <h1 class="lg:text-3xl md:text-2xl text-xl text-center font-bold mb-2">
-                <span class="text-primary">Hema</span>.Indonesia
-            </h1>
-            <div class="my-6">
-                <h2 class="font-semibold md:text-xl text-lg">Forgot your password?</h2>
-                <p class="text-gray-500 text-[13.3px] md:text-[14px]">Enter your email to receive a reset link</p>
+<div class="auth-wrapper">
+
+    {{-- ═══ LEFT PANEL ═══ --}}
+    <div class="auth-left">
+        <a href="{{ url('/') }}" class="auth-left-logo"><span>Hema</span>.Indonesia</a>
+
+        <div class="auth-left-content">
+            <h2>Kami Bantu<br>Pulihkan Akun Anda 🔐</h2>
+            <p>Jangan khawatir, masukkan email terdaftar dan kami akan kirimkan tautan untuk mengatur ulang kata sandi.</p>
+        </div>
+
+        <div class="auth-left-features">
+            @foreach([
+                ['fas fa-envelope','Link Dikirim via Email'],
+                ['fas fa-clock','Berlaku 60 Menit'],
+                ['fas fa-shield-halved','Proses Aman & Terenkripsi'],
+                ['fas fa-headset','Butuh Bantuan? Hubungi Kami'],
+            ] as $f)
+            <div class="auth-left-feature">
+                <span class="auth-left-feature-icon"><i class="{{ $f[0] }}"></i></span>
+                {{ $f[1] }}
             </div>
-            <form action="{{ route('forgotPasswordPost') }}" method="post">
+            @endforeach
+        </div>
+    </div>
+
+    {{-- ═══ RIGHT PANEL ═══ --}}
+    <div class="auth-right">
+        <div class="auth-card">
+
+            <a href="{{ url('/') }}" class="auth-card-logo"><span>Hema</span>.Indonesia</a>
+
+            {{-- Icon --}}
+            <div class="flex justify-center mb-6">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center"
+                    style="background:rgba(177,116,87,.1);">
+                    <i class="fas fa-envelope text-3xl" style="color:#b17457;"></i>
+                </div>
+            </div>
+
+            <h2>Lupa Kata Sandi?</h2>
+            <p class="subtitle">Masukkan email Anda dan kami akan mengirimkan tautan untuk mengatur ulang kata sandi.</p>
+
+            <form action="{{ route('forgotPasswordPost') }}" method="post" autocomplete="off">
                 @csrf
-                <div class="form-group mb-6">
-                    <label
-                        class="label-form block mb-1 text-gray-800 text-[13.5px] md:text-[14.7px] tracking-wider">Email</label>
-                    <input type="text"
-                        class="inline-block placeholder:text-[13.5px] md:placeholder:text-[14.7px] text-[13.5px] md:text-[14.7px] tracking-wide bg-white border-[1.8px] border-gray-600 w-full py-2.5 px-3 focus:border-primary outline-none rounded-md"
-                        name="email" placeholder="Enter your email" id="email" value="{{ Request::old('email') }}"
-                        autocomplete="off">
+
+                <div class="auth-form-group">
+                    <label class="auth-label">Alamat Email</label>
+                    <input class="auth-input" type="email" name="email"
+                        placeholder="contoh@email.com" value="{{ old('email') }}">
                 </div>
-                <div class="form-group">
-                    <button
-                        class="inline-block text-[13.5px] md:text-[14.7px] font-medium tracking-widest text-center rounded-md bg-gradient-to-r from-primary to-secondary text-white py-2.5 px-3 w-full hover:opacity-[90%]"
-                        type="submit">Send Reset Link</button>
-                </div>
-                <p class="text-center text-[13.5px] md:text-sm mt-4 text-gray-500">Remember your password? <a
-                        href="{{ url('auth/sign-in') }}" class="text-primary font-medium">Sign In</a></p>
+
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-paper-plane me-2 text-sm"></i>Kirim Tautan Reset
+                </button>
+
+                <p class="auth-footer-text">
+                    Ingat kata sandi? <a href="{{ url('auth/sign-in') }}" class="auth-link">Kembali Masuk</a>
+                </p>
             </form>
-        </main>
-    </section>
+        </div>
+    </div>
+</div>
 
-    <script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('js/auth.js') }}"></script>
-    <script src="{{ asset('js/alert.js') }}"></script>
-
+<script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('js/auth.js') }}"></script>
+<script src="{{ asset('js/alert.js') }}"></script>
 </body>
-
 </html>

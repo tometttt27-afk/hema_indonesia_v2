@@ -1,744 +1,609 @@
 /* ============================================================
-   HEMA INDONESIA — Admin Theme Override v2
-   Satu sumber kebenaran untuk brand identity admin + customer.
-
-   Design Tokens (sama persis dengan tailwind.config.js):
-     Primary   : #b17457  — cokelat hangat
-     Secondary : #c29470  — cokelat muda
-     Font      : Urbanist (sama dengan customer)
-     Radius    : 6px      — radius sudut konsisten
-
-   Struktur file:
-     1.  CSS Variables (Design Tokens)
-     2.  Font & Global Reset
-     3.  Header / Topbar
-     4.  Sidebar
-     5.  Page Wrapper & Breadcrumb
-     6.  Cards  (termasuk stat-card & shortcut-card)
-     7.  Buttons
-     8.  Forms & Select2
-     9.  Tables & DataTables
-    10.  Badges
-    11.  Alerts / Flash
-    12.  Links
-    13.  SweetAlert2
-    14.  Utility Classes  (fw-*, text-*, bg-*)
-    15.  Neutralisasi warna template (Bootstrap leak guard)
-    16.  Scrollbar
-    17.  Responsive
+   HEMA INDONESIA — Admin Design System v3
+   DreamsPos-inspired UI · Brand tokens #b17457 / #c29470
+   Font: Urbanist · Framework: Bootstrap 4 (admin template)
    ============================================================ */
 
-/* ─────────────────────────────────────────────────────────────
-   1. CSS VARIABLES — Design Tokens
-   ───────────────────────────────────────────────────────────── */
+/* ─── 1. DESIGN TOKENS ────────────────────────────────────── */
 :root {
-    /* Brand palette */
-    --hema-primary:        #b17457;
-    --hema-primary-dark:   #96603f;
-    --hema-primary-light:  #d4a882;
-    --hema-primary-subtle: rgba(177, 116, 87, 0.10);
-    --hema-secondary:      #c29470;
-    --hema-accent:         #9a6040;
-    --hema-gradient:       linear-gradient(135deg, #b17457 0%, #c29470 100%);
+  --hema-primary:        #b17457;
+  --hema-primary-dark:   #96603f;
+  --hema-primary-light:  #d4a882;
+  --hema-primary-subtle: rgba(177,116,87,.10);
+  --hema-secondary:      #c29470;
+  --hema-gradient:       linear-gradient(135deg,#b17457 0%,#c29470 100%);
 
-    /* Sidebar */
-    --hema-sidebar-bg:     #2c1f17;
-    --hema-sidebar-hover:  #3d2b1f;
-    --hema-sidebar-active: linear-gradient(135deg, #b17457 0%, #c29470 100%);
+  --sidebar-bg:          #1a1a2e;
+  --sidebar-surface:     #16213e;
+  --sidebar-active:      linear-gradient(135deg,#b17457 0%,#c29470 100%);
+  --sidebar-text:        rgba(255,255,255,.72);
+  --sidebar-text-muted:  rgba(255,255,255,.42);
 
-    /* Surface */
-    --hema-header-bg:      #ffffff;
-    --hema-bg:             #faf7f5;
-    --hema-card-bg:        #ffffff;
+  --topbar-bg:           #ffffff;
+  --topbar-border:       #f0ece8;
+  --page-bg:             #f5f3f0;
+  --card-bg:             #ffffff;
+  --border:              #e8ddd7;
+  --border-light:        #f0ece8;
 
-    /* Typography */
-    --hema-text-dark:      #2c1f17;
-    --hema-text-muted:     #7a6255;
-    --hema-text-light:     rgba(255, 255, 255, 0.75);
+  --text-dark:           #1e1410;
+  --text-body:           #3d2e26;
+  --text-muted:          #7a6255;
+  --text-light:          #a89080;
 
-    /* Borders & Shadows */
-    --hema-border:         #e8ddd7;
-    --hema-shadow-sm:      0 1px 6px  rgba(177, 116, 87, 0.07);
-    --hema-shadow-md:      0 4px 16px rgba(177, 116, 87, 0.14);
-    --hema-shadow-lg:      0 6px 24px rgba(177, 116, 87, 0.20);
-    --hema-shadow-sidebar: 2px 0 12px rgba(44,  31, 23,  0.18);
+  --shadow-xs:  0 1px 3px  rgba(44,20,0,.06);
+  --shadow-sm:  0 2px 8px  rgba(177,116,87,.08);
+  --shadow-md:  0 4px 18px rgba(177,116,87,.13);
+  --shadow-lg:  0 8px 32px rgba(177,116,87,.18);
+  --shadow-sidebar: 3px 0 20px rgba(0,0,0,.22);
 
-    /* Shape */
-    --hema-radius:         6px;
-    --hema-radius-pill:    30px;
-    --hema-radius-circle:  50%;
+  --radius:      8px;
+  --radius-sm:   5px;
+  --radius-pill: 50px;
+  --radius-full: 9999px;
 }
 
-
-/* ─────────────────────────────────────────────────────────────
-   2. FONT & GLOBAL RESET
-   ───────────────────────────────────────────────────────────── */
-body,
-.sidebar,
-.header,
-.card,
-h1, h2, h3, h4, h5, h6,
-.page-title h4,
-.page-title h6,
-.form-group label,
-.form-label,
-input, select, textarea,
-.btn,
-table, td, th,
-.dropdown-item,
-.modal-title,
-.modal-body,
-.nav-tabs .nav-link {
-    font-family: "Urbanist", sans-serif !important;
+/* ─── 2. GLOBAL RESET & FONT ──────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box}
+body,h1,h2,h3,h4,h5,h6,p,a,span,label,input,select,textarea,
+button,.btn,.card,.modal-title,.modal-body,.dropdown-item,
+table,td,th,.page-title,.sidebar,.header{
+  font-family:"Urbanist",sans-serif !important;
+}
+body{
+  background:var(--page-bg) !important;
+  color:var(--text-body) !important;
+  font-size:14px !important;
+  line-height:1.6 !important;
 }
 
-body {
-    background-color: var(--hema-bg)        !important;
-    color:            var(--hema-text-dark)  !important;
+/* ─── 3. TOPBAR / HEADER ──────────────────────────────────── */
+.header{
+  background:var(--topbar-bg) !important;
+  border-bottom:1.5px solid var(--topbar-border) !important;
+  box-shadow:0 2px 12px rgba(177,116,87,.07) !important;
+  height:64px !important;
 }
-
-/* ─────────────────────────────────────────────────────────────
-   3. HEADER / TOPBAR
-   ───────────────────────────────────────────────────────────── */
-.header {
-    background:    var(--hema-header-bg)                    !important;
-    border-bottom: 1.5px solid var(--hema-border)           !important;
-    box-shadow:    0 1px 8px rgba(177, 116, 87, 0.08)       !important;
-}
-
-/* Logo zone — mirrors sidebar bg so they visually lock together */
-.header .header-left {
-    background:   var(--hema-sidebar-bg) !important;
-    border-right: none                   !important;
+.header .header-left{
+  background:var(--sidebar-bg) !important;
+  border-right:none !important;
+  width:260px !important;
 }
 .header .header-left .logo img,
-.header .header-left .logo-small img {
-    filter: brightness(0) invert(1);
+.header .header-left .logo-small img{
+  filter:brightness(0) invert(1);
+}
+.bar-icon span{background:var(--hema-primary) !important;}
+#toggle_btn:hover{color:var(--hema-primary) !important;}
+
+/* Search */
+.top-nav-search .searchinputs input{
+  border:1.5px solid var(--border) !important;
+  border-radius:var(--radius) !important;
+  background:#faf8f6 !important;
+  color:var(--text-dark) !important;
+  font-size:13px !important;
+}
+.top-nav-search .searchinputs input:focus{
+  border-color:var(--hema-primary) !important;
+  box-shadow:0 0 0 3px rgba(177,116,87,.12) !important;
 }
 
-/* Sidebar toggle & mobile hamburger */
-#toggle_btn i,
-#toggle_btn:hover { color: var(--hema-primary) !important; }
-.bar-icon span    { background-color: var(--hema-primary) !important; }
-
-/* Top-nav search */
-.searchinputs input {
-    border:        1.5px solid var(--hema-border)   !important;
-    border-radius: var(--hema-radius)               !important;
-    color:         var(--hema-text-dark)            !important;
+/* User avatar */
+.user-img img{
+  width:36px !important;height:36px !important;
+  border-radius:var(--radius-full) !important;
+  border:2px solid var(--border) !important;
+  object-fit:cover !important;
 }
-.searchinputs input:focus {
-    border-color: var(--hema-primary)                            !important;
-    box-shadow:   0 0 0 3px rgba(177, 116, 87, 0.12)            !important;
+.status.online{
+  background:#22c55e !important;
+  border:2px solid #fff !important;
+  width:9px !important;height:9px !important;
 }
-
-/* Header nav icons */
-.user-menu.nav > li > a       { color: var(--hema-text-dark)    !important; }
-.user-menu.nav > li > a:hover { color: var(--hema-primary)      !important; }
 
 /* Profile dropdown */
-.menu-drop-user {
-    border:        1px solid var(--hema-border)     !important;
-    border-radius: var(--hema-radius)               !important;
-    box-shadow:    var(--hema-shadow-lg)             !important;
+.menu-drop-user{
+  border:1px solid var(--border-light) !important;
+  border-radius:var(--radius) !important;
+  box-shadow:var(--shadow-lg) !important;
+  min-width:220px !important;
+  padding:8px 0 !important;
 }
-.menu-drop-user .dropdown-item:hover {
-    background-color: #faf0ea             !important;
-    color:            var(--hema-primary) !important;
+.menu-drop-user .dropdown-item{
+  padding:9px 18px !important;
+  font-size:13.5px !important;
+  color:var(--text-body) !important;
+  border-radius:0 !important;
 }
-.menu-drop-user .dropdown-item.logout:hover {
-    background-color: #fdf2f2 !important;
-    color:            #dc3545 !important;
+.menu-drop-user .dropdown-item:hover{
+  background:#faf0ea !important;
+  color:var(--hema-primary) !important;
 }
-.profilesets h6 { color: var(--hema-text-dark);  font-weight: 600    !important; }
-.profilesets h5 { color: var(--hema-text-muted); font-size: 12px     !important; text-transform: capitalize !important; }
+.menu-drop-user .dropdown-item.logout:hover{
+  background:#fdf2f2 !important;color:#ef4444 !important;
+}
+.profilesets h6{color:var(--text-dark);font-weight:600;font-size:13.5px !important;}
+.profilesets h5{color:var(--text-muted);font-size:11.5px !important;text-transform:capitalize !important;}
 
-/* Online indicator */
-.status.online {
-    background-color: #28c76f !important;
-    border: 2px solid #fff    !important;
+/* ─── 4. SIDEBAR ──────────────────────────────────────────── */
+.sidebar{
+  background:var(--sidebar-bg) !important;
+  border-right:none !important;
+  box-shadow:var(--shadow-sidebar) !important;
+  width:260px !important;
 }
-
-
-/* ─────────────────────────────────────────────────────────────
-   4. SIDEBAR
-   ───────────────────────────────────────────────────────────── */
-.sidebar {
-    background:   var(--hema-sidebar-bg)    !important;
-    border-right: none                      !important;
-    box-shadow:   var(--hema-shadow-sidebar) !important;
+/* brand strip at top */
+.sidebar::before{
+  content:"";
+  display:block;
+  height:3px;
+  background:var(--hema-gradient);
 }
-
-/* Menu items */
-.sidebar-menu > ul > li > a {
-    color:         var(--hema-text-light) !important;
-    border-radius: var(--hema-radius)     !important;
-    margin:        2px 10px              !important;
-    padding:       10px 12px             !important;
-    transition:    background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease !important;
-    display:       flex !important;
-    align-items:   center !important;
-    gap:           8px !important;
+/* section label */
+.sidebar-menu ul li.menu-title{
+  color:var(--sidebar-text-muted) !important;
+  font-size:10.5px !important;
+  font-weight:700 !important;
+  letter-spacing:1.2px !important;
+  text-transform:uppercase !important;
+  padding:18px 22px 6px !important;
 }
-.sidebar-menu > ul > li > a:hover,
+/* menu item */
+.sidebar-menu > ul > li > a{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  color:var(--sidebar-text) !important;
+  padding:11px 14px !important;
+  margin:2px 12px !important;
+  border-radius:var(--radius) !important;
+  font-size:13.5px !important;
+  font-weight:500 !important;
+  transition:background .2s,color .2s,box-shadow .2s !important;
+  position:relative !important;
+}
+.sidebar-menu > ul > li > a:hover{
+  background:rgba(177,116,87,.15) !important;
+  color:#fff !important;
+}
 .sidebar-menu > ul > li.active > a,
-.sidebar-menu > ul > li.active > a:focus {
-    background: var(--hema-gradient)                      !important;
-    color:      #fff                                      !important;
-    box-shadow: 0 3px 10px rgba(177, 116, 87, 0.35)       !important;
+.sidebar-menu > ul > li.active > a:focus{
+  background:var(--sidebar-active) !important;
+  color:#fff !important;
+  box-shadow:0 4px 14px rgba(177,116,87,.38) !important;
 }
-
-/* SVG icons inside menu items */
-.sidebar-menu > ul > li > a img {
-    filter: brightness(0) invert(0.85) !important;
+/* icons */
+.sidebar-menu > ul > li > a img{
+  width:18px !important;height:18px !important;
+  filter:brightness(0) invert(.75) !important;flex-shrink:0;
 }
 .sidebar-menu > ul > li.active > a img,
-.sidebar-menu > ul > li > a:hover img {
-    filter: brightness(0) invert(1) !important;
-}
-
-/* Bootstrap-icons in sidebar */
-.sidebar-menu > ul > li > a .bi {
-    color:     var(--hema-text-light) !important;
-    font-size: 16px;
+.sidebar-menu > ul > li > a:hover img{filter:brightness(0) invert(1) !important;}
+.sidebar-menu > ul > li > a .bi{
+  font-size:16px;color:var(--sidebar-text) !important;flex-shrink:0;
 }
 .sidebar-menu > ul > li.active > a .bi,
-.sidebar-menu > ul > li > a:hover .bi {
-    color: #fff !important;
+.sidebar-menu > ul > li > a:hover .bi{color:#fff !important;}
+/* arrow */
+.menu-arrow{
+  margin-left:auto !important;
+  width:16px !important;height:16px !important;
+  background:rgba(255,255,255,.12) !important;
+  border-radius:3px !important;
 }
-
-/* Menu arrow */
-.menu-arrow { background: rgba(255,255,255,0.15) !important; }
-.sidebar-menu > ul > li > a:hover .menu-arrow,
-.sidebar-menu > ul > li.active > a .menu-arrow {
-    background: rgba(255,255,255,0.30) !important;
+.sidebar-menu > ul > li.active > a .menu-arrow,
+.sidebar-menu > ul > li > a:hover .menu-arrow{
+  background:rgba(255,255,255,.25) !important;
 }
-
-/* Submenu */
-.sidebar .sub-menu {
-    background:    rgba(0,0,0,0.25)    !important;
-    border-radius: 0 0 var(--hema-radius) var(--hema-radius) !important;
+/* submenu */
+.sidebar .sub-menu{
+  background:rgba(0,0,0,.20) !important;
+  border-radius:0 0 var(--radius) var(--radius) !important;
+  margin:0 12px !important;
+  overflow:hidden !important;
 }
-.sidebar .sub-menu a {
-    color:      rgba(255,255,255,0.65) !important;
-    padding:    8px 12px 8px 38px     !important;
-    font-size:  13px                   !important;
-    transition: color 0.2s ease, padding-left 0.2s ease !important;
+.sidebar .sub-menu a{
+  color:rgba(255,255,255,.62) !important;
+  padding:9px 14px 9px 40px !important;
+  font-size:13px !important;
+  transition:color .18s,padding-left .18s !important;
+  display:block !important;
 }
 .sidebar .sub-menu a:hover,
-.sidebar .sub-menu li.active > a {
-    color:        var(--hema-primary-light) !important;
-    padding-left: 44px                     !important;
+.sidebar .sub-menu li.active > a{
+  color:var(--hema-primary-light) !important;
+  padding-left:46px !important;
 }
 
-/* Sidebar text span */
-.sidebar-menu > ul > li > a span:first-of-type {
-    color:       inherit !important;
-    font-weight: 500     !important;
-    font-size:   14px    !important;
+/* ─── 5. PAGE WRAPPER & HEADER ────────────────────────────── */
+.page-wrapper{background:var(--page-bg) !important;}
+.content{padding:24px !important;}
+
+.page-header{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  flex-wrap:wrap !important;
+  gap:12px !important;
+  margin-bottom:24px !important;
+  padding-bottom:18px !important;
+  border-bottom:1.5px solid var(--border-light) !important;
+}
+.page-title h4{
+  color:var(--text-dark) !important;
+  font-weight:700 !important;
+  font-size:20px !important;
+  margin-bottom:2px !important;
+}
+.page-title h6{
+  color:var(--text-muted) !important;
+  font-size:13px !important;
+  font-weight:400 !important;
+  margin:0 !important;
 }
 
+/* ─── 6. CARDS ────────────────────────────────────────────── */
+.card{
+  background:var(--card-bg) !important;
+  border:1px solid var(--border-light) !important;
+  border-radius:var(--radius) !important;
+  box-shadow:var(--shadow-xs) !important;
+  transition:box-shadow .22s,transform .22s !important;
+  margin-bottom:24px !important;
+}
+.card:hover{
+  box-shadow:var(--shadow-sm) !important;
+  transform:translateY(-1px);
+}
+.card-header{
+  background:transparent !important;
+  border-bottom:1px solid var(--border-light) !important;
+  padding:16px 20px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+}
+.card-title{
+  color:var(--text-dark) !important;
+  font-weight:700 !important;
+  font-size:15px !important;
+  margin:0 !important;
+}
+.card-body{padding:20px !important;}
 
-/* ─────────────────────────────────────────────────────────────
-   5. PAGE WRAPPER & BREADCRUMB
-   ───────────────────────────────────────────────────────────── */
-.page-wrapper { background: var(--hema-bg) !important; }
+/* stat card */
+.stat-card{border-left-width:4px !important;border-left-style:solid !important;}
+.stat-card .stat-icon{
+  width:48px;height:48px;border-radius:var(--radius-full);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.stat-card .stat-value{font-size:24px;font-weight:800;line-height:1.2;}
+.stat-card .stat-label{font-size:12px;color:var(--text-muted);margin:0;}
 
-.page-header {
-    margin-bottom:  1.5rem                       !important;
-    padding-bottom: 0.75rem                      !important;
-    border-bottom:  1.5px solid var(--hema-border) !important;
+/* shortcut card */
+.shortcut-card{
+  color:var(--text-dark) !important;
+  text-decoration:none !important;
+  text-align:center;
 }
-.page-title h4 {
-    color:       var(--hema-text-dark) !important;
-    font-weight: 700                   !important;
-    font-size:   18px                  !important;
+.shortcut-card .shortcut-icon{
+  color:var(--hema-primary);font-size:2rem;
+  margin-bottom:.5rem;display:block;
+  transition:color .2s,transform .2s;
 }
-.page-title h6 {
-    color:       var(--hema-text-muted) !important;
-    font-size:   13px                   !important;
-    font-weight: 400                    !important;
+.shortcut-card:hover .shortcut-icon{
+  color:var(--hema-primary-dark);transform:scale(1.12);
 }
+.shortcut-card .shortcut-label{
+  font-size:13px;font-weight:600;color:var(--text-dark);margin:0;
+}
+.card-header-icon{color:var(--hema-primary);}
+.stock-safe-icon{color:var(--hema-primary);opacity:.45;}
 
-/* Breadcrumb */
-.breadcrumb-item + .breadcrumb-item::before { color: var(--hema-text-muted) !important; }
-.breadcrumb-item a                          { color: var(--hema-primary)     !important; }
-.breadcrumb-item.active                     { color: var(--hema-text-muted)  !important; }
+/* ─── 7. BUTTONS ──────────────────────────────────────────── */
+.btn{
+  border-radius:var(--radius-sm) !important;
+  font-weight:600 !important;
+  font-size:13.5px !important;
+  padding:9px 20px !important;
+  transition:opacity .2s,box-shadow .2s,transform .15s !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+}
+.btn:active{transform:translateY(1px);}
+.btn-primary,.btn-submit,.btn-added{
+  background:var(--hema-gradient) !important;
+  border-color:var(--hema-primary) !important;
+  color:#fff !important;
+  box-shadow:0 3px 10px rgba(177,116,87,.28) !important;
+}
+.btn-primary:hover,.btn-submit:hover,.btn-added:hover{
+  opacity:.88 !important;color:#fff !important;
+  box-shadow:0 5px 16px rgba(177,116,87,.38) !important;
+}
+.btn-primary:focus,.btn-submit:focus,.btn-added:focus{
+  box-shadow:0 0 0 3px rgba(177,116,87,.28) !important;
+}
+.btn-secondary{
+  background:#f3ede9 !important;
+  border-color:var(--border) !important;
+  color:var(--hema-primary) !important;
+}
+.btn-secondary:hover{background:#ecddd5 !important;color:var(--hema-primary-dark) !important;}
+.btn-cancel{
+  background:#f5f5f5 !important;border-color:#ddd !important;
+  color:var(--text-body) !important;
+}
+.btn-cancel:hover{background:#e8e8e8 !important;}
+.btn-info,.btn-success,.btn-warning,.btn-danger{
+  border-radius:var(--radius-sm) !important;font-weight:600 !important;
+  color:#fff !important;
+}
+/* white text guard */
+.btn,.btn:hover,.btn:focus,
+.btn-primary,.btn-primary:hover,.btn-primary:focus,
+.btn-added,.btn-added:hover,.btn-submit,.btn-submit:hover{
+  color:#fff !important;
+}
+.btn-secondary,.btn-secondary:hover,.btn-cancel,.btn-cancel:hover{
+  color:var(--hema-primary) !important;
+}
+.btn-cancel,.btn-cancel:hover{color:var(--text-body) !important;}
+/* small action buttons */
+.btn-sm{padding:5px 10px !important;font-size:12px !important;}
 
-/* ─────────────────────────────────────────────────────────────
-   6. CARDS
-   ─────────────────────────────────────────────────────────────
-   Includes:
-     • Base .card
-     • .stat-card   — dashboard stat tiles (4 metrics)
-     • .shortcut-card — dashboard quick-nav grid
-   ───────────────────────────────────────────────────────────── */
-
-/* Base card — matches customer surface/card pattern */
-.card {
-    background:    var(--hema-card-bg)  !important;
-    border:        1px solid var(--hema-border) !important;
-    border-radius: var(--hema-radius)   !important;
-    box-shadow:    var(--hema-shadow-sm) !important;
-    transition:    box-shadow 0.2s ease, transform 0.2s ease !important;
+/* ─── 8. FORMS ────────────────────────────────────────────── */
+.form-group{margin-bottom:18px !important;}
+.form-group label,.form-label{
+  color:var(--text-dark) !important;
+  font-weight:600 !important;
+  font-size:13px !important;
+  margin-bottom:6px !important;
+  display:block !important;
 }
-.card:hover {
-    box-shadow: var(--hema-shadow-md)   !important;
-    transform:  translateY(-2px);
-}
-.card-header {
-    background:    transparent               !important;
-    border-bottom: 1px solid var(--hema-border) !important;
-    padding:       1rem 1.25rem              !important;
-}
-.card-title {
-    color:       var(--hema-text-dark) !important;
-    font-weight: 600                   !important;
-    font-size:   15px                  !important;
-}
-.card-body { padding: 1.25rem !important; }
-
-/* ── Stat Card (dashboard top-row tiles) ── */
-/* Each tile uses a colored left-border accent set via inline style;
-   the icon-circle bg is auto-derived from the same color at 13% opacity.
-   We only need to define the shared structural styles here. */
-.stat-card {
-    border-left-width: 4px   !important;
-    border-left-style: solid !important;
-}
-.stat-card .stat-icon {
-    width:          46px;
-    height:         46px;
-    border-radius:  var(--hema-radius-circle);
-    display:        flex;
-    align-items:    center;
-    justify-content:center;
-    flex-shrink:    0;
-}
-.stat-card .stat-value {
-    font-size:   22px;
-    font-weight: 700;
-    line-height: 1.2;
-}
-.stat-card .stat-label {
-    font-size: 12px;
-    color: var(--hema-text-muted);
-    margin-bottom: 0;
-}
-
-/* ── Shortcut Card (dashboard quick-nav grid) ── */
-.shortcut-card {
-    color:           var(--hema-text-dark)  !important;
-    text-decoration: none                   !important;
-    text-align:      center;
-}
-.shortcut-card .shortcut-icon {
-    color:     var(--hema-primary);
-    font-size: 2rem;         /* fa-2x equivalent */
-    margin-bottom: 0.5rem;
-    display: block;
-}
-.shortcut-card .shortcut-label {
-    font-size:   13px;
-    font-weight: 600;
-    color:       var(--hema-text-dark);
-    margin:      0;
-}
-.shortcut-card:hover .shortcut-icon {
-    color: var(--hema-primary-dark);
-}
-
-/* Low-stock empty state icon */
-.stock-safe-icon {
-    color:   var(--hema-primary);
-    opacity: 0.5;
-}
-
-/* Card header accent icon */
-.card-header-icon {
-    color: var(--hema-primary);
-}
-
-
-/* ─────────────────────────────────────────────────────────────
-   7. BUTTONS
-   ─────────────────────────────────────────────────────────────
-   Mirror customer gradient button pattern exactly:
-     customer: bg-gradient-to-r from-primary to-secondary
-     admin:    var(--hema-gradient)
-   ───────────────────────────────────────────────────────────── */
-.btn-primary,
-.btn-submit,
-.btn-added,
-.page-header .btn-added {
-    background:    var(--hema-gradient)                    !important;
-    border-color:  var(--hema-primary)                     !important;
-    color:         #fff                                    !important;
-    border-radius: var(--hema-radius)                      !important;
-    font-weight:   600                                     !important;
-    box-shadow:    0 2px 8px rgba(177, 116, 87, 0.25)      !important;
-    transition:    opacity 0.2s ease, box-shadow 0.2s ease !important;
-}
-.btn-primary:hover,
-.btn-submit:hover,
-.btn-added:hover {
-    opacity:    0.88                                       !important;
-    box-shadow: 0 4px 14px rgba(177, 116, 87, 0.35)       !important;
-    color:      #fff                                       !important;
-}
-.btn-primary:focus,
-.btn-submit:focus,
-.btn-added:focus {
-    box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.25)        !important;
-}
-
-/* Secondary / outlined */
-.btn-secondary {
-    background:    #f3ede9              !important;
-    border-color:  var(--hema-border)   !important;
-    color:         var(--hema-primary)  !important;
-    border-radius: var(--hema-radius)   !important;
-    font-weight:   600                  !important;
-}
-.btn-secondary:hover {
-    background: #ecddd5                 !important;
-    color:      var(--hema-primary-dark) !important;
-}
-
-/* Cancel */
-.btn-cancel {
-    background:    #f5f5f5              !important;
-    border-color:  #ddd                 !important;
-    color:         var(--hema-text-dark) !important;
-    border-radius: var(--hema-radius)   !important;
-    font-weight:   600                  !important;
-}
-.btn-cancel:hover {
-    background: #e8e8e8                 !important;
-    color:      var(--hema-text-dark)   !important;
-}
-
-/* Semantic variants — radius & font only (keep Bootstrap colours) */
-.btn-info,
-.btn-success,
-.btn-warning,
-.btn-danger {
-    border-radius: var(--hema-radius) !important;
-    font-weight:   600                !important;
-}
-
-/* Ensure btn text never goes dark via the global a{} rule */
-.btn, .btn:hover, .btn:focus,
-.btn-primary a, .btn-primary a:hover,
-.btn-added a,   .btn-added a:hover {
-    color: #fff !important;
-}
-
-/* ─────────────────────────────────────────────────────────────
-   8. FORMS & SELECT2
-   ───────────────────────────────────────────────────────────── */
-.form-group label,
-.form-label {
-    color:         var(--hema-text-dark) !important;
-    font-weight:   500                   !important;
-    font-size:     13.5px               !important;
-    margin-bottom: 5px                   !important;
-}
-
 .form-control,
-.form-group input,
-.form-group select,
-.form-group textarea,
-input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
-select,
-textarea {
-    border:           1.5px solid var(--hema-border)  !important;
-    border-radius:    var(--hema-radius)               !important;
-    font-size:        14px                             !important;
-    color:            var(--hema-text-dark)            !important;
-    background-color: #fff                             !important;
-    transition:       border-color 0.2s ease, box-shadow 0.2s ease !important;
+.form-group input:not([type=checkbox]):not([type=radio]):not([type=file]),
+.form-group select,.form-group textarea{
+  border:1.5px solid var(--border) !important;
+  border-radius:var(--radius-sm) !important;
+  font-size:13.5px !important;
+  color:var(--text-dark) !important;
+  background:#fff !important;
+  padding:9px 13px !important;
+  width:100% !important;
+  transition:border-color .2s,box-shadow .2s !important;
 }
 .form-control:focus,
 .form-group input:focus,
 .form-group select:focus,
-.form-group textarea:focus,
-input:not([type="checkbox"]):not([type="radio"]):focus,
-select:focus,
-textarea:focus {
-    border-color: var(--hema-primary)                   !important;
-    box-shadow:   0 0 0 3px rgba(177, 116, 87, 0.12)   !important;
-    outline:      none                                  !important;
+.form-group textarea:focus{
+  border-color:var(--hema-primary) !important;
+  box-shadow:0 0 0 3px rgba(177,116,87,.14) !important;
+  outline:none !important;
 }
-
-/* Select2 */
-.select2-container--default .select2-selection--single {
-    border:        1.5px solid var(--hema-border) !important;
-    border-radius: var(--hema-radius)             !important;
-    height:        38px                           !important;
+.form-group input[type=file]{
+  padding:6px !important;
+  font-size:13px !important;
 }
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 36px                  !important;
-    color:       var(--hema-text-dark) !important;
+/* select2 */
+.select2-container--default .select2-selection--single{
+  border:1.5px solid var(--border) !important;
+  border-radius:var(--radius-sm) !important;
+  height:42px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+  line-height:40px !important;color:var(--text-dark) !important;
+  padding-left:13px !important;
 }
 .select2-container--default.select2-container--open .select2-selection--single,
-.select2-container--default.select2-container--focus .select2-selection--single {
-    border-color: var(--hema-primary)                  !important;
-    box-shadow:   0 0 0 3px rgba(177, 116, 87, 0.12)  !important;
+.select2-container--default.select2-container--focus .select2-selection--single{
+  border-color:var(--hema-primary) !important;
+  box-shadow:0 0 0 3px rgba(177,116,87,.14) !important;
 }
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: var(--hema-primary) !important;
-    color:            #fff                !important;
+.select2-container--default .select2-results__option--highlighted{
+  background:var(--hema-primary) !important;color:#fff !important;
 }
+/* image upload area */
+.image-upload{
+  border:2px dashed var(--border) !important;
+  border-radius:var(--radius) !important;
+  background:#faf8f6 !important;
+  padding:24px !important;
+  text-align:center !important;
+  cursor:pointer !important;
+  transition:border-color .2s !important;
+}
+.image-upload:hover{border-color:var(--hema-primary) !important;}
+.image-uploads h4{font-size:13px !important;color:var(--text-muted) !important;margin-top:8px !important;}
 
-
-/* ─────────────────────────────────────────────────────────────
-   9. TABLES & DATATABLES
-   ───────────────────────────────────────────────────────────── */
-.table thead th {
-    background:       #faf0ea             !important;
-    color:            var(--hema-text-dark) !important;
-    font-weight:      700                 !important;
-    font-size:        13px                !important;
-    border-bottom:    2px solid var(--hema-border) !important;
-    text-transform:   uppercase           !important;
-    letter-spacing:   0.4px              !important;
+/* ─── 9. TABLES ───────────────────────────────────────────── */
+.table{border-collapse:separate !important;border-spacing:0 !important;}
+.table thead tr{
+  background:#faf0ea !important;
 }
-.table tbody tr:hover { background-color: #fdf7f4 !important; }
-.table td,
-.table th {
-    border-color:   var(--hema-border) !important;
-    vertical-align: middle             !important;
-    font-size:      14px               !important;
+.table thead th{
+  color:var(--text-dark) !important;
+  font-weight:700 !important;
+  font-size:11.5px !important;
+  text-transform:uppercase !important;
+  letter-spacing:.6px !important;
+  border-bottom:2px solid var(--border) !important;
+  padding:12px 16px !important;
+  white-space:nowrap !important;
 }
-
-/* DataTables pagination */
+.table td{
+  vertical-align:middle !important;
+  font-size:13.5px !important;
+  border-color:var(--border-light) !important;
+  padding:12px 16px !important;
+}
+.table tbody tr{transition:background .15s !important;}
+.table tbody tr:hover{background:#fdf7f4 !important;}
+/* dataTables */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input{
+  border:1.5px solid var(--border) !important;
+  border-radius:var(--radius-sm) !important;
+  padding:6px 10px !important;
+  font-size:13px !important;
+}
+.dataTables_wrapper .dataTables_filter input:focus{
+  border-color:var(--hema-primary) !important;
+  box-shadow:0 0 0 3px rgba(177,116,87,.12) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+  border-radius:var(--radius-sm) !important;
+  font-size:13px !important;border:1px solid var(--border) !important;
+  margin:0 2px !important;
+}
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background:    var(--hema-gradient)  !important;
-    border-color:  var(--hema-primary)   !important;
-    color:         #fff                  !important;
-    border-radius: var(--hema-radius)    !important;
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+  background:var(--hema-gradient) !important;
+  border-color:var(--hema-primary) !important;
+  color:#fff !important;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background:    #f3ede9              !important;
-    border-color:  var(--hema-border)   !important;
-    color:         var(--hema-primary)  !important;
-    border-radius: var(--hema-radius)   !important;
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current){
+  background:#f3ede9 !important;color:var(--hema-primary) !important;
+  border-color:var(--border) !important;
 }
-.dataTables_wrapper .dataTables_filter input {
-    border:        1.5px solid var(--hema-border) !important;
-    border-radius: var(--hema-radius)             !important;
-}
-.dataTables_wrapper .dataTables_filter input:focus {
-    border-color: var(--hema-primary)                  !important;
-    box-shadow:   0 0 0 3px rgba(177, 116, 87, 0.12)  !important;
+.dataTables_wrapper .dataTables_info{
+  font-size:12.5px !important;color:var(--text-muted) !important;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   10. BADGES
-   ───────────────────────────────────────────────────────────── */
-.badge {
-    font-weight:   600                    !important;
-    border-radius: var(--hema-radius-pill) !important;
-    padding:       4px 10px               !important;
+/* ─── 10. BADGES ──────────────────────────────────────────── */
+.badge{
+  font-weight:600 !important;
+  border-radius:var(--radius-pill) !important;
+  padding:4px 10px !important;
+  font-size:11.5px !important;
+  letter-spacing:.2px !important;
+}
+/* brand badge */
+.badge-brand{
+  background:#f3ede9 !important;
+  color:var(--hema-primary) !important;
+  border:1px solid var(--border) !important;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   11. ALERTS / FLASH MESSAGES
-   ───────────────────────────────────────────────────────────── */
-.alert {
-    border-radius: var(--hema-radius) !important;
-}
-.alert-success {
-    background:   #f0faf4  !important;
-    border-color: #c3e6cb  !important;
-    color:        #2d6a4f  !important;
-}
-.alert-danger {
-    background:   #fdf2f2  !important;
-    border-color: #f5c6cb  !important;
-    color:        #842029  !important;
-}
-.alert-warning {
-    background:   #fff8ee  !important;
-    border-color: #ffd591  !important;
-    color:        #7d4e00  !important;
-}
-.alert-info {
-    background:   #f0f7ff  !important;
-    border-color: #b8d9f5  !important;
-    color:        #0a4d80  !important;
-}
+/* ─── 11. ALERTS ──────────────────────────────────────────── */
+.alert{border-radius:var(--radius) !important;font-size:13.5px !important;}
+.alert-success{background:#f0fdf6 !important;border-color:#bbf7d0 !important;color:#166534 !important;}
+.alert-danger {background:#fef2f2 !important;border-color:#fecaca !important;color:#991b1b !important;}
+.alert-warning{background:#fffbeb !important;border-color:#fde68a !important;color:#92400e !important;}
+.alert-info   {background:#eff6ff !important;border-color:#bfdbfe !important;color:#1e40af !important;}
 
-/* ─────────────────────────────────────────────────────────────
-   12. LINKS
-   ─────────────────────────────────────────────────────────────
-   Global link color = brand primary.
-   Exceptions for white text inside buttons are handled below.
-   ───────────────────────────────────────────────────────────── */
-a {
-    color:      var(--hema-primary)      !important;
-    transition: color 0.2s ease         !important;
-}
-a:hover {
-    color: var(--hema-primary-dark)      !important;
-}
-/* White-text exceptions: buttons, sidebar active links */
-.btn-primary, .btn-primary:hover, .btn-primary:focus,
-.btn-added,   .btn-added:hover,   .btn-added:focus,
-.btn-submit,  .btn-submit:hover,  .btn-submit:focus,
+/* ─── 12. LINKS ───────────────────────────────────────────── */
+a{color:var(--hema-primary) !important;transition:color .18s !important;}
+a:hover{color:var(--hema-primary-dark) !important;}
+/* white exceptions */
+.btn-primary,.btn-primary:hover,.btn-primary a,
+.btn-added,.btn-added:hover,
+.btn-submit,.btn-submit:hover,
+.btn-info,.btn-success,.btn-warning,.btn-danger,
 .sidebar-menu > ul > li.active > a,
-.sidebar-menu > ul > li > a:hover {
-    color: #fff !important;
+.sidebar-menu > ul > li > a:hover,
+.badge.bg-success,.badge.bg-danger,.badge.bg-info,.badge.bg-warning{
+  color:#fff !important;
 }
-/* White text inside Bootstrap semantic buttons */
-.btn-success, .btn-danger, .btn-warning, .btn-info {
-    color: #fff !important;
+.badge.bg-warning{color:#1e1410 !important;}
+
+/* ─── 13. MODAL ───────────────────────────────────────────── */
+.modal-content{
+  border-radius:calc(var(--radius)*1.5) !important;
+  border:1px solid var(--border-light) !important;
+  box-shadow:var(--shadow-lg) !important;
 }
-
-
-/* ─────────────────────────────────────────────────────────────
-   13. SWEETALERT2
-   ───────────────────────────────────────────────────────────── */
-.swal2-popup {
-    font-family:   "Urbanist", sans-serif !important;
-    border-radius: calc(var(--hema-radius) * 2) !important;
+.modal-header{
+  border-bottom:1px solid var(--border-light) !important;
+  background:var(--card-bg) !important;
+  border-radius:calc(var(--radius)*1.5) calc(var(--radius)*1.5) 0 0 !important;
+  padding:18px 24px !important;
 }
-.swal2-title,
-.swal2-html-container { font-family: "Urbanist", sans-serif !important; }
-.swal2-confirm {
-    background:    var(--hema-gradient) !important;
-    border-color:  var(--hema-primary)  !important;
-    color:         #fff                 !important;
-    border-radius: var(--hema-radius)   !important;
-    font-weight:   600                  !important;
+.modal-title{font-weight:700 !important;color:var(--text-dark) !important;}
+.modal-footer{border-top:1px solid var(--border-light) !important;padding:14px 24px !important;}
+.modal-body{padding:22px 24px !important;}
+
+/* ─── 14. SWEETALERT ──────────────────────────────────────── */
+.swal2-popup{
+  font-family:"Urbanist",sans-serif !important;
+  border-radius:calc(var(--radius)*2) !important;
+  padding:2rem !important;
 }
-.swal2-cancel {
-    background:    #f5f5f5              !important;
-    border-color:  #ddd                 !important;
-    color:         var(--hema-text-dark) !important;
-    border-radius: var(--hema-radius)   !important;
+.swal2-title,.swal2-html-container{font-family:"Urbanist",sans-serif !important;}
+.swal2-confirm{
+  background:var(--hema-gradient) !important;
+  border-color:var(--hema-primary) !important;
+  color:#fff !important;
+  border-radius:var(--radius-sm) !important;
+  font-weight:600 !important;
+  padding:10px 28px !important;
 }
-
-/* ─────────────────────────────────────────────────────────────
-   14. UTILITY CLASSES
-   ─────────────────────────────────────────────────────────────
-   Shared between admin blade templates.
-   Named to match Tailwind conventions where possible.
-   ───────────────────────────────────────────────────────────── */
-
-/* Font weights */
-.fw-400 { font-weight: 400 !important; }
-.fw-500 { font-weight: 500 !important; }
-.fw-600 { font-weight: 600 !important; }
-.fw-700 { font-weight: 700 !important; }
-
-/* Brand text colours */
-.text-primary-brand  { color: var(--hema-primary)      !important; }
-.text-secondary-brand{ color: var(--hema-secondary)    !important; }
-.text-muted-brand    { color: var(--hema-text-muted)   !important; }
-.text-dark-brand     { color: var(--hema-text-dark)    !important; }
-
-/* Brand background tints */
-.bg-primary-subtle   { background-color: var(--hema-primary-subtle) !important; }
-.bg-brand-light      { background-color: #faf0ea                    !important; }
-
-/* Border */
-.border-brand        { border-color: var(--hema-border) !important; }
-
-/* Gap utility for older Bootstrap 4 grids */
-.gap-2 { gap: 0.5rem  !important; }
-.gap-3 { gap: 0.75rem !important; }
-
-/* ─────────────────────────────────────────────────────────────
-   15. BOOTSTRAP LEAK GUARD
-   ─────────────────────────────────────────────────────────────
-   Neutralise default Bootstrap-4 blue (#007bff) that can bleed
-   through on focus rings, active links, and certain components.
-   ───────────────────────────────────────────────────────────── */
-
-/* Focus ring — replace blue with brand warm brown */
-*:focus { outline-color: var(--hema-primary) !important; }
-.form-control:focus { box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.18) !important; }
-
-/* Bootstrap .text-primary utility → brand primary */
-.text-primary { color: var(--hema-primary) !important; }
-
-/* Bootstrap .bg-primary → brand gradient */
-.bg-primary { background: var(--hema-gradient) !important; }
-
-/* Bootstrap link-primary colour */
-.link-primary { color: var(--hema-primary) !important; }
-
-/* Page-header "Add" / action button — override any default .btn-primary blue */
-.page-header a.btn,
-.page-header button.btn {
-    font-weight: 600 !important;
+.swal2-cancel{
+  background:#f5f5f5 !important;border-color:#ddd !important;
+  color:var(--text-body) !important;
+  border-radius:var(--radius-sm) !important;
 }
 
-/* Modal header */
-.modal-header {
-    border-bottom:  1px solid var(--hema-border) !important;
-    background:     var(--hema-card-bg)          !important;
+/* ─── 15. NAV TABS ────────────────────────────────────────── */
+.nav-tabs .nav-link.active{
+  color:var(--hema-primary) !important;
+  border-color:var(--border) var(--border) #fff !important;
+  font-weight:700 !important;
 }
-.modal-content {
-    border-radius:  calc(var(--hema-radius) * 1.5) !important;
-    border:         1px solid var(--hema-border)   !important;
-    box-shadow:     var(--hema-shadow-lg)           !important;
-}
-.modal-footer { border-top: 1px solid var(--hema-border) !important; }
-
-/* Nav-tabs (used in some detail pages) */
-.nav-tabs .nav-link.active {
-    color:        var(--hema-primary) !important;
-    border-color: var(--hema-border) var(--hema-border) #fff !important;
-    font-weight:  600 !important;
-}
-.nav-tabs .nav-link:hover {
-    color:        var(--hema-primary) !important;
-    border-color: var(--hema-border) var(--hema-border) transparent !important;
+.nav-tabs .nav-link:hover{
+  color:var(--hema-primary) !important;
+  border-color:var(--border) var(--border) transparent !important;
 }
 
-/* Pagination (outside DataTables) */
-.page-item.active .page-link {
-    background:   var(--hema-primary) !important;
-    border-color: var(--hema-primary) !important;
+/* ─── 16. PAGINATION ──────────────────────────────────────── */
+.page-item.active .page-link{
+  background:var(--hema-primary) !important;border-color:var(--hema-primary) !important;
 }
-.page-link {
-    color:         var(--hema-primary) !important;
-    border-color:  var(--hema-border)  !important;
-    border-radius: var(--hema-radius)  !important;
+.page-link{
+  color:var(--hema-primary) !important;border-color:var(--border) !important;
+  border-radius:var(--radius-sm) !important;font-size:13px !important;
 }
-.page-link:hover {
-    background:   #f3ede9              !important;
-    color:        var(--hema-primary)  !important;
+.page-link:hover{background:#f3ede9 !important;color:var(--hema-primary) !important;}
+
+/* ─── 17. BOOTSTRAP LEAK GUARD ────────────────────────────── */
+*:focus{outline-color:var(--hema-primary) !important;}
+.form-control:focus{box-shadow:0 0 0 3px rgba(177,116,87,.14) !important;}
+.text-primary{color:var(--hema-primary) !important;}
+.bg-primary{background:var(--hema-gradient) !important;}
+.link-primary{color:var(--hema-primary) !important;}
+
+/* ─── 18. UTILITIES ───────────────────────────────────────── */
+.fw-400{font-weight:400 !important;}
+.fw-500{font-weight:500 !important;}
+.fw-600{font-weight:600 !important;}
+.fw-700{font-weight:700 !important;}
+.fw-800{font-weight:800 !important;}
+.text-brand{color:var(--hema-primary) !important;}
+.text-muted-brand{color:var(--text-muted) !important;}
+.bg-brand-subtle{background:rgba(177,116,87,.08) !important;}
+.bg-brand-light{background:#faf0ea !important;}
+.border-brand{border-color:var(--border) !important;}
+.rounded-brand{border-radius:var(--radius) !important;}
+.gap-2{gap:.5rem !important;}
+.gap-3{gap:.75rem !important;}
+.gap-4{gap:1rem !important;}
+
+/* ─── 19. SCROLLBAR ───────────────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--page-bg);}
+::-webkit-scrollbar-thumb{background:var(--hema-primary-light);border-radius:10px;}
+::-webkit-scrollbar-thumb:hover{background:var(--hema-primary);}
+
+/* ─── 20. RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:991px){
+  .sidebar{background:var(--sidebar-bg) !important;}
+  .stat-card .stat-value{font-size:20px;}
+  .stat-card .stat-icon{width:40px;height:40px;}
 }
-
-
-/* ─────────────────────────────────────────────────────────────
-   16. CUSTOM SCROLLBAR (webkit)
-   ───────────────────────────────────────────────────────────── */
-::-webkit-scrollbar          { width: 5px; height: 5px; }
-::-webkit-scrollbar-track    { background: var(--hema-bg); }
-::-webkit-scrollbar-thumb    { background: var(--hema-primary-light); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--hema-primary); }
-
-/* ─────────────────────────────────────────────────────────────
-   17. RESPONSIVE
-   ───────────────────────────────────────────────────────────── */
-@media (max-width: 991px) {
-    .sidebar { background: var(--hema-sidebar-bg) !important; }
-
-    /* Compact stat cards on mobile */
-    .stat-card .stat-value { font-size: 18px; }
-    .stat-card .stat-icon  { width: 38px; height: 38px; }
-}
-
-@media (max-width: 575px) {
-    /* Page title sizing */
-    .page-title h4 { font-size: 16px !important; }
-
-    /* Shortcut cards: smaller text on xs */
-    .shortcut-card .shortcut-label { font-size: 11px; }
+@media(max-width:575px){
+  .page-title h4{font-size:17px !important;}
+  .content{padding:16px !important;}
+  .shortcut-card .shortcut-label{font-size:11.5px;}
 }
