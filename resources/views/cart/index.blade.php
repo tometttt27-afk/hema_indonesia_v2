@@ -103,11 +103,10 @@
                             <span>Total</span>
                             <span class="text-primary">Rp. {{ number_format($total, 0, ',', '.') }}</span>
                         </div>
-                        <button type="button" disabled
-                            class="w-full mt-6 bg-gradient-to-r from-primary to-secondary text-white text-sm font-medium rounded-sm py-[10px] opacity-60 cursor-not-allowed">
-                            Checkout (Segera Hadir)
-                        </button>
-                        <p class="text-[11px] text-gray-400 text-center mt-2">Fitur checkout akan tersedia pada Tahap 3.</p>
+                        <a href="{{ url('/checkout') }}"
+                            class="block text-center w-full mt-6 bg-gradient-to-r from-primary to-secondary text-white text-sm font-medium rounded-sm py-[10px] hover:opacity-90">
+                            Lanjut ke Checkout
+                        </a>
                     </div>
                 </div>
             </div>

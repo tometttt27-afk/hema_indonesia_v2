@@ -264,13 +264,9 @@
                         <li class="submenu">
                             <a href="javascript:void(0);"><img src="{{ asset('admin/img/icons/sales1.svg') }}"
                                     alt="img"><span>
-                                    Sales</span> <span class="menu-arrow"></span></a>
+                                    Pesanan</span> <span class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="saleslist.html">Sales List</a></li>
-                                <li><a href="pos.html">POS</a></li>
-                                <li><a href="pos.html">New Sales</a></li>
-                                <li><a href="salesreturnlists.html">Sales Return List</a></li>
-                                <li><a href="createsalesreturns.html">New Sales Return</a></li>
+                                <li><a href="{{ url('/order-list') }}">Data Pesanan</a></li>
                             </ul>
                         </li>
                         <li class="submenu">

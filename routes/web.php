@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\MainAdminController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WishlistController;
@@ -47,6 +49,11 @@ Route::middleware('auth')->group(function () {
         // About / Profil Perusahaan (singleton)
         Route::get('/about-company', [DataMasterController::class, 'aboutCompanyIndex']);
         Route::put('/about-company', [DataMasterController::class, 'aboutCompanyUpdate'])->name('aboutCompanyPut');
+
+        // Manajemen Pesanan
+        Route::get('/order-list', [AdminOrderController::class, 'index']);
+        Route::get('/order-list/{id}', [AdminOrderController::class, 'show']);
+        Route::put('/order-list/{id}/status', [AdminOrderController::class, 'updateStatus'])->name('orderStatusPut');
         Route::get('/categories', [ProductsController::class, 'categoriesIndex']);
         Route::prefix('categories')->group(function () {
             Route::get('/add-categories', [ProductsController::class, 'categoriesAdd']);
@@ -103,5 +110,13 @@ Route::middleware('auth')->group(function () {
         Route::put('/cart/{key}', [CartController::class, 'update'])->name('cartUpdate');
         Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cartClear');
         Route::delete('/cart/{key}', [CartController::class, 'remove'])->name('cartRemove');
+
+        // Checkout & Pesanan Saya
+        Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+        Route::post('/checkout', [OrderController::class, 'store'])->name('orderStore');
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+        Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orderShow');
+        Route::put('/orders/{id}/cancel', [OrderController::class, 'cancel'])->name('orderCancel');
+        Route::put('/orders/{id}/complete', [OrderController::class, 'complete'])->name('orderComplete');
     });
 });
