@@ -146,8 +146,6 @@ class DataMasterController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . $data->id,
-            'password' => 'nullable|min:8',
-            'profile_img' => 'image|mimes:jpeg,png,jpg|max:1024',
         ], [
             'first_name.required' => 'Input first name harus diisi',
             'first_name.string' => 'Input first name harus diisi dengan string',
@@ -156,32 +154,21 @@ class DataMasterController extends Controller
             'email.required' => 'Input email harus diisi',
             'email.email' => 'Input email harus diisi format @',
             'email.unique' => 'Email tersebut sudah tersedia',
-            'password.min' => 'Input password minimal 8 karakter',
-            'profile_img.image' => 'File harus berupa gambar.',
-            'profile_img.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
-            'profile_img.max' => 'Ukuran gambar maksimal 1MB.',
         ]);
 
         if ($validator->fails()) return redirect('/customer/edit-customer/' . $data->email)->withErrors($validator)->withInput();
 
-        $nama_profile = $data->profile_img;
-        if ($request->hasFile('profile_img')) {
-            $file = $request->file('profile_img');
-            $nama_profile = 'profile_' . uniqid() . '_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
-            $file->move('uploads/profile', $nama_profile);
-        }
-
+        // Password dan foto profil TIDAK diubah oleh admin —
+        // hanya bisa diubah oleh customer sendiri lewat halaman profil.
         $data->update([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->filled('email') ? $request->input('email') : $data->email,
-            'password' => $request->filled('password') ? Hash::make($request->password) : $data->password,
             'no_telp' => $request->no_telp,
             'gender' => $request->gender,
             'age' => $request->age,
             'address' => $request->address,
             'status' => $request->status,
-            'profile_img' => $nama_profile,
         ]);
 
         return redirect('/customer')->with('success', 'Ubah data pelanggan berhasil');
