@@ -36,12 +36,18 @@
                         <td>
                             <div class="d-flex gap-2">
                                 <a href="{{ url('/faq-company/edit-faq-company/'.strtolower($faq->code_faq)) }}" class="btn btn-sm btn-secondary"><i class="bi bi-pencil"></i></a>
-                                <form action="{{ route('faqCompanyDelete',strtolower($faq->code_faq)) }}" method="post">
+                                <button type="button"
+                                        class="btn btn-sm btn-soft-danger btn-delete"
+                                        data-form="form-del-faq-{{ $faq->code_faq }}"
+                                        data-name="{{ Str::limit($faq->title, 40) }}"
+                                        data-type="FAQ"
+                                        title="Hapus">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <form id="form-del-faq-{{ $faq->code_faq }}"
+                                      action="{{ route('faqCompanyDelete', strtolower($faq->code_faq)) }}"
+                                      method="post" class="d-none">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-sm confirm-text" type="submit"
-                                        style="background:#fef2f2;border:1px solid #fecaca;color:#ef4444;border-radius:5px;padding:5px 10px;">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
                             </div>
                         </td>

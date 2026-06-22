@@ -50,12 +50,18 @@
                             <div class="d-flex gap-2">
                                 <a href="{{ url('/gallery-company/edit-gallery-company/'.strtolower($gallery->code_gallery)) }}"
                                     class="btn btn-sm btn-secondary"><i class="bi bi-pencil"></i></a>
-                                <form action="{{ route('galleryCompanyDelete',strtolower($gallery->code_gallery)) }}" method="post">
+                                <button type="button"
+                                        class="btn btn-sm btn-soft-danger btn-delete"
+                                        data-form="form-del-gal-{{ $gallery->code_gallery }}"
+                                        data-name="{{ $gallery->title }}"
+                                        data-type="Galeri"
+                                        title="Hapus">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <form id="form-del-gal-{{ $gallery->code_gallery }}"
+                                      action="{{ route('galleryCompanyDelete', strtolower($gallery->code_gallery)) }}"
+                                      method="post" class="d-none">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-sm confirm-text" type="submit"
-                                        style="background:#fef2f2;border:1px solid #fecaca;color:#ef4444;border-radius:5px;padding:5px 10px;">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
                             </div>
                         </td>

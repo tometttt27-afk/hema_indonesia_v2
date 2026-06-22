@@ -211,15 +211,20 @@
                                    class="btn btn-sm btn-secondary" title="Edit produk">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <form action="{{ route('productsListDelete', strtolower($product->code_product)) }}"
-                                      method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="btn btn-sm btn-soft-danger confirm-text"
-                                            title="Hapus produk">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+
+                                {{-- Tombol hapus → trigger SweetAlert konfirmasi --}}
+                                <button type="button"
+                                        class="btn btn-sm btn-soft-danger btn-delete"
+                                        data-form="form-del-prod-{{ $product->code_product }}"
+                                        data-name="{{ $product->name }}"
+                                        data-type="Produk"
+                                        title="Hapus produk">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <form id="form-del-prod-{{ $product->code_product }}"
+                                      action="{{ route('productsListDelete', strtolower($product->code_product)) }}"
+                                      method="POST" class="d-none">
+                                    @csrf @method('DELETE')
                                 </form>
                             </div>
                         </td>

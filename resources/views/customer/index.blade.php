@@ -49,12 +49,18 @@
                             <div class="d-flex gap-2">
                                 <a href="{{ url('/customer/edit-customer/'.$customer->email) }}"
                                     class="btn btn-sm btn-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
-                                <form action="{{ route('customerDelete',$customer->email) }}" method="post">
+                                <button type="button"
+                                        class="btn btn-sm btn-soft-danger btn-delete"
+                                        data-form="form-del-cust-{{ md5($customer->email) }}"
+                                        data-name="{{ $customer->first_name }} {{ $customer->last_name }}"
+                                        data-type="Pelanggan"
+                                        title="Hapus">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <form id="form-del-cust-{{ md5($customer->email) }}"
+                                      action="{{ route('customerDelete', $customer->email) }}"
+                                      method="post" class="d-none">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-sm confirm-text" type="submit" title="Hapus"
-                                        style="background:#fef2f2;border:1px solid #fecaca;color:#ef4444;border-radius:5px;padding:5px 10px;">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </form>
                             </div>
                         </td>
