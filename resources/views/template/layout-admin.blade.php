@@ -224,8 +224,11 @@
 <script src="{{ asset('admin/plugins/select2/js/custom-select.js') }}"></script>
 <script src="{{ asset('admin/plugins/lightbox/glightbox.min.js') }}"></script>
 <script src="{{ asset('admin/plugins/lightbox/lightbox.js') }}"></script>
-<script src="{{ asset('library/sweetalert/sweetalert2.all.min.js') }}"></script>
-<script src="{{ asset('library/sweetalert/sweetalerts.min.js') }}"></script>
+<script src="{{ asset('library/sweetalert/sweetalert2.min.js') }}"></script>
+{{-- sweetalerts.min.js bawaan template DINONAKTIFKAN karena
+     mendefinisikan ulang handler .confirm-text sendiri dan
+     menginterferensi dengan alert.js kita. --}}
+{{-- <script src="{{ asset('library/sweetalert/sweetalerts.min.js') }}"></script> --}}
 <script src="{{ asset('admin/js/script.js') }}"></script>
 <script src="{{ asset('admin/js/form-input.js') }}"></script>
 <script src="{{ asset('js/alert.js') }}"></script>
