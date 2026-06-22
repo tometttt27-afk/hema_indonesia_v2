@@ -19,7 +19,10 @@ class MainController extends Controller
 
     public function news_email(Request $request)
     {
-        $validator = Validator::make($request->all(), ['email' => 'email'], ['email.email' => 'Input email harus diisi format @']);
+        $validator = Validator::make($request->all(), ['email' => 'required|email'], [
+            'email.required' => 'Input email harus diisi',
+            'email.email' => 'Input email harus diisi format @',
+        ]);
         if ($validator->fails()) return redirect('/')->withErrors($validator)->withInput();
 
         $message = NewsEmail::create(['email' => $request->input('email')]);

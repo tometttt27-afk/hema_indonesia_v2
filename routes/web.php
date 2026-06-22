@@ -48,8 +48,19 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profileUpdate');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profilePasswordUpdate');
 
-    Route::middleware('role:admin')->group(function () {
-        Route::get('/dashboard', [MainAdminController::class, 'index']);
+    // Wishlist
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+    Route::post('/wishlist/{product_id}', [WishlistController::class, 'store'])->name('wishlistStore');
+    Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlistDestroy');
+
+    // Keranjang (cart)
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::post('/cart', [CartController::class, 'store'])->name('cartStore');
+    Route::put('/cart/{key}', [CartController::class, 'update'])->name('cartUpdate');
+    Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cartClear');
+    Route::delete('/cart/{key}', [CartController::class, 'remove'])->name('cartRemove');
+
+    Route::middleware('role:admin')->group(function () {        Route::get('/dashboard', [MainAdminController::class, 'index']);
 
         // About / Profil Perusahaan (singleton)
         Route::get('/about-company', [DataMasterController::class, 'aboutCompanyIndex']);
@@ -105,18 +116,6 @@ Route::middleware('auth')->group(function () {
         });
     });
     Route::middleware('role:customer')->group(function () {
-        // Wishlist
-        Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
-        Route::post('/wishlist/{product_id}', [WishlistController::class, 'store'])->name('wishlistStore');
-        Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlistDestroy');
-
-        // Keranjang (cart)
-        Route::get('/cart', [CartController::class, 'index'])->name('cart');
-        Route::post('/cart', [CartController::class, 'store'])->name('cartStore');
-        Route::put('/cart/{key}', [CartController::class, 'update'])->name('cartUpdate');
-        Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cartClear');
-        Route::delete('/cart/{key}', [CartController::class, 'remove'])->name('cartRemove');
-
         // Checkout & Pesanan Saya
         Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
         Route::post('/checkout', [OrderController::class, 'store'])->name('orderStore');

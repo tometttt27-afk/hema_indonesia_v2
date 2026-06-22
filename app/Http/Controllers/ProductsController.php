@@ -203,14 +203,14 @@ class ProductsController extends Controller
 
         $data->update([
             'name' => $request->name,
-            'code_product' => $request->code_product,
             'description' => $request->description,
             'price' => $price,
             'discount' => $discount,
             'final_price' => $final_price,
             'stock' => $request->stock,
+            'category_id' => $request->category_id,
             'size' => implode(', ', $request->size),
-            'image' => $name_product
+            'image' => $name_product,
         ]);
 
         return redirect('/product-list')->with('success', 'Ubah data produk berhasil');

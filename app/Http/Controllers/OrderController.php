@@ -39,6 +39,7 @@ class OrderController extends Controller
             return redirect('/cart');
         }
 
+        $order = null;
         try {
             $order = DB::transaction(function () use ($cart) {
                 $total = 0;
