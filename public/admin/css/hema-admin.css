@@ -13,14 +13,15 @@
   --hs:        #c29470;   /* secondary */
   --hg:        linear-gradient(135deg,#b17457 0%,#c29470 100%);
 
-  /* ── Sidebar ── nilai STATIS, tidak ada animasi/transisi warna ── */
-  --sb-bg:     #1b1f3b;   /* background tetap — navy gelap */
-  --sb-txt:    #dde3f0;   /* teks menu — off-white, kontras ≥ 7:1 */
-  --sb-lbl:    #5a6080;   /* section label — abu redup */
-  --sb-sub:    #9aa0bb;   /* submenu link */
-  --sb-act-bg: linear-gradient(90deg,#b17457 0%,#c29470 100%); /* item aktif */
-  --sb-act-tx: #ffffff;   /* teks item aktif */
-  --sb-hov-bg: rgba(177,116,87,.20); /* item hover bg */
+  /* ── Sidebar ── nilai STATIS, background coklat permanen ── */
+  --sb-bg:     #6b3a2a;            /* coklat tua — TIDAK PERNAH berubah */
+  --sb-txt:    #ffffff;            /* teks menu — putih penuh, kontras max */
+  --sb-lbl:    rgba(255,255,255,.45); /* section label — putih redup */
+  --sb-sub:    rgba(255,255,255,.72); /* submenu link */
+  --sb-act-bg: #3d1f12;            /* active bg: coklat lebih gelap */
+  --sb-act-tx: #ffffff;            /* teks item aktif — putih */
+  --sb-hov-bg: rgba(0,0,0,.22);    /* hover bg: sedikit lebih gelap */
+  --sb-act-shadow: 0 2px 12px rgba(0,0,0,.45), inset 0 0 0 2px rgba(255,255,255,.15); /* shadow kotak aktif */
 
   /* Topbar & Page */
   --tb-bg:     #ffffff;
@@ -73,9 +74,9 @@ body{
   box-shadow:0 2px 10px rgba(177,116,87,.07) !important;
   height:64px !important;
 }
-/* Logo zone matches sidebar bg — bukan gradient, STATIS */
+/* Logo zone matches sidebar bg coklat — STATIS */
 .header .header-left{
-  background:var(--sb-bg) !important;
+  background:var(--sb-bg) !important;  /* coklat #6b3a2a */
   border-right:none !important;
   width:260px !important;
 }
@@ -167,7 +168,7 @@ body{
 /* ── Section label (menu-title) ──────────────────────────── */
 .sidebar-menu ul li.menu-title,
 .sidebar-menu ul li.menu-title span{
-  color:var(--sb-lbl) !important;
+  color:var(--sb-lbl) !important;          /* rgba white .45 */
   background:transparent !important;
   font-size:10px !important;
   font-weight:800 !important;
@@ -179,7 +180,7 @@ body{
   display:block !important;
 }
 
-/* ── Menu item link — teks KONTRAS terhadap sidebar gelap ── */
+/* ── Menu item link — teks PUTIH TEBAL terhadap sidebar coklat ── */
 /*
   Penting: selector mencakup :link dan :visited agar browser
   tidak menimpa warna dengan "visited link purple".
@@ -191,40 +192,41 @@ body{
   display:flex !important;
   align-items:center !important;
   gap:10px !important;
-  color:var(--sb-txt) !important;        /* #dde3f0 — TINGGI kontras */
-  background:transparent !important;     /* STATIS */
+  color:#ffffff !important;              /* PUTIH TEBAL — kontras max */
+  background:transparent !important;    /* STATIS */
   padding:11px 14px !important;
   margin:2px 12px !important;
   border-radius:var(--r) !important;
   font-size:13.5px !important;
-  font-weight:500 !important;
+  font-weight:700 !important;            /* TEBAL */
   text-decoration:none !important;
   /* hanya color & background yang boleh transisi, BUKAN sidebar bg */
-  transition:color .15s ease, background .15s ease !important;
+  transition:color .15s ease, background .15s ease, box-shadow .15s ease !important;
   position:relative !important;
 }
 
-/* Hover state — bg berubah, sidebar TIDAK berubah */
+/* Hover state — sedikit lebih gelap, sidebar TIDAK berubah */
 .sidebar-menu > ul > li > a:hover{
-  background:var(--sb-hov-bg) !important;  /* rgba warm brown */
+  background:var(--sb-hov-bg) !important;
   color:#ffffff !important;
 }
 
-/* Item aktif */
+/* Item aktif — shadow kotak menonjol, font putih tebal */
 .sidebar-menu > ul > li.active > a,
 .sidebar-menu > ul > li.active > a:link,
 .sidebar-menu > ul > li.active > a:visited,
 .sidebar-menu > ul > li.active > a:hover,
 .sidebar-menu > ul > li.active > a:focus{
-  background:var(--sb-act-bg) !important;
-  color:var(--sb-act-tx) !important;       /* #ffffff */
-  box-shadow:0 3px 12px rgba(177,116,87,.40) !important;
+  background:var(--sb-act-bg) !important; /* coklat lebih gelap */
+  color:#ffffff !important;               /* PUTIH */
+  font-weight:800 !important;             /* ekstra tebal saat aktif */
+  box-shadow:var(--sb-act-shadow) !important; /* shadow kotak menonjol */
 }
 
 /* ── Bootstrap Icons ──────────────────────────────────────── */
 .sidebar-menu > ul > li > a .bi{
   font-size:17px !important;
-  color:var(--sb-txt) !important;    /* #dde3f0 — sama dgn teks */
+  color:#ffffff !important;          /* PUTIH — sama dgn teks */
   flex-shrink:0 !important;
   transition:color .15s ease !important;
 }
@@ -271,24 +273,25 @@ body{
 .sidebar .sub-menu a,
 .sidebar .sub-menu a:link,
 .sidebar .sub-menu a:visited{
-  color:var(--sb-sub) !important;     /* #9aa0bb — kontras ≥ 5:1 */
+  color:var(--sb-sub) !important;     /* rgba white .72 — tetap putih */
   padding:9px 14px 9px 42px !important;
   font-size:13px !important;
-  font-weight:400 !important;
+  font-weight:600 !important;         /* tebal */
   display:block !important;
   text-decoration:none !important;
   transition:color .15s ease, padding-left .15s ease, background .15s ease !important;
 }
 .sidebar .sub-menu a:hover{
-  background:rgba(177,116,87,.16) !important;
-  color:#e8ddd7 !important;            /* lebih terang saat hover */
+  background:rgba(0,0,0,.20) !important;
+  color:#ffffff !important;
   padding-left:48px !important;
 }
 .sidebar .sub-menu li.active > a,
 .sidebar .sub-menu li.active > a:visited{
-  color:var(--hp-lt) !important;       /* #d4a882 — brand accent */
-  font-weight:600 !important;
-  background:rgba(177,116,87,.10) !important;
+  color:#ffffff !important;
+  font-weight:700 !important;
+  background:rgba(0,0,0,.30) !important;
+  box-shadow:inset 3px 0 0 rgba(255,255,255,.6) !important; /* aksen kiri */
 }
 
 /* ── Responsive: sidebar mini/hidden ─────────────────────── */
