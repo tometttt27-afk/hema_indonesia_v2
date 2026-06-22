@@ -1,102 +1,108 @@
 /* ============================================================
-   HEMA INDONESIA — Admin Design System v3
-   DreamsPos-inspired UI · Brand tokens #b17457 / #c29470
-   Font: Urbanist · Framework: Bootstrap 4 (admin template)
+   HEMA INDONESIA — Admin Design System v4
+   Sidebar STATIS (tidak berganti warna), kontras tombol tinggi
+   Brand: #b17457 primary / #c29470 secondary / Urbanist font
    ============================================================ */
 
-/* ─── 1. DESIGN TOKENS ────────────────────────────────────── */
+/* ═══ 1. DESIGN TOKENS ═══════════════════════════════════════ */
 :root {
-  --hema-primary:        #b17457;
-  --hema-primary-dark:   #96603f;
-  --hema-primary-light:  #d4a882;
-  --hema-primary-subtle: rgba(177,116,87,.10);
-  --hema-secondary:      #c29470;
-  --hema-gradient:       linear-gradient(135deg,#b17457 0%,#c29470 100%);
+  /* Brand */
+  --hp:        #b17457;   /* hema-primary */
+  --hp-dk:     #8a5538;   /* dark */
+  --hp-lt:     #d4a882;   /* light */
+  --hs:        #c29470;   /* secondary */
+  --hg:        linear-gradient(135deg,#b17457 0%,#c29470 100%);
 
-  --sidebar-bg:          #1a1a2e;
-  --sidebar-surface:     #232340;
-  --sidebar-active:      linear-gradient(135deg,#b17457 0%,#c29470 100%);
-  /* Kontras tinggi: teks putih solid, WCAG AA ≥ 4.5:1 pada bg #1a1a2e */
-  --sidebar-text:        #e8ddd7;
-  --sidebar-text-hover:  #ffffff;
-  --sidebar-text-muted:  #8a8aaa;
-  --sidebar-text-label:  #6a6a8a;
+  /* ── Sidebar ── nilai STATIS, tidak ada animasi/transisi warna ── */
+  --sb-bg:     #1b1f3b;   /* background tetap — navy gelap */
+  --sb-txt:    #dde3f0;   /* teks menu — off-white, kontras ≥ 7:1 */
+  --sb-lbl:    #5a6080;   /* section label — abu redup */
+  --sb-sub:    #9aa0bb;   /* submenu link */
+  --sb-act-bg: linear-gradient(90deg,#b17457 0%,#c29470 100%); /* item aktif */
+  --sb-act-tx: #ffffff;   /* teks item aktif */
+  --sb-hov-bg: rgba(177,116,87,.20); /* item hover bg */
 
-  --topbar-bg:           #ffffff;
-  --topbar-border:       #f0ece8;
-  --page-bg:             #f5f3f0;
-  --card-bg:             #ffffff;
-  --border:              #e8ddd7;
-  --border-light:        #f0ece8;
+  /* Topbar & Page */
+  --tb-bg:     #ffffff;
+  --tb-br:     #f0ece8;
+  --pg-bg:     #f5f3f0;
+  --cd-bg:     #ffffff;
 
-  --text-dark:           #1e1410;
-  --text-body:           #3d2e26;
-  --text-muted:          #7a6255;
-  --text-light:          #a89080;
+  /* Warna konten */
+  --tx-dk:     #1e1410;
+  --tx-bd:     #3d2e26;
+  --tx-mt:     #7a6255;
+  --tx-lt:     #a89080;
+  --bd:        #e8ddd7;
+  --bd-lt:     #f0ece8;
 
-  --shadow-xs:  0 1px 3px  rgba(44,20,0,.06);
-  --shadow-sm:  0 2px 8px  rgba(177,116,87,.08);
-  --shadow-md:  0 4px 18px rgba(177,116,87,.13);
-  --shadow-lg:  0 8px 32px rgba(177,116,87,.18);
-  --shadow-sidebar: 3px 0 20px rgba(0,0,0,.22);
+  /* Shadow */
+  --sh-xs: 0 1px 3px  rgba(44,20,0,.06);
+  --sh-sm: 0 2px 8px  rgba(177,116,87,.08);
+  --sh-md: 0 4px 18px rgba(177,116,87,.13);
+  --sh-lg: 0 8px 32px rgba(177,116,87,.18);
+  --sh-sb: 3px 0 20px rgba(0,0,0,.25);
 
-  --radius:      8px;
-  --radius-sm:   5px;
-  --radius-pill: 50px;
-  --radius-full: 9999px;
+  /* Shape */
+  --r:    8px;
+  --r-sm: 5px;
+  --r-pl: 50px;
+  --r-fu: 9999px;
 }
 
-/* ─── 2. GLOBAL RESET & FONT ──────────────────────────────── */
+/* ═══ 2. GLOBAL RESET & FONT ═════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box}
-body,h1,h2,h3,h4,h5,h6,p,a,span,label,input,select,textarea,
-button,.btn,.card,.modal-title,.modal-body,.dropdown-item,
-table,td,th,.page-title,.sidebar,.header{
+body,h1,h2,h3,h4,h5,h6,p,a,span,label,
+input,select,textarea,button,
+.btn,.card,.modal-title,.modal-body,
+.dropdown-item,table,td,th,
+.page-title,.sidebar,.header{
   font-family:"Urbanist",sans-serif !important;
 }
 body{
-  background:var(--page-bg) !important;
-  color:var(--text-body) !important;
+  background:var(--pg-bg) !important;
+  color:var(--tx-bd) !important;
   font-size:14px !important;
   line-height:1.6 !important;
 }
 
-/* ─── 3. TOPBAR / HEADER ──────────────────────────────────── */
+/* ═══ 3. TOPBAR ══════════════════════════════════════════════ */
 .header{
-  background:var(--topbar-bg) !important;
-  border-bottom:1.5px solid var(--topbar-border) !important;
-  box-shadow:0 2px 12px rgba(177,116,87,.07) !important;
+  background:var(--tb-bg) !important;
+  border-bottom:1.5px solid var(--tb-br) !important;
+  box-shadow:0 2px 10px rgba(177,116,87,.07) !important;
   height:64px !important;
 }
+/* Logo zone matches sidebar bg — bukan gradient, STATIS */
 .header .header-left{
-  background:var(--sidebar-bg) !important;
+  background:var(--sb-bg) !important;
   border-right:none !important;
   width:260px !important;
 }
 .header .header-left .logo img,
 .header .header-left .logo-small img{
-  filter:brightness(0) invert(1);
+  filter:brightness(0) invert(1) !important;
 }
-.bar-icon span{background:var(--hema-primary) !important;}
-#toggle_btn:hover{color:var(--hema-primary) !important;}
+.bar-icon span{background:var(--hp) !important;}
+#toggle_btn:hover{color:var(--hp) !important;}
 
 /* Search */
 .top-nav-search .searchinputs input{
-  border:1.5px solid var(--border) !important;
-  border-radius:var(--radius) !important;
+  border:1.5px solid var(--bd) !important;
+  border-radius:var(--r) !important;
   background:#faf8f6 !important;
-  color:var(--text-dark) !important;
+  color:var(--tx-dk) !important;
   font-size:13px !important;
 }
 .top-nav-search .searchinputs input:focus{
-  border-color:var(--hema-primary) !important;
-  box-shadow:0 0 0 3px rgba(177,116,87,.12) !important;
+  border-color:var(--hp) !important;
+  box-shadow:0 0 0 3px rgba(177,116,87,.14) !important;
 }
-
-/* User avatar */
+/* Avatar */
 .user-img img{
   width:36px !important;height:36px !important;
-  border-radius:var(--radius-full) !important;
-  border:2px solid var(--border) !important;
+  border-radius:var(--r-fu) !important;
+  border:2px solid var(--bd) !important;
   object-fit:cover !important;
 }
 .status.online{
@@ -104,50 +110,65 @@ body{
   border:2px solid #fff !important;
   width:9px !important;height:9px !important;
 }
-
 /* Profile dropdown */
 .menu-drop-user{
-  border:1px solid var(--border-light) !important;
-  border-radius:var(--radius) !important;
-  box-shadow:var(--shadow-lg) !important;
+  border:1px solid var(--bd-lt) !important;
+  border-radius:var(--r) !important;
+  box-shadow:var(--sh-lg) !important;
   min-width:220px !important;
   padding:8px 0 !important;
 }
 .menu-drop-user .dropdown-item{
   padding:9px 18px !important;
   font-size:13.5px !important;
-  color:var(--text-body) !important;
-  border-radius:0 !important;
+  color:var(--tx-bd) !important;
 }
 .menu-drop-user .dropdown-item:hover{
   background:#faf0ea !important;
-  color:var(--hema-primary) !important;
+  color:var(--hp) !important;
 }
 .menu-drop-user .dropdown-item.logout:hover{
-  background:#fdf2f2 !important;color:#ef4444 !important;
+  background:#fef2f2 !important;
+  color:#ef4444 !important;
 }
-.profilesets h6{color:var(--text-dark);font-weight:600;font-size:13.5px !important;}
-.profilesets h5{color:var(--text-muted);font-size:11.5px !important;text-transform:capitalize !important;}
+.profilesets h6{color:var(--tx-dk);font-weight:600;font-size:13.5px !important;}
+.profilesets h5{color:var(--tx-mt);font-size:11.5px !important;text-transform:capitalize !important;}
 
-/* ─── 4. SIDEBAR ──────────────────────────────────────────── */
-.sidebar{
-  background:var(--sidebar-bg) !important;
+/* ═══ 4. SIDEBAR — SEPENUHNYA STATIS ════════════════════════
+   ATURAN:
+   • background: var(--sb-bg) = #1b1f3b — TIDAK PERNAH berubah
+   • TIDAK ADA keyframe / @keyframes / animation pada elemen sidebar
+   • TIDAK ADA transition pada background sidebar itu sendiri
+   • Teks dan icon: var(--sb-txt) = #dde3f0 (kontras ≥ 7:1 pada #1b1f3b)
+   • Hover: hanya background item, bukan background sidebar
+   • Section label (menu-title): warna tersendiri, bukan link
+   ════════════════════════════════════════════════════════════ */
+
+/* Container sidebar — background STATIS, no animation */
+.sidebar,
+.sidebar-inner,
+#sidebar{
+  background:var(--sb-bg) !important;
   border-right:none !important;
-  box-shadow:var(--shadow-sidebar) !important;
+  box-shadow:var(--sh-sb) !important;
   width:260px !important;
+  animation:none !important;
+  transition:width .2s ease !important; /* hanya lebar, bukan warna */
 }
-/* brand strip at top */
+/* Brand accent strip — statis, bukan animasi */
 .sidebar::before{
   content:"";
   display:block;
   height:3px;
-  background:var(--hema-gradient);
+  background:var(--hg);
+  animation:none !important;
 }
 
-/* ─── section label (menu-title) ─────────────────────────── */
-/* Diberi warna tersendiri agar tidak disalah-artikan sbg link */
-.sidebar-menu ul li.menu-title{
-  color:var(--sidebar-text-label) !important;
+/* ── Section label (menu-title) ──────────────────────────── */
+.sidebar-menu ul li.menu-title,
+.sidebar-menu ul li.menu-title span{
+  color:var(--sb-lbl) !important;
+  background:transparent !important;
   font-size:10px !important;
   font-weight:800 !important;
   letter-spacing:1.8px !important;
@@ -155,56 +176,57 @@ body{
   padding:20px 24px 6px !important;
   pointer-events:none !important;
   user-select:none !important;
-}
-.sidebar-menu ul li.menu-title span{
-  /* pastikan tidak ikut override global a{color} */
-  color:var(--sidebar-text-label) !important;
+  display:block !important;
 }
 
-/* ─── menu item link ──────────────────────────────────────── */
+/* ── Menu item link — teks KONTRAS terhadap sidebar gelap ── */
 /*
-  Override global link rule (seksi 12) yang menetapkan
-  a { color: var(--hema-primary) !important }
-  sehingga teks menu sidebar tetap kontras tinggi.
+  Penting: selector mencakup :link dan :visited agar browser
+  tidak menimpa warna dengan "visited link purple".
+  Juga menimpa aturan global .page-wrapper a{color:brand}.
 */
 .sidebar-menu > ul > li > a,
-.sidebar-menu > ul > li > a:visited,
-.sidebar-menu > ul > li > a:link{
+.sidebar-menu > ul > li > a:link,
+.sidebar-menu > ul > li > a:visited{
   display:flex !important;
   align-items:center !important;
   gap:10px !important;
-  color:var(--sidebar-text) !important;       /* #e8ddd7 — kontras tinggi */
+  color:var(--sb-txt) !important;        /* #dde3f0 — TINGGI kontras */
+  background:transparent !important;     /* STATIS */
   padding:11px 14px !important;
   margin:2px 12px !important;
-  border-radius:var(--radius) !important;
+  border-radius:var(--r) !important;
   font-size:13.5px !important;
   font-weight:500 !important;
-  transition:background .2s,color .2s,box-shadow .2s !important;
-  position:relative !important;
   text-decoration:none !important;
-}
-.sidebar-menu > ul > li > a:hover{
-  background:rgba(177,116,87,.18) !important;
-  color:var(--sidebar-text-hover) !important;  /* #ffffff */
-}
-.sidebar-menu > ul > li.active > a,
-.sidebar-menu > ul > li.active > a:focus,
-.sidebar-menu > ul > li.active > a:hover{
-  background:var(--sidebar-active) !important;
-  color:#ffffff !important;
-  box-shadow:0 4px 14px rgba(177,116,87,.40) !important;
+  /* hanya color & background yang boleh transisi, BUKAN sidebar bg */
+  transition:color .15s ease, background .15s ease !important;
+  position:relative !important;
 }
 
-/* ─── Bootstrap Icons di dalam menu ──────────────────────── */
-/*
-  Tanpa ini, aturan global "a .bi" akan mengambil warna
-  --hema-primary (cokelat) yang tidak kontras di bg gelap.
-*/
+/* Hover state — bg berubah, sidebar TIDAK berubah */
+.sidebar-menu > ul > li > a:hover{
+  background:var(--sb-hov-bg) !important;  /* rgba warm brown */
+  color:#ffffff !important;
+}
+
+/* Item aktif */
+.sidebar-menu > ul > li.active > a,
+.sidebar-menu > ul > li.active > a:link,
+.sidebar-menu > ul > li.active > a:visited,
+.sidebar-menu > ul > li.active > a:hover,
+.sidebar-menu > ul > li.active > a:focus{
+  background:var(--sb-act-bg) !important;
+  color:var(--sb-act-tx) !important;       /* #ffffff */
+  box-shadow:0 3px 12px rgba(177,116,87,.40) !important;
+}
+
+/* ── Bootstrap Icons ──────────────────────────────────────── */
 .sidebar-menu > ul > li > a .bi{
   font-size:17px !important;
-  color:var(--sidebar-text) !important;       /* #e8ddd7 */
+  color:var(--sb-txt) !important;    /* #dde3f0 — sama dgn teks */
   flex-shrink:0 !important;
-  transition:color .2s !important;
+  transition:color .15s ease !important;
 }
 .sidebar-menu > ul > li > a:hover .bi{
   color:#ffffff !important;
@@ -213,63 +235,73 @@ body{
   color:#ffffff !important;
 }
 
-/* ─── SVG/IMG icons ───────────────────────────────────────── */
+/* ── SVG/IMG icons ──────────────────────────────────────── */
 .sidebar-menu > ul > li > a img{
   width:18px !important;
   height:18px !important;
-  /* invert(.9) → off-white #e6e6e6 agar kontras di #1a1a2e */
-  filter:brightness(0) invert(.90) !important;
+  filter:brightness(0) invert(.88) !important;  /* off-white */
   flex-shrink:0 !important;
+  transition:filter .15s ease !important;
 }
 .sidebar-menu > ul > li > a:hover img,
 .sidebar-menu > ul > li.active > a img{
-  filter:brightness(0) invert(1) !important;  /* full white */
+  filter:brightness(0) invert(1) !important;    /* full white */
 }
 
-/* ─── menu-arrow chevron ──────────────────────────────────── */
+/* ── Menu-arrow chevron ────────────────────────────────────── */
 .menu-arrow{
   margin-left:auto !important;
-  width:16px !important;
-  height:16px !important;
-  background:rgba(255,255,255,.14) !important;
+  width:16px !important;height:16px !important;
+  background:rgba(255,255,255,.12) !important;
   border-radius:3px !important;
 }
 .sidebar-menu > ul > li > a:hover .menu-arrow,
 .sidebar-menu > ul > li.active > a .menu-arrow{
-  background:rgba(255,255,255,.28) !important;
+  background:rgba(255,255,255,.26) !important;
 }
 
-/* ─── submenu panel ───────────────────────────────────────── */
+/* ── Submenu panel ─────────────────────────────────────────── */
 .sidebar .sub-menu{
-  background:rgba(0,0,0,.28) !important;
-  border-radius:0 0 var(--radius) var(--radius) !important;
+  background:rgba(0,0,0,.30) !important;
+  border-radius:0 0 var(--r) var(--r) !important;
   margin:0 12px !important;
   overflow:hidden !important;
 }
+/* Submenu link — lebih redup dari item utama, tetap kontras */
 .sidebar .sub-menu a,
-.sidebar .sub-menu a:visited,
-.sidebar .sub-menu a:link{
-  color:#c8c0bc !important;    /* off-white — beda dari item utama */
+.sidebar .sub-menu a:link,
+.sidebar .sub-menu a:visited{
+  color:var(--sb-sub) !important;     /* #9aa0bb — kontras ≥ 5:1 */
   padding:9px 14px 9px 42px !important;
   font-size:13px !important;
   font-weight:400 !important;
-  transition:color .18s,padding-left .18s,background .18s !important;
   display:block !important;
   text-decoration:none !important;
+  transition:color .15s ease, padding-left .15s ease, background .15s ease !important;
 }
-.sidebar .sub-menu a:hover,
-.sidebar .sub-menu li.active > a{
-  background:rgba(177,116,87,.14) !important;
-  color:#f0e8e4 !important;    /* hampir putih */
+.sidebar .sub-menu a:hover{
+  background:rgba(177,116,87,.16) !important;
+  color:#e8ddd7 !important;            /* lebih terang saat hover */
   padding-left:48px !important;
 }
-.sidebar .sub-menu li.active > a{
-  color:var(--hema-primary-light) !important;  /* #d4a882 — brand accent */
+.sidebar .sub-menu li.active > a,
+.sidebar .sub-menu li.active > a:visited{
+  color:var(--hp-lt) !important;       /* #d4a882 — brand accent */
   font-weight:600 !important;
+  background:rgba(177,116,87,.10) !important;
 }
 
-/* ─── 5. PAGE WRAPPER & HEADER ────────────────────────────── */
-.page-wrapper{background:var(--page-bg) !important;}
+/* ── Responsive: sidebar mini/hidden ─────────────────────── */
+@media (max-width:991px){
+  .sidebar,
+  .sidebar-inner,
+  #sidebar{
+    background:var(--sb-bg) !important; /* tetap statis di mobile */
+  }
+}
+
+/* ═══ 5. PAGE WRAPPER & PAGE HEADER ═════════════════════════ */
+.page-wrapper{background:var(--pg-bg) !important;}
 .content{padding:24px !important;}
 
 .page-header{
@@ -280,136 +312,191 @@ body{
   gap:12px !important;
   margin-bottom:24px !important;
   padding-bottom:18px !important;
-  border-bottom:1.5px solid var(--border-light) !important;
+  border-bottom:1.5px solid var(--bd-lt) !important;
 }
 .page-title h4{
-  color:var(--text-dark) !important;
+  color:var(--tx-dk) !important;
   font-weight:700 !important;
   font-size:20px !important;
   margin-bottom:2px !important;
 }
 .page-title h6{
-  color:var(--text-muted) !important;
+  color:var(--tx-mt) !important;
   font-size:13px !important;
   font-weight:400 !important;
   margin:0 !important;
 }
 
-/* ─── 6. CARDS ────────────────────────────────────────────── */
+/* ═══ 6. CARDS ═══════════════════════════════════════════════ */
 .card{
-  background:var(--card-bg) !important;
-  border:1px solid var(--border-light) !important;
-  border-radius:var(--radius) !important;
-  box-shadow:var(--shadow-xs) !important;
-  transition:box-shadow .22s,transform .22s !important;
+  background:var(--cd-bg) !important;
+  border:1px solid var(--bd-lt) !important;
+  border-radius:var(--r) !important;
+  box-shadow:var(--sh-xs) !important;
+  transition:box-shadow .2s,transform .2s !important;
   margin-bottom:24px !important;
 }
 .card:hover{
-  box-shadow:var(--shadow-sm) !important;
+  box-shadow:var(--sh-sm) !important;
   transform:translateY(-1px);
 }
 .card-header{
   background:transparent !important;
-  border-bottom:1px solid var(--border-light) !important;
+  border-bottom:1px solid var(--bd-lt) !important;
   padding:16px 20px !important;
   display:flex !important;
   align-items:center !important;
   justify-content:space-between !important;
+  gap:8px !important;
 }
 .card-title{
-  color:var(--text-dark) !important;
+  color:var(--tx-dk) !important;
   font-weight:700 !important;
   font-size:15px !important;
   margin:0 !important;
 }
 .card-body{padding:20px !important;}
 
-/* stat card */
+/* Stat cards */
 .stat-card{border-left-width:4px !important;border-left-style:solid !important;}
 .stat-card .stat-icon{
-  width:48px;height:48px;border-radius:var(--radius-full);
+  width:48px;height:48px;border-radius:var(--r-fu);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-.stat-card .stat-value{font-size:24px;font-weight:800;line-height:1.2;}
-.stat-card .stat-label{font-size:12px;color:var(--text-muted);margin:0;}
+.card-header-icon{color:var(--hp);}
+.stock-safe-icon{color:var(--hp);opacity:.42;}
 
-/* shortcut card */
-.shortcut-card{
-  color:var(--text-dark) !important;
-  text-decoration:none !important;
-  text-align:center;
-}
-.shortcut-card .shortcut-icon{
-  color:var(--hema-primary);font-size:2rem;
-  margin-bottom:.5rem;display:block;
-  transition:color .2s,transform .2s;
-}
-.shortcut-card:hover .shortcut-icon{
-  color:var(--hema-primary-dark);transform:scale(1.12);
-}
-.shortcut-card .shortcut-label{
-  font-size:13px;font-weight:600;color:var(--text-dark);margin:0;
-}
-.card-header-icon{color:var(--hema-primary);}
-.stock-safe-icon{color:var(--hema-primary);opacity:.45;}
-
-/* ─── 7. BUTTONS ──────────────────────────────────────────── */
+/* ═══ 7. BUTTONS — KONTRAS TINGGI ════════════════════════════
+   ATURAN AKSESIBILITAS:
+   • Background gelap / berwarna  → teks #ffffff (putih)
+   • Background terang (f3ede9)   → teks brand-primary #8a5538 (gelap)
+   • Background abu-abu (f5f5f5)  → teks tx-body #3d2e26 (gelap)
+   • Minimal kontras rasio 4.5:1 (WCAG AA)
+   ════════════════════════════════════════════════════════════ */
 .btn{
-  border-radius:var(--radius-sm) !important;
-  font-weight:600 !important;
+  border-radius:var(--r-sm) !important;
+  font-weight:700 !important;
   font-size:13.5px !important;
   padding:9px 20px !important;
-  transition:opacity .2s,box-shadow .2s,transform .15s !important;
+  line-height:1.4 !important;
   display:inline-flex !important;
   align-items:center !important;
+  justify-content:center !important;
   gap:6px !important;
+  text-decoration:none !important;
+  border-width:1.5px !important;
+  border-style:solid !important;
+  transition:opacity .15s ease, box-shadow .15s ease, transform .12s ease !important;
+  cursor:pointer !important;
+  white-space:nowrap !important;
 }
-.btn:active{transform:translateY(1px);}
-.btn-primary,.btn-submit,.btn-added{
-  background:var(--hema-gradient) !important;
-  border-color:var(--hema-primary) !important;
-  color:#fff !important;
-  box-shadow:0 3px 10px rgba(177,116,87,.28) !important;
+.btn:active{transform:translateY(1px) !important;}
+
+/* PRIMARY — bg gradient gelap → teks PUTIH */
+.btn-primary,
+.btn-submit,
+.btn-added{
+  background:var(--hg) !important;
+  border-color:var(--hp) !important;
+  color:#ffffff !important;             /* PUTIH — kontras ≥ 5.2:1 */
+  box-shadow:0 3px 10px rgba(177,116,87,.30) !important;
 }
-.btn-primary:hover,.btn-submit:hover,.btn-added:hover{
-  opacity:.88 !important;color:#fff !important;
-  box-shadow:0 5px 16px rgba(177,116,87,.38) !important;
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-submit:hover,
+.btn-added:hover{
+  opacity:.88 !important;
+  color:#ffffff !important;
+  box-shadow:0 5px 16px rgba(177,116,87,.42) !important;
 }
-.btn-primary:focus,.btn-submit:focus,.btn-added:focus{
-  box-shadow:0 0 0 3px rgba(177,116,87,.28) !important;
-}
+
+/* SECONDARY — bg warm-light → teks GELAP #8a5538 (kontras 5.8:1) */
 .btn-secondary{
   background:#f3ede9 !important;
-  border-color:var(--border) !important;
-  color:var(--hema-primary) !important;
+  border-color:#d6c4b8 !important;
+  color:#8a5538 !important;
 }
-.btn-secondary:hover{background:#ecddd5 !important;color:var(--hema-primary-dark) !important;}
-.btn-cancel{
-  background:#f5f5f5 !important;border-color:#ddd !important;
-  color:var(--text-body) !important;
+.btn-secondary:hover{
+  background:#ecddd5 !important;
+  color:#6b3f22 !important;
 }
-.btn-cancel:hover{background:#e8e8e8 !important;}
-.btn-info,.btn-success,.btn-warning,.btn-danger{
-  border-radius:var(--radius-sm) !important;font-weight:600 !important;
-  color:#fff !important;
-}
-/* white text guard */
-.btn,.btn:hover,.btn:focus,
-.btn-primary,.btn-primary:hover,.btn-primary:focus,
-.btn-added,.btn-added:hover,.btn-submit,.btn-submit:hover{
-  color:#fff !important;
-}
-.btn-secondary,.btn-secondary:hover,.btn-cancel,.btn-cancel:hover{
-  color:var(--hema-primary) !important;
-}
-.btn-cancel,.btn-cancel:hover{color:var(--text-body) !important;}
-/* small action buttons */
-.btn-sm{padding:5px 10px !important;font-size:12px !important;}
 
-/* ─── 8. FORMS ────────────────────────────────────────────── */
+/* CANCEL / muted — bg abu → teks GELAP #3d2e26 (kontras 8.2:1) */
+.btn-cancel,
+.btn-default{
+  background:#f0efed !important;
+  border-color:#d5cfc9 !important;
+  color:#3d2e26 !important;
+}
+.btn-cancel:hover{
+  background:#e4e0db !important;
+  color:#1e1410 !important;
+}
+
+/* SUCCESS — bg hijau → teks PUTIH */
+.btn-success{
+  background:#16a34a !important;
+  border-color:#15803d !important;
+  color:#ffffff !important;
+}
+.btn-success:hover{background:#15803d !important;color:#ffffff !important;}
+
+/* DANGER — bg merah → teks PUTIH */
+.btn-danger{
+  background:#dc2626 !important;
+  border-color:#b91c1c !important;
+  color:#ffffff !important;
+}
+.btn-danger:hover{background:#b91c1c !important;color:#ffffff !important;}
+
+/* WARNING — bg kuning → teks GELAP #1e1410 (kontras 9.5:1) */
+.btn-warning{
+  background:#f59e0b !important;
+  border-color:#d97706 !important;
+  color:#1e1410 !important;             /* GELAP — kuning terang */
+}
+.btn-warning:hover{background:#d97706 !important;color:#1e1410 !important;}
+
+/* INFO — bg biru → teks PUTIH */
+.btn-info{
+  background:#0284c7 !important;
+  border-color:#0369a1 !important;
+  color:#ffffff !important;
+}
+.btn-info:hover{background:#0369a1 !important;color:#ffffff !important;}
+
+/* OUTLINE/SOFT DANGER (tombol hapus kecil di tabel) */
+.btn-soft-danger{
+  background:#fef2f2 !important;
+  border-color:#fca5a5 !important;
+  color:#b91c1c !important;             /* GELAP merah — kontras 5.3:1 */
+  font-weight:600 !important;
+}
+.btn-soft-danger:hover{
+  background:#dc2626 !important;
+  border-color:#dc2626 !important;
+  color:#ffffff !important;
+}
+
+/* SIZE VARIANTS */
+.btn-sm{padding:5px 12px !important;font-size:12px !important;gap:4px !important;}
+.btn-lg{padding:12px 28px !important;font-size:15px !important;}
+.btn-icon{padding:6px 8px !important;min-width:34px !important;}
+
+/* Guard: tombol di dalam link jangan ikut aturan link global */
+a.btn,a.btn:hover,a.btn:focus,
+a.btn-primary,a.btn-primary:hover,
+a.btn-secondary,a.btn-secondary:hover,
+a.btn-success,a.btn-success:hover,
+a.btn-danger,a.btn-danger:hover{
+  text-decoration:none !important;
+}
+
+/* ═══ 8. FORMS ═══════════════════════════════════════════════ */
 .form-group{margin-bottom:18px !important;}
-.form-group label,.form-label{
-  color:var(--text-dark) !important;
+.form-group label,
+.form-label{
+  color:var(--tx-dk) !important;
   font-weight:600 !important;
   font-size:13px !important;
   margin-bottom:6px !important;
@@ -417,264 +504,279 @@ body{
 }
 .form-control,
 .form-group input:not([type=checkbox]):not([type=radio]):not([type=file]),
-.form-group select,.form-group textarea{
-  border:1.5px solid var(--border) !important;
-  border-radius:var(--radius-sm) !important;
+.form-group select,
+.form-group textarea{
+  border:1.5px solid var(--bd) !important;
+  border-radius:var(--r-sm) !important;
   font-size:13.5px !important;
-  color:var(--text-dark) !important;
-  background:#fff !important;
+  color:var(--tx-dk) !important;
+  background:#ffffff !important;
   padding:9px 13px !important;
   width:100% !important;
-  transition:border-color .2s,box-shadow .2s !important;
+  transition:border-color .18s, box-shadow .18s !important;
 }
 .form-control:focus,
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus{
-  border-color:var(--hema-primary) !important;
-  box-shadow:0 0 0 3px rgba(177,116,87,.14) !important;
+  border-color:var(--hp) !important;
+  box-shadow:0 0 0 3px rgba(177,116,87,.16) !important;
   outline:none !important;
 }
-.form-group input[type=file]{
-  padding:6px !important;
-  font-size:13px !important;
+/* Readonly/disabled */
+.form-control[readonly],
+input[readonly]{
+  background:#f8f6f3 !important;
+  cursor:not-allowed !important;
+  color:var(--tx-mt) !important;
 }
-/* select2 */
+/* File input */
+.form-group input[type=file]{padding:6px !important;font-size:13px !important;}
+
+/* Select2 */
 .select2-container--default .select2-selection--single{
-  border:1.5px solid var(--border) !important;
-  border-radius:var(--radius-sm) !important;
+  border:1.5px solid var(--bd) !important;
+  border-radius:var(--r-sm) !important;
   height:42px !important;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered{
-  line-height:40px !important;color:var(--text-dark) !important;
+  line-height:40px !important;
+  color:var(--tx-dk) !important;
   padding-left:13px !important;
 }
 .select2-container--default.select2-container--open .select2-selection--single,
 .select2-container--default.select2-container--focus .select2-selection--single{
-  border-color:var(--hema-primary) !important;
-  box-shadow:0 0 0 3px rgba(177,116,87,.14) !important;
+  border-color:var(--hp) !important;
+  box-shadow:0 0 0 3px rgba(177,116,87,.16) !important;
 }
 .select2-container--default .select2-results__option--highlighted{
-  background:var(--hema-primary) !important;color:#fff !important;
+  background:var(--hp) !important;
+  color:#ffffff !important;
 }
-/* image upload area */
+
+/* Image upload zone */
 .image-upload{
-  border:2px dashed var(--border) !important;
-  border-radius:var(--radius) !important;
+  border:2px dashed var(--bd) !important;
+  border-radius:var(--r) !important;
   background:#faf8f6 !important;
   padding:24px !important;
   text-align:center !important;
   cursor:pointer !important;
-  transition:border-color .2s !important;
+  transition:border-color .18s, background .18s !important;
 }
-.image-upload:hover{border-color:var(--hema-primary) !important;}
-.image-uploads h4{font-size:13px !important;color:var(--text-muted) !important;margin-top:8px !important;}
+.image-upload:hover{
+  border-color:var(--hp) !important;
+  background:#fdf5ef !important;
+}
+.image-uploads h4{
+  font-size:13px !important;
+  color:var(--tx-mt) !important;
+  margin-top:8px !important;
+}
 
-/* ─── 9. TABLES ───────────────────────────────────────────── */
+/* ═══ 9. TABLES & DATATABLES ═════════════════════════════════ */
 .table{border-collapse:separate !important;border-spacing:0 !important;}
-.table thead tr{
-  background:#faf0ea !important;
-}
+.table thead tr{background:#faf0ea !important;}
 .table thead th{
-  color:var(--text-dark) !important;
+  color:var(--tx-dk) !important;
   font-weight:700 !important;
-  font-size:11.5px !important;
+  font-size:11px !important;
   text-transform:uppercase !important;
-  letter-spacing:.6px !important;
-  border-bottom:2px solid var(--border) !important;
+  letter-spacing:.7px !important;
+  border-bottom:2px solid var(--bd) !important;
   padding:12px 16px !important;
   white-space:nowrap !important;
 }
 .table td{
   vertical-align:middle !important;
   font-size:13.5px !important;
-  border-color:var(--border-light) !important;
+  border-color:var(--bd-lt) !important;
   padding:12px 16px !important;
+  color:var(--tx-bd) !important;
 }
-.table tbody tr{transition:background .15s !important;}
+.table tbody tr{transition:background .12s !important;}
 .table tbody tr:hover{background:#fdf7f4 !important;}
-/* dataTables */
+
+/* DataTables controls */
 .dataTables_wrapper .dataTables_length select,
 .dataTables_wrapper .dataTables_filter input{
-  border:1.5px solid var(--border) !important;
-  border-radius:var(--radius-sm) !important;
+  border:1.5px solid var(--bd) !important;
+  border-radius:var(--r-sm) !important;
   padding:6px 10px !important;
   font-size:13px !important;
+  color:var(--tx-dk) !important;
 }
 .dataTables_wrapper .dataTables_filter input:focus{
-  border-color:var(--hema-primary) !important;
-  box-shadow:0 0 0 3px rgba(177,116,87,.12) !important;
+  border-color:var(--hp) !important;
+  box-shadow:0 0 0 3px rgba(177,116,87,.14) !important;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button{
-  border-radius:var(--radius-sm) !important;
-  font-size:13px !important;border:1px solid var(--border) !important;
+  border-radius:var(--r-sm) !important;
+  font-size:12.5px !important;
+  border:1px solid var(--bd) !important;
   margin:0 2px !important;
+  color:var(--tx-bd) !important;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
-  background:var(--hema-gradient) !important;
-  border-color:var(--hema-primary) !important;
-  color:#fff !important;
+  background:var(--hg) !important;
+  border-color:var(--hp) !important;
+  color:#ffffff !important;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current){
-  background:#f3ede9 !important;color:var(--hema-primary) !important;
-  border-color:var(--border) !important;
+  background:#f3ede9 !important;
+  color:var(--hp-dk) !important;
+  border-color:var(--bd) !important;
 }
 .dataTables_wrapper .dataTables_info{
-  font-size:12.5px !important;color:var(--text-muted) !important;
+  font-size:12px !important;
+  color:var(--tx-mt) !important;
 }
 
-/* ─── 10. BADGES ──────────────────────────────────────────── */
+/* ═══ 10. BADGES ══════════════════════════════════════════════ */
 .badge{
-  font-weight:600 !important;
-  border-radius:var(--radius-pill) !important;
+  font-weight:700 !important;
+  border-radius:var(--r-pl) !important;
   padding:4px 10px !important;
-  font-size:11.5px !important;
-  letter-spacing:.2px !important;
+  font-size:11px !important;
+  letter-spacing:.3px !important;
+  display:inline-flex !important;
+  align-items:center !important;
 }
-/* brand badge */
+/* Brand badge: bg terang, teks gelap */
 .badge-brand{
   background:#f3ede9 !important;
-  color:var(--hema-primary) !important;
-  border:1px solid var(--border) !important;
+  color:#8a5538 !important;           /* kontras 5.8:1 */
+  border:1px solid var(--bd) !important;
 }
+/* Bootstrap semantic badges — teks PUTIH semua kecuali warning */
+.badge.bg-success{color:#ffffff !important;}
+.badge.bg-danger {color:#ffffff !important;}
+.badge.bg-info   {color:#ffffff !important;}
+.badge.bg-primary{color:#ffffff !important;}
+.badge.bg-secondary{color:#ffffff !important;}
+.badge.bg-warning{color:#1e1410 !important;}    /* kuning → GELAP */
 
-/* ─── 11. ALERTS ──────────────────────────────────────────── */
-.alert{border-radius:var(--radius) !important;font-size:13.5px !important;}
-.alert-success{background:#f0fdf6 !important;border-color:#bbf7d0 !important;color:#166534 !important;}
-.alert-danger {background:#fef2f2 !important;border-color:#fecaca !important;color:#991b1b !important;}
-.alert-warning{background:#fffbeb !important;border-color:#fde68a !important;color:#92400e !important;}
-.alert-info   {background:#eff6ff !important;border-color:#bfdbfe !important;color:#1e40af !important;}
+/* ═══ 11. ALERTS ══════════════════════════════════════════════ */
+.alert{border-radius:var(--r) !important;font-size:13.5px !important;}
+.alert-success{background:#f0fdf6 !important;border-color:#bbf7d0 !important;color:#14532d !important;}
+.alert-danger {background:#fef2f2 !important;border-color:#fecaca !important;color:#7f1d1d !important;}
+.alert-warning{background:#fffbeb !important;border-color:#fde68a !important;color:#78350f !important;}
+.alert-info   {background:#eff6ff !important;border-color:#bfdbfe !important;color:#1e3a5f !important;}
 
-/* ─── 12. LINKS ───────────────────────────────────────────── */
+/* ═══ 12. LINKS — SCOPED (tidak merusak sidebar) ════════════ */
 /*
-  Scoped ke area konten saja — TIDAK berlaku ke .sidebar & .header-left
-  agar warna teks sidebar (seksi 4, kontras tinggi) tidak di-override.
+  Hanya berlaku di area konten (.page-wrapper, .card, .table, .modal).
+  Sidebar & header-left TIDAK tersentuh karena tidak tercakup selector.
 */
-.page-wrapper a,
-.card a,
-.dropdown-menu a,
-.table a,
-.modal a,
-.alert a,
-.breadcrumb a {
-  color:var(--hema-primary) !important;
-  transition:color .18s !important;
+.page-wrapper a:not(.btn),
+.card a:not(.btn),
+.dropdown-menu a:not(.btn),
+.table a:not(.btn),
+.modal a:not(.btn),
+.alert a:not(.btn){
+  color:var(--hp) !important;
+  transition:color .15s !important;
 }
-.page-wrapper a:hover,
-.card a:hover,
-.dropdown-menu a:hover,
-.table a:hover,
-.modal a:hover {
-  color:var(--hema-primary-dark) !important;
+.page-wrapper a:not(.btn):hover,
+.card a:not(.btn):hover,
+.table a:not(.btn):hover{
+  color:var(--hp-dk) !important;
 }
-/* white exceptions — btn & badge selalu putih */
-.btn-primary,.btn-primary:hover,.btn-primary a,
-.btn-added,.btn-added:hover,
-.btn-submit,.btn-submit:hover,
-.btn-info,.btn-success,.btn-danger,
-.badge.bg-success,.badge.bg-danger,.badge.bg-info{
-  color:#fff !important;
-}
-.badge.bg-warning{color:#1e1410 !important;}
-/* user-dropdown tetap gelap */
-.menu-drop-user .dropdown-item{color:var(--text-body) !important;}
+/* Profile dropdown links */
+.menu-drop-user .dropdown-item{color:var(--tx-bd) !important;}
+.menu-drop-user .dropdown-item:hover{color:var(--hp) !important;}
 
-/* ─── 13. MODAL ───────────────────────────────────────────── */
+/* ═══ 13. MODAL ═══════════════════════════════════════════════ */
 .modal-content{
-  border-radius:calc(var(--radius)*1.5) !important;
-  border:1px solid var(--border-light) !important;
-  box-shadow:var(--shadow-lg) !important;
+  border-radius:calc(var(--r)*1.5) !important;
+  border:1px solid var(--bd-lt) !important;
+  box-shadow:var(--sh-lg) !important;
 }
 .modal-header{
-  border-bottom:1px solid var(--border-light) !important;
-  background:var(--card-bg) !important;
-  border-radius:calc(var(--radius)*1.5) calc(var(--radius)*1.5) 0 0 !important;
+  border-bottom:1px solid var(--bd-lt) !important;
+  background:var(--cd-bg) !important;
+  border-radius:calc(var(--r)*1.5) calc(var(--r)*1.5) 0 0 !important;
   padding:18px 24px !important;
 }
-.modal-title{font-weight:700 !important;color:var(--text-dark) !important;}
-.modal-footer{border-top:1px solid var(--border-light) !important;padding:14px 24px !important;}
+.modal-title{font-weight:700 !important;color:var(--tx-dk) !important;}
+.modal-footer{border-top:1px solid var(--bd-lt) !important;padding:14px 24px !important;}
 .modal-body{padding:22px 24px !important;}
 
-/* ─── 14. SWEETALERT ──────────────────────────────────────── */
+/* ═══ 14. SWEETALERT ══════════════════════════════════════════ */
 .swal2-popup{
   font-family:"Urbanist",sans-serif !important;
-  border-radius:calc(var(--radius)*2) !important;
+  border-radius:calc(var(--r)*2) !important;
   padding:2rem !important;
 }
 .swal2-title,.swal2-html-container{font-family:"Urbanist",sans-serif !important;}
 .swal2-confirm{
-  background:var(--hema-gradient) !important;
-  border-color:var(--hema-primary) !important;
-  color:#fff !important;
-  border-radius:var(--radius-sm) !important;
-  font-weight:600 !important;
+  background:var(--hg) !important;
+  border-color:var(--hp) !important;
+  color:#ffffff !important;
+  border-radius:var(--r-sm) !important;
+  font-weight:700 !important;
   padding:10px 28px !important;
 }
 .swal2-cancel{
-  background:#f5f5f5 !important;border-color:#ddd !important;
-  color:var(--text-body) !important;
-  border-radius:var(--radius-sm) !important;
+  background:#f0efed !important;
+  border-color:#d5cfc9 !important;
+  color:var(--tx-bd) !important;
+  border-radius:var(--r-sm) !important;
 }
 
-/* ─── 15. NAV TABS ────────────────────────────────────────── */
-.nav-tabs .nav-link.active{
-  color:var(--hema-primary) !important;
-  border-color:var(--border) var(--border) #fff !important;
-  font-weight:700 !important;
-}
-.nav-tabs .nav-link:hover{
-  color:var(--hema-primary) !important;
-  border-color:var(--border) var(--border) transparent !important;
-}
-
-/* ─── 16. PAGINATION ──────────────────────────────────────── */
+/* ═══ 15. PAGINATION ══════════════════════════════════════════ */
 .page-item.active .page-link{
-  background:var(--hema-primary) !important;border-color:var(--hema-primary) !important;
+  background:var(--hp) !important;
+  border-color:var(--hp) !important;
+  color:#ffffff !important;
 }
 .page-link{
-  color:var(--hema-primary) !important;border-color:var(--border) !important;
-  border-radius:var(--radius-sm) !important;font-size:13px !important;
+  color:var(--hp) !important;
+  border-color:var(--bd) !important;
+  border-radius:var(--r-sm) !important;
+  font-size:13px !important;
 }
-.page-link:hover{background:#f3ede9 !important;color:var(--hema-primary) !important;}
+.page-link:hover{
+  background:#f3ede9 !important;
+  color:var(--hp-dk) !important;
+}
 
-/* ─── 17. BOOTSTRAP LEAK GUARD ────────────────────────────── */
-*:focus{outline-color:var(--hema-primary) !important;}
-.form-control:focus{box-shadow:0 0 0 3px rgba(177,116,87,.14) !important;}
-.text-primary{color:var(--hema-primary) !important;}
-.bg-primary{background:var(--hema-gradient) !important;}
-.link-primary{color:var(--hema-primary) !important;}
+/* ═══ 16. BOOTSTRAP LEAK GUARD ═══════════════════════════════ */
+*:focus{outline-color:var(--hp) !important;}
+.form-control:focus{box-shadow:0 0 0 3px rgba(177,116,87,.16) !important;}
+.text-primary{color:var(--hp) !important;}
+.bg-primary{background:var(--hg) !important;}
+.link-primary{color:var(--hp) !important;}
 
-/* ─── 18. UTILITIES ───────────────────────────────────────── */
+/* ═══ 17. UTILITIES ═══════════════════════════════════════════ */
 .fw-400{font-weight:400 !important;}
 .fw-500{font-weight:500 !important;}
 .fw-600{font-weight:600 !important;}
 .fw-700{font-weight:700 !important;}
 .fw-800{font-weight:800 !important;}
-.text-brand{color:var(--hema-primary) !important;}
-.text-muted-brand{color:var(--text-muted) !important;}
+.text-brand   {color:var(--hp) !important;}
+.text-muted-brand{color:var(--tx-mt) !important;}
 .bg-brand-subtle{background:rgba(177,116,87,.08) !important;}
-.bg-brand-light{background:#faf0ea !important;}
-.border-brand{border-color:var(--border) !important;}
-.rounded-brand{border-radius:var(--radius) !important;}
+.bg-brand-light {background:#faf0ea !important;}
+.border-brand   {border-color:var(--bd) !important;}
+.rounded-brand  {border-radius:var(--r) !important;}
 .gap-2{gap:.5rem !important;}
 .gap-3{gap:.75rem !important;}
 .gap-4{gap:1rem !important;}
 
-/* ─── 19. SCROLLBAR ───────────────────────────────────────── */
+/* ═══ 18. SCROLLBAR ══════════════════════════════════════════ */
 ::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-track{background:var(--page-bg);}
-::-webkit-scrollbar-thumb{background:var(--hema-primary-light);border-radius:10px;}
-::-webkit-scrollbar-thumb:hover{background:var(--hema-primary);}
+::-webkit-scrollbar-track{background:var(--pg-bg);}
+::-webkit-scrollbar-thumb{background:var(--hp-lt);border-radius:10px;}
+::-webkit-scrollbar-thumb:hover{background:var(--hp);}
 
-/* ─── 20. RESPONSIVE ──────────────────────────────────────── */
+/* ═══ 19. RESPONSIVE ═════════════════════════════════════════ */
 @media(max-width:991px){
-  .sidebar{background:var(--sidebar-bg) !important;}
-  .stat-card .stat-value{font-size:20px;}
-  .stat-card .stat-icon{width:40px;height:40px;}
+  /* Sidebar statis di layar kecil */
+  .sidebar,#sidebar,.sidebar-inner{background:var(--sb-bg) !important;}
 }
 @media(max-width:575px){
   .page-title h4{font-size:17px !important;}
   .content{padding:16px !important;}
-  .shortcut-card .shortcut-label{font-size:11.5px;}
 }
