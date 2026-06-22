@@ -92,6 +92,26 @@
                     </form>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-3">Pengiriman & Pembayaran</h5>
+                    <p class="mb-1"><strong>Pembayaran:</strong>
+                        {{ $data->payment_type ? ucfirst(str_replace('_', ' ', $data->payment_type)) : '-' }}</p>
+                    <p class="mb-3"><strong>Dibayar pada:</strong>
+                        {{ $data->paid_at ? $data->paid_at->format('d M Y H:i') : '-' }}</p>
+                    <form action="{{ route('orderTrackingPut', $data->id) }}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label>Nomor Resi</label>
+                            <input type="text" name="tracking_number" value="{{ $data->tracking_number }}"
+                                placeholder="Masukkan no. resi" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2 w-100">Simpan Resi & Tandai Dikirim</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

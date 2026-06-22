@@ -88,6 +88,20 @@
                         <span class="text-primary">Rp. {{ number_format($data->total_price, 0, ',', '.') }}</span>
                     </div>
 
+                    @if ($data->tracking_number)
+                        <div class="mt-4 text-sm bg-[#f5f5f5] rounded p-3">
+                            <span class="text-gray-500">No. Resi:</span>
+                            <span class="font-medium">{{ $data->tracking_number }}</span>
+                        </div>
+                    @endif
+
+                    @if ($data->status === 'pending')
+                        <a href="{{ route('orderPay', $data->id) }}"
+                            class="block text-center w-full mt-6 bg-gradient-to-r from-primary to-secondary text-white text-sm font-medium rounded-sm py-[10px] hover:opacity-90">
+                            <i class="fas fa-credit-card"></i> Bayar Sekarang
+                        </a>
+                    @endif
+
                     @if (in_array($data->status, ['pending', 'paid']))
                         <form action="{{ route('orderCancel', $data->id) }}" method="post" class="mt-6">
                             @csrf

@@ -11,6 +11,15 @@ class OrderModel extends Model
         'user_id',
         'total_price',
         'status',
+        'snap_token',
+        'midtrans_order_id',
+        'payment_type',
+        'paid_at',
+        'tracking_number',
+    ];
+
+    protected $casts = [
+        'paid_at' => 'datetime',
     ];
 
     public function user()

@@ -7,6 +7,7 @@ use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\MainAdminController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WishlistController;
@@ -37,6 +38,10 @@ Route::get('/about', [MainController::class, 'about']);
 Route::get('/gallery', [MainController::class, 'gallery']);
 Route::get('/faq', [MainController::class, 'faq']);
 
+// Midtrans payment callback (publik, tanpa auth/CSRF)
+Route::post('/payment/notification', [PaymentController::class, 'notification'])->name('paymentNotification');
+Route::get('/payment/finish', [PaymentController::class, 'finish'])->name('paymentFinish');
+
 Route::middleware('auth')->group(function () {
     // Profil (admin & customer)
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
@@ -54,6 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/order-list', [AdminOrderController::class, 'index']);
         Route::get('/order-list/{id}', [AdminOrderController::class, 'show']);
         Route::put('/order-list/{id}/status', [AdminOrderController::class, 'updateStatus'])->name('orderStatusPut');
+        Route::put('/order-list/{id}/tracking', [AdminOrderController::class, 'updateTracking'])->name('orderTrackingPut');
         Route::get('/categories', [ProductsController::class, 'categoriesIndex']);
         Route::prefix('categories')->group(function () {
             Route::get('/add-categories', [ProductsController::class, 'categoriesAdd']);
@@ -115,6 +121,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
         Route::post('/checkout', [OrderController::class, 'store'])->name('orderStore');
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+        Route::get('/orders/{id}/pay', [PaymentController::class, 'pay'])->name('orderPay');
         Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orderShow');
         Route::put('/orders/{id}/cancel', [OrderController::class, 'cancel'])->name('orderCancel');
         Route::put('/orders/{id}/complete', [OrderController::class, 'complete'])->name('orderComplete');

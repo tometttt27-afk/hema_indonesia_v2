@@ -54,4 +54,23 @@ class AdminOrderController extends Controller
         $order->update(['status' => $newStatus]);
         return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui');
     }
+
+    public function updateTracking(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'tracking_number' => 'required|string|max:100',
+        ], [
+            'tracking_number.required' => 'Nomor resi harus diisi',
+        ]);
+
+        if ($validator->fails()) return redirect()->back()->withErrors($validator);
+
+        $order = OrderModel::findOrFail($id);
+        $order->update([
+            'tracking_number' => $request->tracking_number,
+            'status' => $order->status === 'paid' ? 'shipped' : $order->status,
+        ]);
+
+        return redirect()->back()->with('success', 'Nomor resi tersimpan & pesanan ditandai dikirim');
+    }
 }
