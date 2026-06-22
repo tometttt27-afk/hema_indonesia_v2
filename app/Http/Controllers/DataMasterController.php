@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutCompanyModel;
 use App\Models\CategoriesModel;
 use App\Models\FaqCompanyModel;
 use App\Models\GalleryModel;
@@ -13,6 +14,65 @@ use Illuminate\Support\Facades\Validator;
 
 class DataMasterController extends Controller
 {
+    public function aboutCompanyIndex()
+    {
+        $data = AboutCompanyModel::first();
+        return view('about_company.index', compact('data'));
+    }
+
+    public function aboutCompanyUpdate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'about_description_company' => 'required',
+            'logo' => 'image|mimes:jpeg,png,jpg|max:1024',
+            'about_img_company' => 'image|mimes:jpeg,png,jpg|max:1024',
+        ], [
+            'name.required' => 'Input nama perusahaan harus diisi',
+            'name.string' => 'Input nama perusahaan harus berupa string',
+            'about_description_company.required' => 'Input deskripsi perusahaan harus diisi',
+            'logo.image' => 'File logo harus berupa gambar.',
+            'logo.mimes' => 'Format logo harus jpeg, png, atau jpg.',
+            'logo.max' => 'Ukuran logo maksimal 1MB.',
+            'about_img_company.image' => 'File gambar harus berupa gambar.',
+            'about_img_company.mimes' => 'Format gambar harus jpeg, png, atau jpg.',
+            'about_img_company.max' => 'Ukuran gambar maksimal 1MB.',
+        ]);
+
+        if ($validator->fails()) return redirect('/about-company')->withErrors($validator)->withInput();
+
+        $data = AboutCompanyModel::first() ?? new AboutCompanyModel();
+
+        $name_logo = $data->logo;
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $name_logo = 'logo_' . uniqid() . '_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $file->move('uploads/about', $name_logo);
+        }
+
+        $name_about_img = $data->about_img_company;
+        if ($request->hasFile('about_img_company')) {
+            $file = $request->file('about_img_company');
+            $name_about_img = 'about_' . uniqid() . '_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $file->move('uploads/about', $name_about_img);
+        }
+
+        $data->fill([
+            'name' => $request->name,
+            'breadcrumb' => $request->breadcrumb,
+            'about_description_company' => $request->about_description_company,
+            'instagram' => $request->instagram,
+            'tiktok' => $request->tiktok,
+            'facebook' => $request->facebook,
+            'youtube' => $request->youtube,
+            'logo' => $name_logo,
+            'about_img_company' => $name_about_img,
+        ]);
+        $data->save();
+
+        return redirect('/about-company')->with('success', 'Data perusahaan berhasil diperbarui');
+    }
+
     public function customerIndex()
     {
         $data = User::where('role', 'customer')->get();

@@ -8,7 +8,7 @@
     <meta name="success" content="{{ session('success') }}">
     <meta name="error" content="{{ session('error') }}">
     <meta name="errors" content='@json($errors->all())'>
-    <title>Sign In | Hema.Indonesia</title>
+    <title>Reset Password | Hema.Indonesia</title>
     {{-- Auth css --}}
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     {{-- Font Urbanist --}}
@@ -29,39 +29,44 @@
                 <span class="text-primary">Hema</span>.Indonesia
             </h1>
             <div class="my-6">
-                <h2 class="font-semibold md:text-xl text-lg">Sign in to your account</h2>
-                <p class="text-gray-500 text-[13.3px] md:text-[14px]">Enter your username and password</p>
+                <h2 class="font-semibold md:text-xl text-lg">Reset your password</h2>
+                <p class="text-gray-500 text-[13.3px] md:text-[14px]">Enter your new password below</p>
             </div>
-            <form action="{{ route('isSignIn') }}" method="post">
+            <form action="{{ route('resetPasswordPost') }}" method="post">
                 @csrf
+                <input type="hidden" name="token" value="{{ $token }}">
                 <div class="form-group mb-4">
                     <label
                         class="label-form block mb-1 text-gray-800 text-[13.5px] md:text-[14.7px] tracking-wider">Email</label>
                     <input type="text"
                         class="inline-block placeholder:text-[13.5px] md:placeholder:text-[14.7px] text-[13.5px] md:text-[14.7px] tracking-wide bg-white border-[1.8px] border-gray-600 w-full py-2.5 px-3 focus:border-primary outline-none rounded-md"
-                        name="email" placeholder="Enter your email" id="email" value="{{ Request::old('email') }}"
-                        autocomplete="off">
+                        name="email" placeholder="Enter your email" id="email"
+                        value="{{ old('email', $email) }}" autocomplete="off">
+                </div>
+                <div class="form-group mb-4 relative">
+                    <label
+                        class="label-form block mb-1 text-gray-800 text-[13.5px] md:text-[14.7px] tracking-wider">New
+                        Password</label>
+                    <input type="password"
+                        class="inline-block placeholder:text-[13.5px] md:placeholder:text-[14.7px] text-[13.5px] md:text-[14.7px] tracking-wide bg-white border-[1.8px] border-gray-600 w-full py-2.5 px-3 focus:border-primary outline-none rounded-md"
+                        name="password" placeholder="Enter your new password" id="password" autocomplete="off">
                 </div>
                 <div class="form-group mb-6 relative">
                     <label
-                        class="label-form block mb-1 text-gray-800 text-[13.5px] md:text-[14.7px] tracking-wider">Password</label>
+                        class="label-form block mb-1 text-gray-800 text-[13.5px] md:text-[14.7px] tracking-wider">Confirm
+                        Password</label>
                     <input type="password"
                         class="inline-block placeholder:text-[13.5px] md:placeholder:text-[14.7px] text-[13.5px] md:text-[14.7px] tracking-wide bg-white border-[1.8px] border-gray-600 w-full py-2.5 px-3 focus:border-primary outline-none rounded-md"
-                        name="password" placeholder="Enter your password" value="{{ Request::old('password') }}"
-                        id="password" autocomplete="off">
-                    <span class="password-icon"><i class="fas fa-eye-slash"></i></span>
-                </div>
-                <div class="text-right mb-4">
-                    <a href="{{ url('auth/forgot-password') }}"
-                        class="text-primary font-medium text-[13.5px] md:text-sm">Forgot password?</a>
+                        name="password_confirmation" placeholder="Confirm your new password" id="password_confirmation"
+                        autocomplete="off">
                 </div>
                 <div class="form-group">
                     <button
                         class="inline-block text-[13.5px] md:text-[14.7px] font-medium tracking-widest text-center rounded-md bg-gradient-to-r from-primary to-secondary text-white py-2.5 px-3 w-full hover:opacity-[90%]"
-                        type="submit">Sign In</button>
+                        type="submit">Reset Password</button>
                 </div>
-                <p class="text-center text-[13.5px] md:text-sm mt-4 text-gray-500">Don't have an account? <a
-                        href="{{ url('auth/sign-up') }}" class="text-primary font-medium">Sign Up</a></p>
+                <p class="text-center text-[13.5px] md:text-sm mt-4 text-gray-500">Back to <a
+                        href="{{ url('auth/sign-in') }}" class="text-primary font-medium">Sign In</a></p>
             </form>
         </main>
     </section>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutCompanyModel;
 use App\Models\FaqCompanyModel;
 use App\Models\GalleryModel;
 use App\Models\NewsEmail;
@@ -30,7 +31,7 @@ class MainController extends Controller
 
     public function about()
     {
-        $data_about = GalleryModel::first();
+        $data_about = AboutCompanyModel::first();
         return view('main.about', compact(['data_about']));
     }
 

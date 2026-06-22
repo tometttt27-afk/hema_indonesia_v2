@@ -6,8 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AuthenticationController extends Controller
 {
@@ -113,5 +115,73 @@ class AuthenticationController extends Controller
             'Pragma' => 'no-cache',
             'Expires' => '0'
         ]);
+    }
+
+    public function forgotPassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function processForgotPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ], [
+            'email.required' => 'Input email harus diisi',
+            'email.email' => 'Input email harus diisi format @',
+        ]);
+
+        if ($validator->fails()) return redirect('/auth/forgot-password')->withErrors($validator)->withInput();
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status === Password::RESET_LINK_SENT) {
+            Session::flash('success', 'Tautan reset password telah dikirim ke email anda');
+            return redirect('/auth/forgot-password');
+        }
+
+        Session::flash('error', 'Email tersebut tidak terdaftar');
+        return redirect('/auth/forgot-password')->withInput();
+    }
+
+    public function resetPassword(Request $request, $token)
+    {
+        return view('auth.reset-password', ['token' => $token, 'email' => $request->query('email')]);
+    }
+
+    public function processResetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ], [
+            'token.required' => 'Token reset tidak valid',
+            'email.required' => 'Input email harus diisi',
+            'email.email' => 'Input email harus diisi format @',
+            'password.required' => 'Input password harus diisi',
+            'password.min' => 'Input password minimal 8 karakter',
+            'password.confirmed' => 'Konfirmasi password tidak cocok',
+        ]);
+
+        if ($validator->fails()) return back()->withErrors($validator)->withInput();
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->setRememberToken(Str::random(60));
+                $user->save();
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            Session::flash('success', 'Password berhasil diubah, silakan sign in');
+            return redirect('/auth/sign-in');
+        }
+
+        Session::flash('error', 'Gagal reset password, token mungkin sudah kadaluarsa');
+        return back()->withInput();
     }
 }

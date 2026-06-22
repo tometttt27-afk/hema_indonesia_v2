@@ -214,7 +214,7 @@
                                 </div>
                             </div>
                             <hr class="m-0">
-                            <a class="dropdown-item" href="profile.html"> <i class="me-2" data-feather="user"></i>
+                            <a class="dropdown-item" href="{{ url('/profile') }}"> <i class="me-2" data-feather="user"></i>
                                 My Profile</a>
                             <a class="dropdown-item" href="generalsettings.html"><i class="me-2"
                                     data-feather="settings"></i>Settings</a>
@@ -234,7 +234,7 @@
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="profile.html">My Profile</a>
+                    <a class="dropdown-item" href="{{ url('/profile') }}">My Profile</a>
                     <a class="dropdown-item" href="generalsettings.html">Settings</a>
                     <a class="dropdown-item" href="signin.html">Logout</a>
                 </div>
@@ -281,6 +281,7 @@
                                 <li><a href="{{ url('/customer') }}">Data Pelanggan</a></li>
                                 <li><a href="{{ url('gallery-company') }}">Data Galeri</a></li>
                                 <li><a href="{{ url('/faq-company') }}">Data FAQ</a></li>
+                                <li><a href="{{ url('/about-company') }}">Data Perusahaan</a></li>
                             </ul>
                         </li>
                         <li class="submenu">

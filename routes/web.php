@@ -5,6 +5,7 @@ use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\MainAdminController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -17,6 +18,12 @@ Route::prefix('auth')->group(function () {
     Route::get('/sign-up', [AuthenticationController::class, 'signUp']);
     Route::post('/process-sign-up', [AuthenticationController::class, 'proccessSignUp'])->name('isSignUp');
     Route::post('/sign-out', [AuthenticationController::class, 'signOut'])->name('logout');
+
+    // Lupa & reset password
+    Route::get('/forgot-password', [AuthenticationController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::post('/forgot-password', [AuthenticationController::class, 'processForgotPassword'])->name('forgotPasswordPost');
+    Route::get('/reset-password/{token}', [AuthenticationController::class, 'resetPassword'])->name('password.reset');
+    Route::post('/reset-password', [AuthenticationController::class, 'processResetPassword'])->name('resetPasswordPost');
 });
 
 Route::get('/', [MainController::class, 'index']);
@@ -27,8 +34,17 @@ Route::get('/gallery', [MainController::class, 'gallery']);
 Route::get('/faq', [MainController::class, 'faq']);
 
 Route::middleware('auth')->group(function () {
+    // Profil (admin & customer)
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profileUpdate');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profilePasswordUpdate');
+
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [MainAdminController::class, 'index']);
+
+        // About / Profil Perusahaan (singleton)
+        Route::get('/about-company', [DataMasterController::class, 'aboutCompanyIndex']);
+        Route::put('/about-company', [DataMasterController::class, 'aboutCompanyUpdate'])->name('aboutCompanyPut');
         Route::get('/categories', [ProductsController::class, 'categoriesIndex']);
         Route::prefix('categories')->group(function () {
             Route::get('/add-categories', [ProductsController::class, 'categoriesAdd']);

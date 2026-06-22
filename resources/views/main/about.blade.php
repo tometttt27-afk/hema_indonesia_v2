@@ -20,9 +20,9 @@
                     </ol>
                 </nav>
                 <h2 class="text-[20px] md:text-2xl font-bold">
-                    Tentang <span class="text-primary">Hema</span>.Indonesia
+                    Tentang <span class="text-primary">{{ $data_about->name ?? 'Hema' }}</span>.Indonesia
                 </h2>
-                <p class="text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, id?</p>
+                <p class="text-gray-500">{{ $data_about->breadcrumb ?? 'Tentang perusahaan kami' }}</p>
             </div>
         </div>
     </div>
@@ -30,31 +30,31 @@
     <section class="about container py-24">
         <main class="content flex w-full gap-10 items-center flex-col-reverse xl:flex-row">
             <div class="flex-1">
-                <p class="text-justify">{{ $data_about->about_description_company }}</p>
+                <p class="text-justify">{{ $data_about->about_description_company ?? 'Deskripsi perusahaan belum tersedia.' }}</p>
             </div>
             <div class="flex-1">
                 <img class="w-full object-cover h-[250px] md:h-[280px] lg:h-[350px]"
-                    src="{{ $data_about->about_img_company ? asset('images/general/' . $data_about->about_img_company) : asset('images/not-found/not-photo.jpg') }}"
+                    src="{{ $data_about && $data_about->about_img_company ? asset('uploads/about/' . $data_about->about_img_company) : asset('images/not-found/not-photo.jpg') }}"
                     alt="">
 
             </div>
         </main>
         <div class="social-media mt-10 md:mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            <a href=""
+            <a href="{{ $data_about->instagram ?? '#' }}" target="_blank"
                 class="w-full h-16 flex gap-3 justify-center items-center hover:bg-primary border-[0.5px] border-gray-200 shadow hover:shadow-none hover:text-white rounded">
-                <i class="fab fa-instagram"></i> hema_indonesia
+                <i class="fab fa-instagram"></i> Instagram
             </a>
-            <a href=""
+            <a href="{{ $data_about->tiktok ?? '#' }}" target="_blank"
                 class="w-full h-16 flex gap-3 justify-center items-center hover:bg-primary border-[0.5px] border-gray-200 shadow hover:shadow-none hover:text-white rounded">
-                <i class="fab fa-tiktok"></i> hema_indonesia
+                <i class="fab fa-tiktok"></i> Tiktok
             </a>
-            <a href=""
+            <a href="{{ $data_about->facebook ?? '#' }}" target="_blank"
                 class="w-full h-16 flex gap-3 justify-center items-center hover:bg-primary border-[0.5px] border-gray-200 shadow hover:shadow-none hover:text-white rounded">
-                <i class="fab fa-facebook-f"></i> hema_indonesia
+                <i class="fab fa-facebook-f"></i> Facebook
             </a>
-            <a href=""
+            <a href="{{ $data_about->youtube ?? '#' }}" target="_blank"
                 class="w-full h-16 flex gap-3 justify-center items-center hover:bg-primary border-[0.5px] border-gray-200 shadow hover:shadow-none hover:text-white rounded">
-                <i class="fab fa-youtube"></i> hema_indonesia
+                <i class="fab fa-youtube"></i> Youtube
             </a>
         </div>
     </section>
