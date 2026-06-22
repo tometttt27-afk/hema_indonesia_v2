@@ -40,14 +40,10 @@ class AuthenticationController extends Controller
             $user = Auth::user();
             if ($user && $user->status == 'active') {
                 if ($user->role == 'admin') {
-                    // Login ulang ke guard 'admin' agar session terpisah
-                    Auth::logout();
-                    Auth::guard('admin')->attempt($data);
                     $request->session()->regenerate();
                     Session::flash('success_timer', 'Sign In berhasil');
                     return redirect('/dashboard');
                 } else if ($user->role == 'customer') {
-                    // Tetap di guard 'web' (default)
                     $request->session()->regenerate();
                     Session::flash('success_timer', 'Sign In berhasil');
                     return redirect('/');
@@ -114,9 +110,7 @@ class AuthenticationController extends Controller
 
     public function signOut(Request $request)
     {
-        // Logout dari kedua guard agar tidak ada sisa session
-        Auth::guard('web')->logout();
-        Auth::guard('admin')->logout();
+        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         Session::flash('success', 'Berhasil Sign Out');
