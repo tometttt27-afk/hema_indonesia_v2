@@ -121,7 +121,17 @@
                                 </td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->categories->name }}</td>
-                                <td>{{ $product->stock }}</td>
+                                <td>
+                                    @if (is_null($product->stock))
+                                        <span class="text-muted">&infin;</span>
+                                    @elseif ($product->stock <= 0)
+                                        <span class="badge bg-danger">Habis</span>
+                                    @elseif ($product->stock <= 5)
+                                        <span class="badge bg-warning">{{ $product->stock }} (menipis)</span>
+                                    @else
+                                        <span class="badge bg-success">{{ $product->stock }}</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <p style="margin-bottom: 5px">Harga Asli: Rp.
                                         {{ number_format($product->price, 0, ',', '.') }}</p>
