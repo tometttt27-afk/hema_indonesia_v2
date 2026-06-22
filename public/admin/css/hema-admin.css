@@ -1043,3 +1043,98 @@ body.sidebar-pinned #sidebar-pin-btn {
   #sidebar-pin-btn { display: none; }
   body.sidebar-hidden .page-wrapper { margin-left: 0 !important; }
 }
+
+
+
+/* ─────────────────────────────────────────────────────────────
+   22. SIDEBAR FONT OVERRIDE — paksa coklat, hover putih
+   Override Bootstrap/template yang masih pakai warna biru.
+   Selector sangat spesifik agar pasti menang.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Semua link di sidebar → coklat gelap (#3d1a0a) ──────── */
+.sidebar .sidebar-inner .sidebar-menu ul li a,
+.sidebar .sidebar-inner .sidebar-menu ul li a:link,
+.sidebar .sidebar-inner .sidebar-menu ul li a:visited,
+.sidebar .sidebar-inner .sidebar-menu > ul > li > a,
+.sidebar .sidebar-inner .sidebar-menu > ul > li > a:link,
+.sidebar .sidebar-inner .sidebar-menu > ul > li > a:visited,
+#sidebar .sidebar-inner .sidebar-menu ul li a,
+#sidebar .sidebar-inner .sidebar-menu ul li a:link,
+#sidebar .sidebar-inner .sidebar-menu ul li a:visited {
+  color: #3d1a0a !important;
+  text-decoration: none !important;
+}
+
+/* ── Hover → putih ───────────────────────────────────────── */
+.sidebar .sidebar-inner .sidebar-menu ul li a:hover,
+.sidebar .sidebar-inner .sidebar-menu > ul > li > a:hover,
+#sidebar .sidebar-inner .sidebar-menu ul li a:hover {
+  color: #ffffff !important;
+}
+
+/* ── Active → putih ──────────────────────────────────────── */
+.sidebar .sidebar-inner .sidebar-menu ul li.active > a,
+.sidebar .sidebar-inner .sidebar-menu ul li.active > a:link,
+.sidebar .sidebar-inner .sidebar-menu ul li.active > a:visited,
+.sidebar .sidebar-inner .sidebar-menu ul li.active > a:hover,
+#sidebar .sidebar-inner .sidebar-menu ul li.active > a,
+#sidebar .sidebar-inner .sidebar-menu ul li.active > a:hover {
+  color: #ffffff !important;
+}
+
+/* ── Icon .bi → ikut warna teks ──────────────────────────── */
+.sidebar .sidebar-inner .sidebar-menu ul li a .bi,
+#sidebar .sidebar-inner .sidebar-menu ul li a .bi {
+  color: #3d1a0a !important;
+}
+.sidebar .sidebar-inner .sidebar-menu ul li a:hover .bi,
+#sidebar .sidebar-inner .sidebar-menu ul li a:hover .bi {
+  color: #ffffff !important;
+}
+.sidebar .sidebar-inner .sidebar-menu ul li.active > a .bi,
+#sidebar .sidebar-inner .sidebar-menu ul li.active > a .bi {
+  color: #ffffff !important;
+}
+
+/* ── Icon SVG/IMG → gelap idle, putih hover/active ───────── */
+.sidebar .sidebar-inner .sidebar-menu ul li a img,
+#sidebar .sidebar-inner .sidebar-menu ul li a img {
+  filter: brightness(0) saturate(0) opacity(0.55) !important;
+}
+.sidebar .sidebar-inner .sidebar-menu ul li a:hover img,
+#sidebar .sidebar-inner .sidebar-menu ul li a:hover img,
+.sidebar .sidebar-inner .sidebar-menu ul li.active > a img,
+#sidebar .sidebar-inner .sidebar-menu ul li.active > a img {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* ── Submenu font → coklat gelap, hover putih ────────────── */
+.sidebar .sidebar-inner .sidebar-menu ul li ul li a,
+.sidebar .sidebar-inner .sidebar-menu ul li ul li a:link,
+.sidebar .sidebar-inner .sidebar-menu ul li ul li a:visited,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li a,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li a:link,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li a:visited {
+  color: #3d1a0a !important;
+  font-weight: 700 !important;
+}
+.sidebar .sidebar-inner .sidebar-menu ul li ul li a:hover,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li a:hover {
+  color: #ffffff !important;
+}
+.sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+
+/* ── Hapus shadow kotak pada item aktif dan hover ─────────── */
+.sidebar .sidebar-inner .sidebar-menu ul li.active > a,
+#sidebar .sidebar-inner .sidebar-menu ul li.active > a {
+  box-shadow: none !important;
+}
+.sidebar .sidebar-inner .sidebar-menu ul li a:hover,
+#sidebar .sidebar-inner .sidebar-menu ul li a:hover {
+  box-shadow: none !important;
+}
