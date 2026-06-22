@@ -1,131 +1,124 @@
 @extends('template.layout-main')
 @section('title_web', 'Profil Saya | Hema.Indonesia')
 @section('content-main')
-    <div class="header-hero bg-[#f5f5f5]">
-        <div class="container pt-10 pb-11">
-            <div class="block">
-                <nav aria-label="breadcrumb" class="w-full">
-                    <ol class="flex w-full flex-wrap items-center mb-2">
-                        <li
-                            class="flex cursor-pointer items-center text-sm text-gray-500 transition-colors duration-300 hover:text-slate-800">
-                            <a href="{{ url('/') }}">Beranda</a>
-                            <span class="pointer-events-none mx-2 text-slate-800">/</span>
-                        </li>
-                        <li
-                            class="flex cursor-pointer items-center text-sm text-gray-500 transition-colors duration-300 hover:text-slate-800">
-                            <a href="{{ url('/profile') }}">Profil</a>
-                        </li>
-                    </ol>
-                </nav>
-                <h2 class="text-[20px] md:text-2xl font-bold">Profil <span class="text-primary">Saya</span></h2>
-                <p class="text-gray-500">Kelola informasi akun dan kata sandi anda</p>
+
+<div class="page-hero">
+    <div class="container">
+        <ol class="breadcrumb-list"><li><a href="{{ url('/') }}">Beranda</a></li><li>Profil</li></ol>
+        <h2 class="page-hero">Profil <span style="color:#b17457;">Saya</span></h2>
+        <p>Kelola informasi akun dan kata sandi Anda</p>
+    </div>
+</div>
+
+<section class="container py-14">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        {{-- Avatar --}}
+        <div class="lg:col-span-1">
+            <div class="profile-avatar-card">
+                <img src="{{ asset('uploads/profile/'.($data->profile_img??'default_profile.jpg')) }}" alt="profil">
+                <h3>{{ $data->first_name }} {{ $data->last_name }}</h3>
+                <p>{{ $data->email }}</p>
+                <span class="mt-2 inline-block text-xs px-3 py-1 rounded-full capitalize"
+                    style="background:rgba(177,116,87,.1);color:#b17457;font-weight:600;">{{ $data->role }}</span>
+            </div>
+
+            {{-- Quick links --}}
+            <div class="profile-form-card mt-5">
+                <h3 class="text-sm">Menu Cepat</h3>
+                @foreach([
+                    ['/orders','fas fa-bag-shopping','Pesanan Saya'],
+                    ['/wishlist','far fa-heart','Wishlist'],
+                    ['/cart','fas fa-cart-shopping','Keranjang'],
+                ]) as $ql))
+                <a href="{{ url($ql[0]) }}"
+                   class="flex items-center gap-3 py-2.5 px-3 rounded-lg text-sm font-medium text-gray-700 hover:text-[#b17457] transition-colors"
+                   style="text-decoration:none;">
+                    <i class="{{ $ql[1] }} w-4 text-center" style="color:#b17457;"></i>
+                    {{ $ql[2] }}
+                    <i class="fas fa-chevron-right text-xs ms-auto text-gray-300"></i>
+                </a>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 flex flex-col gap-6">
+
+            {{-- Account info --}}
+            <div class="profile-form-card">
+                <h3><i class="fas fa-user me-2" style="color:#b17457;font-size:16px;"></i>Informasi Akun</h3>
+                <form action="{{ route('profileUpdate') }}" method="post" enctype="multipart/form-data">
+                    @csrf @method('PUT')
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="label-brand">Nama Depan</label>
+                            <input type="text" name="first_name" value="{{ old('first_name',$data->first_name) }}" class="input-brand">
+                        </div>
+                        <div>
+                            <label class="label-brand">Nama Belakang</label>
+                            <input type="text" name="last_name" value="{{ old('last_name',$data->last_name) }}" class="input-brand">
+                        </div>
+                        <div>
+                            <label class="label-brand">Email</label>
+                            <input type="email" name="email" value="{{ old('email',$data->email) }}" class="input-brand">
+                        </div>
+                        <div>
+                            <label class="label-brand">No. Telepon</label>
+                            <input type="text" name="no_telp" value="{{ old('no_telp',$data->no_telp) }}" class="input-brand">
+                        </div>
+                        <div>
+                            <label class="label-brand">Jenis Kelamin</label>
+                            <select name="gender" class="input-brand">
+                                <option value="">-- Pilih --</option>
+                                <option value="male" {{ $data->gender=='male'?'selected':'' }}>Laki-laki</option>
+                                <option value="female" {{ $data->gender=='female'?'selected':'' }}>Perempuan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-brand">Umur</label>
+                            <input type="number" name="age" value="{{ old('age',$data->age) }}" class="input-brand">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="label-brand">Alamat</label>
+                            <textarea name="address" rows="3" class="input-brand">{{ old('address',$data->address) }}</textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="label-brand">Foto Profil</label>
+                            <input type="file" name="profile_img" accept="image/*" class="input-brand">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-brand mt-5 px-7 py-3 text-sm rounded-xl">
+                        <i class="fas fa-check text-xs"></i> Simpan Perubahan
+                    </button>
+                </form>
+            </div>
+
+            {{-- Password --}}
+            <div class="profile-form-card">
+                <h3><i class="fas fa-shield-halved me-2" style="color:#b17457;font-size:16px;"></i>Ubah Kata Sandi</h3>
+                <form action="{{ route('profilePasswordUpdate') }}" method="post">
+                    @csrf @method('PUT')
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="label-brand">Password Lama</label>
+                            <input type="password" name="current_password" class="input-brand">
+                        </div>
+                        <div>
+                            <label class="label-brand">Password Baru</label>
+                            <input type="password" name="password" class="input-brand">
+                        </div>
+                        <div>
+                            <label class="label-brand">Konfirmasi Password Baru</label>
+                            <input type="password" name="password_confirmation" class="input-brand">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-brand mt-5 px-7 py-3 text-sm rounded-xl">
+                        <i class="fas fa-key text-xs"></i> Ubah Password
+                    </button>
+                </form>
             </div>
         </div>
     </div>
+</section>
 
-    <section class="container py-16">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-1">
-                <div class="border border-gray-200 rounded p-6 flex flex-col items-center text-center">
-                    <img class="w-32 h-32 object-cover rounded-full border"
-                        src="{{ asset('uploads/profile/' . ($data->profile_img ?? 'default_profile.jpg')) }}"
-                        alt="profile">
-                    <h3 class="font-semibold mt-4 text-lg">{{ $data->first_name }} {{ $data->last_name }}</h3>
-                    <p class="text-gray-500 text-sm">{{ $data->email }}</p>
-                    <span
-                        class="mt-2 inline-block text-xs px-3 py-1 rounded-full bg-gray-100 capitalize">{{ $data->role }}</span>
-                </div>
-            </div>
-
-            <div class="lg:col-span-2 flex flex-col gap-8">
-                <div class="border border-gray-200 rounded p-6">
-                    <h3 class="font-semibold text-lg mb-4">Informasi Akun</h3>
-                    <form action="{{ route('profileUpdate') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label class="block mb-1 text-sm text-gray-800">Nama Depan</label>
-                                <input type="text" name="first_name"
-                                    value="{{ old('first_name', $data->first_name) }}"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">
-                            </div>
-                            <div class="form-group">
-                                <label class="block mb-1 text-sm text-gray-800">Nama Belakang</label>
-                                <input type="text" name="last_name" value="{{ old('last_name', $data->last_name) }}"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">
-                            </div>
-                            <div class="form-group">
-                                <label class="block mb-1 text-sm text-gray-800">Email</label>
-                                <input type="text" name="email" value="{{ old('email', $data->email) }}"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">
-                            </div>
-                            <div class="form-group">
-                                <label class="block mb-1 text-sm text-gray-800">No. Telepon</label>
-                                <input type="text" name="no_telp" value="{{ old('no_telp', $data->no_telp) }}"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">
-                            </div>
-                            <div class="form-group">
-                                <label class="block mb-1 text-sm text-gray-800">Jenis Kelamin</label>
-                                <select name="gender"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">
-                                    <option value="">-- Pilih --</option>
-                                    <option value="male" {{ $data->gender == 'male' ? 'selected' : '' }}>Laki-laki
-                                    </option>
-                                    <option value="female" {{ $data->gender == 'female' ? 'selected' : '' }}>Perempuan
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="block mb-1 text-sm text-gray-800">Umur</label>
-                                <input type="number" name="age" value="{{ old('age', $data->age) }}"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">
-                            </div>
-                            <div class="form-group md:col-span-2">
-                                <label class="block mb-1 text-sm text-gray-800">Alamat</label>
-                                <textarea name="address" rows="3"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">{{ old('address', $data->address) }}</textarea>
-                            </div>
-                            <div class="form-group md:col-span-2">
-                                <label class="block mb-1 text-sm text-gray-800">Foto Profil</label>
-                                <input type="file" name="profile_img" accept="image/*"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[8px] outline-none text-sm">
-                            </div>
-                        </div>
-                        <button type="submit"
-                            class="bg-gradient-to-r from-primary to-secondary hover:opacity-90 rounded-sm font-medium tracking-widest inline-block mt-4 px-6 py-[10px] outline-none text-white text-sm">Simpan
-                            Perubahan</button>
-                    </form>
-                </div>
-
-                <div class="border border-gray-200 rounded p-6">
-                    <h3 class="font-semibold text-lg mb-4">Ubah Kata Sandi</h3>
-                    <form action="{{ route('profilePasswordUpdate') }}" method="post">
-                        @csrf
-                        @method('PUT')
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="form-group">
-                                <label class="block mb-1 text-sm text-gray-800">Password Lama</label>
-                                <input type="password" name="current_password"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">
-                            </div>
-                            <div class="form-group">
-                                <label class="block mb-1 text-sm text-gray-800">Password Baru</label>
-                                <input type="password" name="password"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">
-                            </div>
-                            <div class="form-group">
-                                <label class="block mb-1 text-sm text-gray-800">Konfirmasi Password Baru</label>
-                                <input type="password" name="password_confirmation"
-                                    class="w-full border-[1.5px] rounded-sm border-gray-600 focus:border-primary px-4 py-[10px] outline-none text-sm">
-                            </div>
-                        </div>
-                        <button type="submit"
-                            class="bg-gradient-to-r from-primary to-secondary hover:opacity-90 rounded-sm font-medium tracking-widest inline-block mt-4 px-6 py-[10px] outline-none text-white text-sm">Ubah
-                            Password</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
 @endsection

@@ -1,0 +1,206 @@
+/* ============================================================
+   HEMA INDONESIA — Customer UI v3
+   Design tokens: #b17457 primary / #c29470 secondary
+   Font: Urbanist
+   ============================================================ */
+
+/* ─── NAVBAR ICON BUTTON ────────────────────────────────── */
+.nav-icon-btn {
+  width: 36px; height: 36px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 9999px;
+  color: #374151;
+  font-size: 15px;
+  transition: background .18s, color .18s;
+  text-decoration: none !important;
+  position: relative;
+}
+.nav-icon-btn:hover { background: #f3ede9; color: #b17457; }
+
+.badge-dot {
+  position: absolute; top: -3px; right: -3px;
+  min-width: 16px; height: 16px;
+  background: #ef4444; color: #fff;
+  font-size: 9px; font-weight: 700;
+  border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 3px;
+  border: 1.5px solid #fff;
+}
+
+/* ─── PAGE HERO HEADER ──────────────────────────────────── */
+.page-hero {
+  background: linear-gradient(135deg, #faf7f4 0%, #f5ede6 100%);
+  border-bottom: 1px solid #ede3db;
+  padding: 40px 0 36px;
+}
+.page-hero h2 { font-weight: 800; font-size: 1.75rem; color: #1e1410; }
+.page-hero p  { color: #7a6255; font-size: .9rem; margin-top: 4px; }
+
+/* breadcrumb */
+.breadcrumb-list { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-bottom: 8px; }
+.breadcrumb-list li { display: flex; align-items: center; font-size: .8rem; color: #7a6255; }
+.breadcrumb-list li a { color: #7a6255; transition: color .15s; }
+.breadcrumb-list li a:hover { color: #b17457; }
+.breadcrumb-list li + li::before { content: '/'; margin-right: 4px; opacity: .5; }
+
+/* ─── PRODUCT CARD ──────────────────────────────────────── */
+.product-card {
+  background: #fff;
+  border: 1px solid #ede3db;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow .22s, transform .22s;
+}
+.product-card:hover {
+  box-shadow: 0 8px 28px rgba(177,116,87,.16);
+  transform: translateY(-3px);
+}
+.product-card .product-img { position: relative; overflow: hidden; }
+.product-card .product-img img {
+  width: 100%; display: block;
+  transition: transform .35s ease;
+}
+.product-card:hover .product-img img { transform: scale(1.04); }
+
+/* badge discount */
+.badge-discount {
+  position: absolute; top: 10px; left: 10px;
+  background: #ef4444; color: #fff;
+  font-size: 10.5px; font-weight: 700;
+  padding: 3px 8px; border-radius: 50px;
+}
+/* badge stock */
+.badge-out { background: #fee2e2; color: #dc2626; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+.badge-low { background: #fef3c7; color: #d97706; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+
+/* size radio pill */
+.size-label input[type=radio] { display: none; }
+.size-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 28px; height: 28px; padding: 0 6px;
+  border: 1.5px solid #e2d5cc; border-radius: 6px;
+  font-size: 10.5px; font-weight: 700; color: #6b4f40;
+  cursor: pointer; transition: background .15s, border-color .15s, color .15s;
+}
+input[type=radio]:checked + .size-pill {
+  background: linear-gradient(135deg,#b17457,#c29470);
+  border-color: #b17457; color: #fff;
+}
+
+/* ─── BUTTONS (customer) ────────────────────────────────── */
+.btn-brand {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  background: linear-gradient(135deg,#b17457,#c29470);
+  color: #fff !important;
+  font-weight: 600; font-size: 13.5px;
+  padding: 10px 22px; border-radius: 7px;
+  border: none; cursor: pointer;
+  transition: opacity .2s, box-shadow .2s;
+  text-decoration: none !important;
+}
+.btn-brand:hover { opacity: .88; box-shadow: 0 4px 16px rgba(177,116,87,.32); color: #fff !important; }
+.btn-brand-sm { padding: 7px 14px; font-size: 12px; border-radius: 6px; }
+.btn-outline-brand {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1.5px solid #b17457; color: #b17457 !important;
+  background: transparent; font-weight: 600; font-size: 13.5px;
+  padding: 9px 20px; border-radius: 7px; cursor: pointer;
+  transition: background .18s, color .18s;
+  text-decoration: none !important;
+}
+.btn-outline-brand:hover { background: #b17457; color: #fff !important; }
+.btn-danger-soft {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1.5px solid #fca5a5; color: #ef4444;
+  background: transparent; font-weight: 600; font-size: 13.5px;
+  padding: 9px 20px; border-radius: 7px; cursor: pointer;
+  transition: background .18s, color .18s;
+}
+.btn-danger-soft:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+
+/* ─── ORDER STATUS BADGES ───────────────────────────────── */
+.status-pending   { background: #fef9c3; color: #854d0e; }
+.status-paid      { background: #dbeafe; color: #1d4ed8; }
+.status-shipped   { background: #ede9fe; color: #6d28d9; }
+.status-completed { background: #dcfce7; color: #166534; }
+.status-cancelled { background: #fee2e2; color: #991b1b; }
+.status-badge {
+  display: inline-block; padding: 3px 11px;
+  border-radius: 50px; font-size: 11.5px; font-weight: 700;
+}
+
+/* ─── FORM INPUTS (customer) ────────────────────────────── */
+.input-brand {
+  width: 100%;
+  border: 1.5px solid #d6cac2;
+  border-radius: 7px;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  color: #1e1410;
+  background: #fff;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  font-family: "Urbanist", sans-serif;
+}
+.input-brand:focus {
+  border-color: #b17457;
+  box-shadow: 0 0 0 3px rgba(177,116,87,.14);
+}
+.input-brand::placeholder { color: #a89080; }
+.label-brand { display: block; font-weight: 600; font-size: 12.5px; color: #3d2e26; margin-bottom: 5px; }
+
+/* ─── SUMMARY PANEL (cart/checkout/order) ───────────────── */
+.summary-panel {
+  background: #fff;
+  border: 1px solid #ede3db;
+  border-radius: 10px;
+  padding: 22px;
+  position: sticky; top: 90px;
+}
+.summary-panel h3 { font-weight: 700; font-size: 15px; margin-bottom: 14px; }
+.summary-row { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; margin-bottom: 8px; }
+.summary-row .label { color: #7a6255; }
+.summary-total { border-top: 1.5px solid #ede3db; margin-top: 12px; padding-top: 12px; font-weight: 800; font-size: 16px; }
+.summary-total .amount { color: #b17457; }
+
+/* ─── TABLE (customer orders/cart) ─────────────────────── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.data-table thead tr { background: #faf0ea; }
+.data-table thead th {
+  padding: 11px 14px; text-align: left;
+  font-size: 11.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px;
+  color: #3d2e26; border-bottom: 2px solid #ede3db;
+  white-space: nowrap;
+}
+.data-table td { padding: 12px 14px; border-bottom: 1px solid #f5ede6; vertical-align: middle; }
+.data-table tbody tr:hover { background: #fdf7f4; }
+
+/* ─── EMPTY STATE ───────────────────────────────────────── */
+.empty-state {
+  text-align: center; padding: 60px 20px;
+  border: 1.5px dashed #d6cac2; border-radius: 12px;
+}
+.empty-state i { font-size: 3rem; color: #d4a882; opacity: .6; }
+.empty-state p { margin-top: 12px; color: #7a6255; font-size: 14px; }
+
+/* ─── PROFILE CARD ──────────────────────────────────────── */
+.profile-avatar-card {
+  background: #fff; border: 1px solid #ede3db; border-radius: 12px;
+  padding: 28px 20px; text-align: center;
+}
+.profile-avatar-card img {
+  width: 110px; height: 110px; border-radius: 9999px;
+  object-fit: cover; border: 3px solid #ede3db; margin: 0 auto 14px;
+}
+.profile-avatar-card h3 { font-weight: 700; font-size: 17px; color: #1e1410; }
+.profile-avatar-card p  { color: #7a6255; font-size: 13px; }
+.profile-form-card { background: #fff; border: 1px solid #ede3db; border-radius: 12px; padding: 24px; }
+.profile-form-card h3 { font-weight: 700; font-size: 15px; margin-bottom: 18px; color: #1e1410; }
+
+/* ─── SCROLLBAR ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #faf7f4; }
+::-webkit-scrollbar-thumb { background: #d4a882; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #b17457; }
