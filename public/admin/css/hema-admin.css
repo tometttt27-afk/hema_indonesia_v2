@@ -1,30 +1,78 @@
 /* ============================================================
-   HEMA INDONESIA — Admin Theme Override
-   Menyelaraskan tampilan admin dengan palet customer:
-   Primary  : #b17457  (cokelat hangat)
-   Secondary: #c29470  (cokelat muda)
-   Font     : Urbanist
+   HEMA INDONESIA — Admin Theme Override v2
+   Satu sumber kebenaran untuk brand identity admin + customer.
+
+   Design Tokens (sama persis dengan tailwind.config.js):
+     Primary   : #b17457  — cokelat hangat
+     Secondary : #c29470  — cokelat muda
+     Font      : Urbanist (sama dengan customer)
+     Radius    : 6px      — radius sudut konsisten
+
+   Struktur file:
+     1.  CSS Variables (Design Tokens)
+     2.  Font & Global Reset
+     3.  Header / Topbar
+     4.  Sidebar
+     5.  Page Wrapper & Breadcrumb
+     6.  Cards  (termasuk stat-card & shortcut-card)
+     7.  Buttons
+     8.  Forms & Select2
+     9.  Tables & DataTables
+    10.  Badges
+    11.  Alerts / Flash
+    12.  Links
+    13.  SweetAlert2
+    14.  Utility Classes  (fw-*, text-*, bg-*)
+    15.  Neutralisasi warna template (Bootstrap leak guard)
+    16.  Scrollbar
+    17.  Responsive
    ============================================================ */
 
-/* ---------- CSS Variables ---------- */
+/* ─────────────────────────────────────────────────────────────
+   1. CSS VARIABLES — Design Tokens
+   ───────────────────────────────────────────────────────────── */
 :root {
-    --hema-primary:       #b17457;
-    --hema-primary-dark:  #96603f;
-    --hema-primary-light: #d4a882;
-    --hema-secondary:     #c29470;
-    --hema-gradient:      linear-gradient(135deg, #b17457 0%, #c29470 100%);
-    --hema-sidebar-bg:    #2c1f17;
-    --hema-sidebar-hover: #3d2b1f;
-    --hema-header-bg:     #ffffff;
-    --hema-text-dark:     #2c1f17;
-    --hema-text-muted:    #7a6255;
-    --hema-border:        #e8ddd7;
-    --hema-bg:            #faf7f5;
-    --hema-card-bg:       #ffffff;
-    --hema-radius:        6px;
+    /* Brand palette */
+    --hema-primary:        #b17457;
+    --hema-primary-dark:   #96603f;
+    --hema-primary-light:  #d4a882;
+    --hema-primary-subtle: rgba(177, 116, 87, 0.10);
+    --hema-secondary:      #c29470;
+    --hema-accent:         #9a6040;
+    --hema-gradient:       linear-gradient(135deg, #b17457 0%, #c29470 100%);
+
+    /* Sidebar */
+    --hema-sidebar-bg:     #2c1f17;
+    --hema-sidebar-hover:  #3d2b1f;
+    --hema-sidebar-active: linear-gradient(135deg, #b17457 0%, #c29470 100%);
+
+    /* Surface */
+    --hema-header-bg:      #ffffff;
+    --hema-bg:             #faf7f5;
+    --hema-card-bg:        #ffffff;
+
+    /* Typography */
+    --hema-text-dark:      #2c1f17;
+    --hema-text-muted:     #7a6255;
+    --hema-text-light:     rgba(255, 255, 255, 0.75);
+
+    /* Borders & Shadows */
+    --hema-border:         #e8ddd7;
+    --hema-shadow-sm:      0 1px 6px  rgba(177, 116, 87, 0.07);
+    --hema-shadow-md:      0 4px 16px rgba(177, 116, 87, 0.14);
+    --hema-shadow-lg:      0 6px 24px rgba(177, 116, 87, 0.20);
+    --hema-shadow-sidebar: 2px 0 12px rgba(44,  31, 23,  0.18);
+
+    /* Shape */
+    --hema-radius:         6px;
+    --hema-radius-pill:    30px;
+    --hema-radius-circle:  50%;
 }
 
-/* ---------- Font ---------- */
+
+/* ─────────────────────────────────────────────────────────────
+   2. FONT & GLOBAL RESET
+   ───────────────────────────────────────────────────────────── */
 body,
 .sidebar,
 .header,
@@ -33,137 +81,114 @@ h1, h2, h3, h4, h5, h6,
 .page-title h4,
 .page-title h6,
 .form-group label,
+.form-label,
 input, select, textarea,
 .btn,
-table,
-td, th {
+table, td, th,
+.dropdown-item,
+.modal-title,
+.modal-body,
+.nav-tabs .nav-link {
     font-family: "Urbanist", sans-serif !important;
 }
 
-/* ---------- Global Background ---------- */
 body {
-    background-color: var(--hema-bg) !important;
-    color: var(--hema-text-dark) !important;
+    background-color: var(--hema-bg)        !important;
+    color:            var(--hema-text-dark)  !important;
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
+/* ─────────────────────────────────────────────────────────────
+   3. HEADER / TOPBAR
+   ───────────────────────────────────────────────────────────── */
 .header {
-    background: var(--hema-header-bg) !important;
-    border-bottom: 1.5px solid var(--hema-border) !important;
-    box-shadow: 0 1px 8px rgba(177, 116, 87, 0.08) !important;
+    background:    var(--hema-header-bg)                    !important;
+    border-bottom: 1.5px solid var(--hema-border)           !important;
+    box-shadow:    0 1px 8px rgba(177, 116, 87, 0.08)       !important;
 }
 
+/* Logo zone — mirrors sidebar bg so they visually lock together */
 .header .header-left {
-    background: var(--hema-sidebar-bg) !important;
-    border-right: none !important;
+    background:   var(--hema-sidebar-bg) !important;
+    border-right: none                   !important;
 }
-
 .header .header-left .logo img,
 .header .header-left .logo-small img {
     filter: brightness(0) invert(1);
 }
 
-/* Header logo teks fallback */
-.header .header-left a.logo-text {
-    color: #fff !important;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-/* Toggle sidebar btn */
+/* Sidebar toggle & mobile hamburger */
 #toggle_btn i,
-#toggle_btn:hover {
-    color: var(--hema-primary) !important;
-}
+#toggle_btn:hover { color: var(--hema-primary) !important; }
+.bar-icon span    { background-color: var(--hema-primary) !important; }
 
-/* Hamburger mobile */
-.bar-icon span {
-    background-color: var(--hema-primary) !important;
-}
-
-/* Search bar */
+/* Top-nav search */
 .searchinputs input {
-    border: 1.5px solid var(--hema-border) !important;
-    border-radius: var(--hema-radius) !important;
-    font-family: "Urbanist", sans-serif !important;
-    color: var(--hema-text-dark) !important;
+    border:        1.5px solid var(--hema-border)   !important;
+    border-radius: var(--hema-radius)               !important;
+    color:         var(--hema-text-dark)            !important;
 }
 .searchinputs input:focus {
-    border-color: var(--hema-primary) !important;
-    box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.12) !important;
+    border-color: var(--hema-primary)                            !important;
+    box-shadow:   0 0 0 3px rgba(177, 116, 87, 0.12)            !important;
 }
 
 /* Header nav icons */
-.user-menu.nav > li > a {
-    color: var(--hema-text-dark) !important;
-}
-.user-menu.nav > li > a:hover {
-    color: var(--hema-primary) !important;
-}
-.user-menu.nav > li > a .badge {
-    background: var(--hema-gradient) !important;
-    border: none !important;
-}
+.user-menu.nav > li > a       { color: var(--hema-text-dark)    !important; }
+.user-menu.nav > li > a:hover { color: var(--hema-primary)      !important; }
 
-/* User dropdown */
+/* Profile dropdown */
 .menu-drop-user {
-    border: 1px solid var(--hema-border) !important;
-    border-radius: var(--hema-radius) !important;
-    box-shadow: 0 6px 24px rgba(177, 116, 87, 0.12) !important;
+    border:        1px solid var(--hema-border)     !important;
+    border-radius: var(--hema-radius)               !important;
+    box-shadow:    var(--hema-shadow-lg)             !important;
 }
 .menu-drop-user .dropdown-item:hover {
-    background-color: #faf0ea !important;
-    color: var(--hema-primary) !important;
+    background-color: #faf0ea             !important;
+    color:            var(--hema-primary) !important;
 }
 .menu-drop-user .dropdown-item.logout:hover {
     background-color: #fdf2f2 !important;
-    color: #dc3545 !important;
+    color:            #dc3545 !important;
 }
-.profilesets h6 {
-    color: var(--hema-text-dark) !important;
-    font-weight: 600 !important;
-}
-.profilesets h5 {
-    color: var(--hema-text-muted) !important;
-    font-size: 12px !important;
-    text-transform: capitalize !important;
-}
+.profilesets h6 { color: var(--hema-text-dark);  font-weight: 600    !important; }
+.profilesets h5 { color: var(--hema-text-muted); font-size: 12px     !important; text-transform: capitalize !important; }
 
-/* Status dot */
+/* Online indicator */
 .status.online {
     background-color: #28c76f !important;
-    border: 2px solid #fff !important;
+    border: 2px solid #fff    !important;
 }
 
-/* ============================================================
-   SIDEBAR
-   ============================================================ */
+
+/* ─────────────────────────────────────────────────────────────
+   4. SIDEBAR
+   ───────────────────────────────────────────────────────────── */
 .sidebar {
-    background: var(--hema-sidebar-bg) !important;
-    border-right: none !important;
-    box-shadow: 2px 0 12px rgba(44, 31, 23, 0.18) !important;
+    background:   var(--hema-sidebar-bg)    !important;
+    border-right: none                      !important;
+    box-shadow:   var(--hema-shadow-sidebar) !important;
 }
 
-/* Sidebar menu items */
+/* Menu items */
 .sidebar-menu > ul > li > a {
-    color: rgba(255, 255, 255, 0.75) !important;
-    border-radius: var(--hema-radius) !important;
-    margin: 2px 10px !important;
-    padding: 10px 12px !important;
-    transition: all 0.2s ease !important;
+    color:         var(--hema-text-light) !important;
+    border-radius: var(--hema-radius)     !important;
+    margin:        2px 10px              !important;
+    padding:       10px 12px             !important;
+    transition:    background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease !important;
+    display:       flex !important;
+    align-items:   center !important;
+    gap:           8px !important;
 }
 .sidebar-menu > ul > li > a:hover,
 .sidebar-menu > ul > li.active > a,
 .sidebar-menu > ul > li.active > a:focus {
-    background: var(--hema-gradient) !important;
-    color: #fff !important;
-    box-shadow: 0 3px 10px rgba(177, 116, 87, 0.35) !important;
+    background: var(--hema-gradient)                      !important;
+    color:      #fff                                      !important;
+    box-shadow: 0 3px 10px rgba(177, 116, 87, 0.35)       !important;
 }
 
-/* Sidebar icons (SVG) */
+/* SVG icons inside menu items */
 .sidebar-menu > ul > li > a img {
     filter: brightness(0) invert(0.85) !important;
 }
@@ -172,11 +197,10 @@ body {
     filter: brightness(0) invert(1) !important;
 }
 
-/* Bootstrap-icons di sidebar */
+/* Bootstrap-icons in sidebar */
 .sidebar-menu > ul > li > a .bi {
-    color: rgba(255, 255, 255, 0.75) !important;
+    color:     var(--hema-text-light) !important;
     font-size: 16px;
-    margin-right: 8px;
 }
 .sidebar-menu > ul > li.active > a .bi,
 .sidebar-menu > ul > li > a:hover .bi {
@@ -184,365 +208,537 @@ body {
 }
 
 /* Menu arrow */
-.menu-arrow {
-    background: rgba(255, 255, 255, 0.15) !important;
-}
+.menu-arrow { background: rgba(255,255,255,0.15) !important; }
 .sidebar-menu > ul > li > a:hover .menu-arrow,
 .sidebar-menu > ul > li.active > a .menu-arrow {
-    background: rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255,255,255,0.30) !important;
 }
 
 /* Submenu */
 .sidebar .sub-menu {
-    background: rgba(0, 0, 0, 0.25) !important;
+    background:    rgba(0,0,0,0.25)    !important;
     border-radius: 0 0 var(--hema-radius) var(--hema-radius) !important;
 }
 .sidebar .sub-menu a {
-    color: rgba(255, 255, 255, 0.65) !important;
-    padding: 8px 12px 8px 38px !important;
-    font-size: 13px !important;
-    transition: all 0.2s ease !important;
+    color:      rgba(255,255,255,0.65) !important;
+    padding:    8px 12px 8px 38px     !important;
+    font-size:  13px                   !important;
+    transition: color 0.2s ease, padding-left 0.2s ease !important;
 }
 .sidebar .sub-menu a:hover,
 .sidebar .sub-menu li.active > a {
-    color: var(--hema-primary-light) !important;
-    padding-left: 44px !important;
+    color:        var(--hema-primary-light) !important;
+    padding-left: 44px                     !important;
 }
 
-/* Sidebar span teks */
+/* Sidebar text span */
 .sidebar-menu > ul > li > a span:first-of-type {
-    color: inherit !important;
-    font-weight: 500 !important;
-    font-size: 14px !important;
+    color:       inherit !important;
+    font-weight: 500     !important;
+    font-size:   14px    !important;
 }
 
-/* ============================================================
-   PAGE WRAPPER & CONTENT
-   ============================================================ */
-.page-wrapper {
-    background: var(--hema-bg) !important;
-}
 
-/* Page header */
+/* ─────────────────────────────────────────────────────────────
+   5. PAGE WRAPPER & BREADCRUMB
+   ───────────────────────────────────────────────────────────── */
+.page-wrapper { background: var(--hema-bg) !important; }
+
 .page-header {
-    margin-bottom: 1.5rem !important;
-    padding-bottom: 0.75rem !important;
-    border-bottom: 1.5px solid var(--hema-border) !important;
+    margin-bottom:  1.5rem                       !important;
+    padding-bottom: 0.75rem                      !important;
+    border-bottom:  1.5px solid var(--hema-border) !important;
 }
 .page-title h4 {
-    color: var(--hema-text-dark) !important;
-    font-weight: 700 !important;
-    font-size: 18px !important;
+    color:       var(--hema-text-dark) !important;
+    font-weight: 700                   !important;
+    font-size:   18px                  !important;
 }
 .page-title h6 {
-    color: var(--hema-text-muted) !important;
-    font-size: 13px !important;
-    font-weight: 400 !important;
+    color:       var(--hema-text-muted) !important;
+    font-size:   13px                   !important;
+    font-weight: 400                    !important;
 }
 
-/* ============================================================
-   CARDS
-   ============================================================ */
+/* Breadcrumb */
+.breadcrumb-item + .breadcrumb-item::before { color: var(--hema-text-muted) !important; }
+.breadcrumb-item a                          { color: var(--hema-primary)     !important; }
+.breadcrumb-item.active                     { color: var(--hema-text-muted)  !important; }
+
+/* ─────────────────────────────────────────────────────────────
+   6. CARDS
+   ─────────────────────────────────────────────────────────────
+   Includes:
+     • Base .card
+     • .stat-card   — dashboard stat tiles (4 metrics)
+     • .shortcut-card — dashboard quick-nav grid
+   ───────────────────────────────────────────────────────────── */
+
+/* Base card — matches customer surface/card pattern */
 .card {
-    background: var(--hema-card-bg) !important;
-    border: 1px solid var(--hema-border) !important;
-    border-radius: var(--hema-radius) !important;
-    box-shadow: 0 1px 6px rgba(177, 116, 87, 0.06) !important;
+    background:    var(--hema-card-bg)  !important;
+    border:        1px solid var(--hema-border) !important;
+    border-radius: var(--hema-radius)   !important;
+    box-shadow:    var(--hema-shadow-sm) !important;
+    transition:    box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+.card:hover {
+    box-shadow: var(--hema-shadow-md)   !important;
+    transform:  translateY(-2px);
 }
 .card-header {
-    background: transparent !important;
+    background:    transparent               !important;
     border-bottom: 1px solid var(--hema-border) !important;
-    padding: 1rem 1.25rem !important;
+    padding:       1rem 1.25rem              !important;
 }
 .card-title {
-    color: var(--hema-text-dark) !important;
-    font-weight: 600 !important;
-    font-size: 15px !important;
+    color:       var(--hema-text-dark) !important;
+    font-weight: 600                   !important;
+    font-size:   15px                  !important;
 }
-.card-body {
-    padding: 1.25rem !important;
+.card-body { padding: 1.25rem !important; }
+
+/* ── Stat Card (dashboard top-row tiles) ── */
+/* Each tile uses a colored left-border accent set via inline style;
+   the icon-circle bg is auto-derived from the same color at 13% opacity.
+   We only need to define the shared structural styles here. */
+.stat-card {
+    border-left-width: 4px   !important;
+    border-left-style: solid !important;
+}
+.stat-card .stat-icon {
+    width:          46px;
+    height:         46px;
+    border-radius:  var(--hema-radius-circle);
+    display:        flex;
+    align-items:    center;
+    justify-content:center;
+    flex-shrink:    0;
+}
+.stat-card .stat-value {
+    font-size:   22px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.stat-card .stat-label {
+    font-size: 12px;
+    color: var(--hema-text-muted);
+    margin-bottom: 0;
 }
 
-/* ============================================================
-   BUTTONS
-   ============================================================ */
-/* Primary */
+/* ── Shortcut Card (dashboard quick-nav grid) ── */
+.shortcut-card {
+    color:           var(--hema-text-dark)  !important;
+    text-decoration: none                   !important;
+    text-align:      center;
+}
+.shortcut-card .shortcut-icon {
+    color:     var(--hema-primary);
+    font-size: 2rem;         /* fa-2x equivalent */
+    margin-bottom: 0.5rem;
+    display: block;
+}
+.shortcut-card .shortcut-label {
+    font-size:   13px;
+    font-weight: 600;
+    color:       var(--hema-text-dark);
+    margin:      0;
+}
+.shortcut-card:hover .shortcut-icon {
+    color: var(--hema-primary-dark);
+}
+
+/* Low-stock empty state icon */
+.stock-safe-icon {
+    color:   var(--hema-primary);
+    opacity: 0.5;
+}
+
+/* Card header accent icon */
+.card-header-icon {
+    color: var(--hema-primary);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   7. BUTTONS
+   ─────────────────────────────────────────────────────────────
+   Mirror customer gradient button pattern exactly:
+     customer: bg-gradient-to-r from-primary to-secondary
+     admin:    var(--hema-gradient)
+   ───────────────────────────────────────────────────────────── */
 .btn-primary,
-.btn-submit {
-    background: var(--hema-gradient) !important;
-    border-color: var(--hema-primary) !important;
-    color: #fff !important;
-    border-radius: var(--hema-radius) !important;
-    font-weight: 600 !important;
-    font-family: "Urbanist", sans-serif !important;
-    transition: opacity 0.2s ease, box-shadow 0.2s ease !important;
-    box-shadow: 0 2px 8px rgba(177, 116, 87, 0.25) !important;
+.btn-submit,
+.btn-added,
+.page-header .btn-added {
+    background:    var(--hema-gradient)                    !important;
+    border-color:  var(--hema-primary)                     !important;
+    color:         #fff                                    !important;
+    border-radius: var(--hema-radius)                      !important;
+    font-weight:   600                                     !important;
+    box-shadow:    0 2px 8px rgba(177, 116, 87, 0.25)      !important;
+    transition:    opacity 0.2s ease, box-shadow 0.2s ease !important;
 }
 .btn-primary:hover,
-.btn-submit:hover {
-    opacity: 0.88 !important;
-    box-shadow: 0 4px 14px rgba(177, 116, 87, 0.35) !important;
-    color: #fff !important;
+.btn-submit:hover,
+.btn-added:hover {
+    opacity:    0.88                                       !important;
+    box-shadow: 0 4px 14px rgba(177, 116, 87, 0.35)       !important;
+    color:      #fff                                       !important;
 }
 .btn-primary:focus,
-.btn-submit:focus {
-    box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.25) !important;
+.btn-submit:focus,
+.btn-added:focus {
+    box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.25)        !important;
 }
 
-/* Secondary */
+/* Secondary / outlined */
 .btn-secondary {
-    background: #f3ede9 !important;
-    border-color: var(--hema-border) !important;
-    color: var(--hema-primary) !important;
-    border-radius: var(--hema-radius) !important;
-    font-weight: 600 !important;
+    background:    #f3ede9              !important;
+    border-color:  var(--hema-border)   !important;
+    color:         var(--hema-primary)  !important;
+    border-radius: var(--hema-radius)   !important;
+    font-weight:   600                  !important;
 }
 .btn-secondary:hover {
-    background: #ecddd5 !important;
-    color: var(--hema-primary-dark) !important;
+    background: #ecddd5                 !important;
+    color:      var(--hema-primary-dark) !important;
 }
 
-/* Cancel / outline */
+/* Cancel */
 .btn-cancel {
-    background: #f5f5f5 !important;
-    border-color: #ddd !important;
-    color: var(--hema-text-dark) !important;
-    border-radius: var(--hema-radius) !important;
-    font-weight: 600 !important;
+    background:    #f5f5f5              !important;
+    border-color:  #ddd                 !important;
+    color:         var(--hema-text-dark) !important;
+    border-radius: var(--hema-radius)   !important;
+    font-weight:   600                  !important;
 }
 .btn-cancel:hover {
-    background: #e8e8e8 !important;
-    color: var(--hema-text-dark) !important;
+    background: #e8e8e8                 !important;
+    color:      var(--hema-text-dark)   !important;
 }
 
-/* Info, success, warning, danger — keep bootstrap semantics, adjust radius */
+/* Semantic variants — radius & font only (keep Bootstrap colours) */
 .btn-info,
 .btn-success,
 .btn-warning,
 .btn-danger {
     border-radius: var(--hema-radius) !important;
-    font-weight: 600 !important;
-    font-family: "Urbanist", sans-serif !important;
+    font-weight:   600                !important;
 }
 
-/* btn-added (page-header tambah) */
-.btn-added,
-.page-header .btn-added {
-    background: var(--hema-gradient) !important;
-    border-color: var(--hema-primary) !important;
-    color: #fff !important;
-    border-radius: var(--hema-radius) !important;
-    font-weight: 600 !important;
-}
-.btn-added:hover {
-    opacity: 0.88 !important;
+/* Ensure btn text never goes dark via the global a{} rule */
+.btn, .btn:hover, .btn:focus,
+.btn-primary a, .btn-primary a:hover,
+.btn-added a,   .btn-added a:hover {
     color: #fff !important;
 }
 
-/* ============================================================
-   FORMS
-   ============================================================ */
-.form-group label {
-    color: var(--hema-text-dark) !important;
-    font-weight: 500 !important;
-    font-size: 13.5px !important;
-    margin-bottom: 5px !important;
+/* ─────────────────────────────────────────────────────────────
+   8. FORMS & SELECT2
+   ───────────────────────────────────────────────────────────── */
+.form-group label,
+.form-label {
+    color:         var(--hema-text-dark) !important;
+    font-weight:   500                   !important;
+    font-size:     13.5px               !important;
+    margin-bottom: 5px                   !important;
 }
+
 .form-control,
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group input[type="email"],
-.form-group input[type="password"],
-.form-group input[type="file"],
-.form-group textarea,
+.form-group input,
 .form-group select,
-input,
+.form-group textarea,
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
 select,
 textarea {
-    border: 1.5px solid var(--hema-border) !important;
-    border-radius: var(--hema-radius) !important;
-    font-family: "Urbanist", sans-serif !important;
-    font-size: 14px !important;
-    color: var(--hema-text-dark) !important;
-    background-color: #fff !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    border:           1.5px solid var(--hema-border)  !important;
+    border-radius:    var(--hema-radius)               !important;
+    font-size:        14px                             !important;
+    color:            var(--hema-text-dark)            !important;
+    background-color: #fff                             !important;
+    transition:       border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 .form-control:focus,
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus,
-input:focus,
+input:not([type="checkbox"]):not([type="radio"]):focus,
 select:focus,
 textarea:focus {
-    border-color: var(--hema-primary) !important;
-    box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.12) !important;
-    outline: none !important;
+    border-color: var(--hema-primary)                   !important;
+    box-shadow:   0 0 0 3px rgba(177, 116, 87, 0.12)   !important;
+    outline:      none                                  !important;
 }
 
 /* Select2 */
 .select2-container--default .select2-selection--single {
-    border: 1.5px solid var(--hema-border) !important;
-    border-radius: var(--hema-radius) !important;
-    height: 38px !important;
+    border:        1.5px solid var(--hema-border) !important;
+    border-radius: var(--hema-radius)             !important;
+    height:        38px                           !important;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 36px !important;
-    color: var(--hema-text-dark) !important;
-    font-family: "Urbanist", sans-serif !important;
+    line-height: 36px                  !important;
+    color:       var(--hema-text-dark) !important;
 }
 .select2-container--default.select2-container--open .select2-selection--single,
 .select2-container--default.select2-container--focus .select2-selection--single {
-    border-color: var(--hema-primary) !important;
-    box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.12) !important;
+    border-color: var(--hema-primary)                  !important;
+    box-shadow:   0 0 0 3px rgba(177, 116, 87, 0.12)  !important;
 }
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
     background-color: var(--hema-primary) !important;
-    color: #fff !important;
+    color:            #fff                !important;
 }
 
-/* ============================================================
-   TABLES
-   ============================================================ */
+
+/* ─────────────────────────────────────────────────────────────
+   9. TABLES & DATATABLES
+   ───────────────────────────────────────────────────────────── */
 .table thead th {
-    background: #faf0ea !important;
-    color: var(--hema-text-dark) !important;
-    font-weight: 700 !important;
-    font-size: 13px !important;
-    border-bottom: 2px solid var(--hema-border) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.4px !important;
+    background:       #faf0ea             !important;
+    color:            var(--hema-text-dark) !important;
+    font-weight:      700                 !important;
+    font-size:        13px                !important;
+    border-bottom:    2px solid var(--hema-border) !important;
+    text-transform:   uppercase           !important;
+    letter-spacing:   0.4px              !important;
 }
-.table tbody tr:hover {
-    background-color: #fdf7f4 !important;
-}
+.table tbody tr:hover { background-color: #fdf7f4 !important; }
 .table td,
 .table th {
-    border-color: var(--hema-border) !important;
-    vertical-align: middle !important;
-    font-size: 14px !important;
+    border-color:   var(--hema-border) !important;
+    vertical-align: middle             !important;
+    font-size:      14px               !important;
 }
 
 /* DataTables pagination */
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background: var(--hema-gradient) !important;
-    border-color: var(--hema-primary) !important;
-    color: #fff !important;
-    border-radius: var(--hema-radius) !important;
+    background:    var(--hema-gradient)  !important;
+    border-color:  var(--hema-primary)   !important;
+    color:         #fff                  !important;
+    border-radius: var(--hema-radius)    !important;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #f3ede9 !important;
-    border-color: var(--hema-border) !important;
-    color: var(--hema-primary) !important;
-    border-radius: var(--hema-radius) !important;
+    background:    #f3ede9              !important;
+    border-color:  var(--hema-border)   !important;
+    color:         var(--hema-primary)  !important;
+    border-radius: var(--hema-radius)   !important;
 }
 .dataTables_wrapper .dataTables_filter input {
-    border: 1.5px solid var(--hema-border) !important;
-    border-radius: var(--hema-radius) !important;
-    font-family: "Urbanist", sans-serif !important;
+    border:        1.5px solid var(--hema-border) !important;
+    border-radius: var(--hema-radius)             !important;
 }
 .dataTables_wrapper .dataTables_filter input:focus {
-    border-color: var(--hema-primary) !important;
-    box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.12) !important;
+    border-color: var(--hema-primary)                  !important;
+    box-shadow:   0 0 0 3px rgba(177, 116, 87, 0.12)  !important;
 }
 
-/* ============================================================
-   BADGES
-   ============================================================ */
+/* ─────────────────────────────────────────────────────────────
+   10. BADGES
+   ───────────────────────────────────────────────────────────── */
 .badge {
-    font-family: "Urbanist", sans-serif !important;
-    font-weight: 600 !important;
-    border-radius: 30px !important;
-    padding: 4px 10px !important;
+    font-weight:   600                    !important;
+    border-radius: var(--hema-radius-pill) !important;
+    padding:       4px 10px               !important;
 }
 
-/* ============================================================
-   ALERTS / FLASH
-   ============================================================ */
-.alert-success {
-    background: #f0faf4 !important;
-    border-color: #c3e6cb !important;
-    color: #2d6a4f !important;
+/* ─────────────────────────────────────────────────────────────
+   11. ALERTS / FLASH MESSAGES
+   ───────────────────────────────────────────────────────────── */
+.alert {
     border-radius: var(--hema-radius) !important;
+}
+.alert-success {
+    background:   #f0faf4  !important;
+    border-color: #c3e6cb  !important;
+    color:        #2d6a4f  !important;
 }
 .alert-danger {
-    background: #fdf2f2 !important;
-    border-color: #f5c6cb !important;
-    color: #842029 !important;
-    border-radius: var(--hema-radius) !important;
+    background:   #fdf2f2  !important;
+    border-color: #f5c6cb  !important;
+    color:        #842029  !important;
 }
 .alert-warning {
-    background: #fff8ee !important;
-    border-color: #ffd591 !important;
-    color: #7d4e00 !important;
-    border-radius: var(--hema-radius) !important;
+    background:   #fff8ee  !important;
+    border-color: #ffd591  !important;
+    color:        #7d4e00  !important;
+}
+.alert-info {
+    background:   #f0f7ff  !important;
+    border-color: #b8d9f5  !important;
+    color:        #0a4d80  !important;
 }
 
-/* ============================================================
-   LINKS
-   ============================================================ */
+/* ─────────────────────────────────────────────────────────────
+   12. LINKS
+   ─────────────────────────────────────────────────────────────
+   Global link color = brand primary.
+   Exceptions for white text inside buttons are handled below.
+   ───────────────────────────────────────────────────────────── */
 a {
-    color: var(--hema-primary) !important;
-    transition: color 0.2s ease !important;
+    color:      var(--hema-primary)      !important;
+    transition: color 0.2s ease         !important;
 }
 a:hover {
-    color: var(--hema-primary-dark) !important;
+    color: var(--hema-primary-dark)      !important;
 }
-
-/* Keep bootstrap btn text white */
-.btn-primary a,
-.btn-secondary a,
-.btn-added a {
+/* White-text exceptions: buttons, sidebar active links */
+.btn-primary, .btn-primary:hover, .btn-primary:focus,
+.btn-added,   .btn-added:hover,   .btn-added:focus,
+.btn-submit,  .btn-submit:hover,  .btn-submit:focus,
+.sidebar-menu > ul > li.active > a,
+.sidebar-menu > ul > li > a:hover {
+    color: #fff !important;
+}
+/* White text inside Bootstrap semantic buttons */
+.btn-success, .btn-danger, .btn-warning, .btn-info {
     color: #fff !important;
 }
 
-/* ============================================================
-   SWEETALERT2 — selaraskan warna confirm button
-   ============================================================ */
-.swal2-confirm {
-    background: var(--hema-gradient) !important;
-    border-color: var(--hema-primary) !important;
-    color: #fff !important;
-    border-radius: var(--hema-radius) !important;
-    font-family: "Urbanist", sans-serif !important;
-    font-weight: 600 !important;
-}
-.swal2-cancel {
-    background: #f5f5f5 !important;
-    border-color: #ddd !important;
-    color: var(--hema-text-dark) !important;
-    border-radius: var(--hema-radius) !important;
-    font-family: "Urbanist", sans-serif !important;
+
+/* ─────────────────────────────────────────────────────────────
+   13. SWEETALERT2
+   ───────────────────────────────────────────────────────────── */
+.swal2-popup {
+    font-family:   "Urbanist", sans-serif !important;
+    border-radius: calc(var(--hema-radius) * 2) !important;
 }
 .swal2-title,
-.swal2-html-container {
-    font-family: "Urbanist", sans-serif !important;
+.swal2-html-container { font-family: "Urbanist", sans-serif !important; }
+.swal2-confirm {
+    background:    var(--hema-gradient) !important;
+    border-color:  var(--hema-primary)  !important;
+    color:         #fff                 !important;
+    border-radius: var(--hema-radius)   !important;
+    font-weight:   600                  !important;
+}
+.swal2-cancel {
+    background:    #f5f5f5              !important;
+    border-color:  #ddd                 !important;
+    color:         var(--hema-text-dark) !important;
+    border-radius: var(--hema-radius)   !important;
 }
 
-/* ============================================================
-   SCROLLBAR (webkit)
-   ============================================================ */
-.slimScrollDiv ::-webkit-scrollbar,
-::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-}
-::-webkit-scrollbar-track {
-    background: var(--hema-bg);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--hema-primary-light);
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--hema-primary);
+/* ─────────────────────────────────────────────────────────────
+   14. UTILITY CLASSES
+   ─────────────────────────────────────────────────────────────
+   Shared between admin blade templates.
+   Named to match Tailwind conventions where possible.
+   ───────────────────────────────────────────────────────────── */
+
+/* Font weights */
+.fw-400 { font-weight: 400 !important; }
+.fw-500 { font-weight: 500 !important; }
+.fw-600 { font-weight: 600 !important; }
+.fw-700 { font-weight: 700 !important; }
+
+/* Brand text colours */
+.text-primary-brand  { color: var(--hema-primary)      !important; }
+.text-secondary-brand{ color: var(--hema-secondary)    !important; }
+.text-muted-brand    { color: var(--hema-text-muted)   !important; }
+.text-dark-brand     { color: var(--hema-text-dark)    !important; }
+
+/* Brand background tints */
+.bg-primary-subtle   { background-color: var(--hema-primary-subtle) !important; }
+.bg-brand-light      { background-color: #faf0ea                    !important; }
+
+/* Border */
+.border-brand        { border-color: var(--hema-border) !important; }
+
+/* Gap utility for older Bootstrap 4 grids */
+.gap-2 { gap: 0.5rem  !important; }
+.gap-3 { gap: 0.75rem !important; }
+
+/* ─────────────────────────────────────────────────────────────
+   15. BOOTSTRAP LEAK GUARD
+   ─────────────────────────────────────────────────────────────
+   Neutralise default Bootstrap-4 blue (#007bff) that can bleed
+   through on focus rings, active links, and certain components.
+   ───────────────────────────────────────────────────────────── */
+
+/* Focus ring — replace blue with brand warm brown */
+*:focus { outline-color: var(--hema-primary) !important; }
+.form-control:focus { box-shadow: 0 0 0 3px rgba(177, 116, 87, 0.18) !important; }
+
+/* Bootstrap .text-primary utility → brand primary */
+.text-primary { color: var(--hema-primary) !important; }
+
+/* Bootstrap .bg-primary → brand gradient */
+.bg-primary { background: var(--hema-gradient) !important; }
+
+/* Bootstrap link-primary colour */
+.link-primary { color: var(--hema-primary) !important; }
+
+/* Page-header "Add" / action button — override any default .btn-primary blue */
+.page-header a.btn,
+.page-header button.btn {
+    font-weight: 600 !important;
 }
 
-/* ============================================================
-   RESPONSIVE — mobile sidebar overlay
-   ============================================================ */
+/* Modal header */
+.modal-header {
+    border-bottom:  1px solid var(--hema-border) !important;
+    background:     var(--hema-card-bg)          !important;
+}
+.modal-content {
+    border-radius:  calc(var(--hema-radius) * 1.5) !important;
+    border:         1px solid var(--hema-border)   !important;
+    box-shadow:     var(--hema-shadow-lg)           !important;
+}
+.modal-footer { border-top: 1px solid var(--hema-border) !important; }
+
+/* Nav-tabs (used in some detail pages) */
+.nav-tabs .nav-link.active {
+    color:        var(--hema-primary) !important;
+    border-color: var(--hema-border) var(--hema-border) #fff !important;
+    font-weight:  600 !important;
+}
+.nav-tabs .nav-link:hover {
+    color:        var(--hema-primary) !important;
+    border-color: var(--hema-border) var(--hema-border) transparent !important;
+}
+
+/* Pagination (outside DataTables) */
+.page-item.active .page-link {
+    background:   var(--hema-primary) !important;
+    border-color: var(--hema-primary) !important;
+}
+.page-link {
+    color:         var(--hema-primary) !important;
+    border-color:  var(--hema-border)  !important;
+    border-radius: var(--hema-radius)  !important;
+}
+.page-link:hover {
+    background:   #f3ede9              !important;
+    color:        var(--hema-primary)  !important;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   16. CUSTOM SCROLLBAR (webkit)
+   ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar          { width: 5px; height: 5px; }
+::-webkit-scrollbar-track    { background: var(--hema-bg); }
+::-webkit-scrollbar-thumb    { background: var(--hema-primary-light); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--hema-primary); }
+
+/* ─────────────────────────────────────────────────────────────
+   17. RESPONSIVE
+   ───────────────────────────────────────────────────────────── */
 @media (max-width: 991px) {
-    .sidebar {
-        background: var(--hema-sidebar-bg) !important;
-    }
+    .sidebar { background: var(--hema-sidebar-bg) !important; }
+
+    /* Compact stat cards on mobile */
+    .stat-card .stat-value { font-size: 18px; }
+    .stat-card .stat-icon  { width: 38px; height: 38px; }
+}
+
+@media (max-width: 575px) {
+    /* Page title sizing */
+    .page-title h4 { font-size: 16px !important; }
+
+    /* Shortcut cards: smaller text on xs */
+    .shortcut-card .shortcut-label { font-size: 11px; }
 }
