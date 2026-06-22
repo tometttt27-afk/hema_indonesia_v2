@@ -14,10 +14,13 @@
   --hema-gradient:       linear-gradient(135deg,#b17457 0%,#c29470 100%);
 
   --sidebar-bg:          #1a1a2e;
-  --sidebar-surface:     #16213e;
+  --sidebar-surface:     #232340;
   --sidebar-active:      linear-gradient(135deg,#b17457 0%,#c29470 100%);
-  --sidebar-text:        rgba(255,255,255,.72);
-  --sidebar-text-muted:  rgba(255,255,255,.42);
+  /* Kontras tinggi: teks putih solid, WCAG AA ≥ 4.5:1 pada bg #1a1a2e */
+  --sidebar-text:        #e8ddd7;
+  --sidebar-text-hover:  #ffffff;
+  --sidebar-text-muted:  #8a8aaa;
+  --sidebar-text-label:  #6a6a8a;
 
   --topbar-bg:           #ffffff;
   --topbar-border:       #f0ece8;
@@ -140,21 +143,37 @@ body{
   height:3px;
   background:var(--hema-gradient);
 }
-/* section label */
+
+/* ─── section label (menu-title) ─────────────────────────── */
+/* Diberi warna tersendiri agar tidak disalah-artikan sbg link */
 .sidebar-menu ul li.menu-title{
-  color:var(--sidebar-text-muted) !important;
-  font-size:10.5px !important;
-  font-weight:700 !important;
-  letter-spacing:1.2px !important;
+  color:var(--sidebar-text-label) !important;
+  font-size:10px !important;
+  font-weight:800 !important;
+  letter-spacing:1.8px !important;
   text-transform:uppercase !important;
-  padding:18px 22px 6px !important;
+  padding:20px 24px 6px !important;
+  pointer-events:none !important;
+  user-select:none !important;
 }
-/* menu item */
-.sidebar-menu > ul > li > a{
+.sidebar-menu ul li.menu-title span{
+  /* pastikan tidak ikut override global a{color} */
+  color:var(--sidebar-text-label) !important;
+}
+
+/* ─── menu item link ──────────────────────────────────────── */
+/*
+  Override global link rule (seksi 12) yang menetapkan
+  a { color: var(--hema-primary) !important }
+  sehingga teks menu sidebar tetap kontras tinggi.
+*/
+.sidebar-menu > ul > li > a,
+.sidebar-menu > ul > li > a:visited,
+.sidebar-menu > ul > li > a:link{
   display:flex !important;
   align-items:center !important;
   gap:10px !important;
-  color:var(--sidebar-text) !important;
+  color:var(--sidebar-text) !important;       /* #e8ddd7 — kontras tinggi */
   padding:11px 14px !important;
   margin:2px 12px !important;
   border-radius:var(--radius) !important;
@@ -162,58 +181,91 @@ body{
   font-weight:500 !important;
   transition:background .2s,color .2s,box-shadow .2s !important;
   position:relative !important;
+  text-decoration:none !important;
 }
 .sidebar-menu > ul > li > a:hover{
-  background:rgba(177,116,87,.15) !important;
-  color:#fff !important;
+  background:rgba(177,116,87,.18) !important;
+  color:var(--sidebar-text-hover) !important;  /* #ffffff */
 }
 .sidebar-menu > ul > li.active > a,
-.sidebar-menu > ul > li.active > a:focus{
+.sidebar-menu > ul > li.active > a:focus,
+.sidebar-menu > ul > li.active > a:hover{
   background:var(--sidebar-active) !important;
-  color:#fff !important;
-  box-shadow:0 4px 14px rgba(177,116,87,.38) !important;
+  color:#ffffff !important;
+  box-shadow:0 4px 14px rgba(177,116,87,.40) !important;
 }
-/* icons */
-.sidebar-menu > ul > li > a img{
-  width:18px !important;height:18px !important;
-  filter:brightness(0) invert(.75) !important;flex-shrink:0;
-}
-.sidebar-menu > ul > li.active > a img,
-.sidebar-menu > ul > li > a:hover img{filter:brightness(0) invert(1) !important;}
+
+/* ─── Bootstrap Icons di dalam menu ──────────────────────── */
+/*
+  Tanpa ini, aturan global "a .bi" akan mengambil warna
+  --hema-primary (cokelat) yang tidak kontras di bg gelap.
+*/
 .sidebar-menu > ul > li > a .bi{
-  font-size:16px;color:var(--sidebar-text) !important;flex-shrink:0;
+  font-size:17px !important;
+  color:var(--sidebar-text) !important;       /* #e8ddd7 */
+  flex-shrink:0 !important;
+  transition:color .2s !important;
 }
-.sidebar-menu > ul > li.active > a .bi,
-.sidebar-menu > ul > li > a:hover .bi{color:#fff !important;}
-/* arrow */
+.sidebar-menu > ul > li > a:hover .bi{
+  color:#ffffff !important;
+}
+.sidebar-menu > ul > li.active > a .bi{
+  color:#ffffff !important;
+}
+
+/* ─── SVG/IMG icons ───────────────────────────────────────── */
+.sidebar-menu > ul > li > a img{
+  width:18px !important;
+  height:18px !important;
+  /* invert(.9) → off-white #e6e6e6 agar kontras di #1a1a2e */
+  filter:brightness(0) invert(.90) !important;
+  flex-shrink:0 !important;
+}
+.sidebar-menu > ul > li > a:hover img,
+.sidebar-menu > ul > li.active > a img{
+  filter:brightness(0) invert(1) !important;  /* full white */
+}
+
+/* ─── menu-arrow chevron ──────────────────────────────────── */
 .menu-arrow{
   margin-left:auto !important;
-  width:16px !important;height:16px !important;
-  background:rgba(255,255,255,.12) !important;
+  width:16px !important;
+  height:16px !important;
+  background:rgba(255,255,255,.14) !important;
   border-radius:3px !important;
 }
-.sidebar-menu > ul > li.active > a .menu-arrow,
-.sidebar-menu > ul > li > a:hover .menu-arrow{
-  background:rgba(255,255,255,.25) !important;
+.sidebar-menu > ul > li > a:hover .menu-arrow,
+.sidebar-menu > ul > li.active > a .menu-arrow{
+  background:rgba(255,255,255,.28) !important;
 }
-/* submenu */
+
+/* ─── submenu panel ───────────────────────────────────────── */
 .sidebar .sub-menu{
-  background:rgba(0,0,0,.20) !important;
+  background:rgba(0,0,0,.28) !important;
   border-radius:0 0 var(--radius) var(--radius) !important;
   margin:0 12px !important;
   overflow:hidden !important;
 }
-.sidebar .sub-menu a{
-  color:rgba(255,255,255,.62) !important;
-  padding:9px 14px 9px 40px !important;
+.sidebar .sub-menu a,
+.sidebar .sub-menu a:visited,
+.sidebar .sub-menu a:link{
+  color:#c8c0bc !important;    /* off-white — beda dari item utama */
+  padding:9px 14px 9px 42px !important;
   font-size:13px !important;
-  transition:color .18s,padding-left .18s !important;
+  font-weight:400 !important;
+  transition:color .18s,padding-left .18s,background .18s !important;
   display:block !important;
+  text-decoration:none !important;
 }
 .sidebar .sub-menu a:hover,
 .sidebar .sub-menu li.active > a{
-  color:var(--hema-primary-light) !important;
-  padding-left:46px !important;
+  background:rgba(177,116,87,.14) !important;
+  color:#f0e8e4 !important;    /* hampir putih */
+  padding-left:48px !important;
+}
+.sidebar .sub-menu li.active > a{
+  color:var(--hema-primary-light) !important;  /* #d4a882 — brand accent */
+  font-weight:600 !important;
 }
 
 /* ─── 5. PAGE WRAPPER & HEADER ────────────────────────────── */
@@ -495,19 +547,38 @@ body{
 .alert-info   {background:#eff6ff !important;border-color:#bfdbfe !important;color:#1e40af !important;}
 
 /* ─── 12. LINKS ───────────────────────────────────────────── */
-a{color:var(--hema-primary) !important;transition:color .18s !important;}
-a:hover{color:var(--hema-primary-dark) !important;}
-/* white exceptions */
+/*
+  Scoped ke area konten saja — TIDAK berlaku ke .sidebar & .header-left
+  agar warna teks sidebar (seksi 4, kontras tinggi) tidak di-override.
+*/
+.page-wrapper a,
+.card a,
+.dropdown-menu a,
+.table a,
+.modal a,
+.alert a,
+.breadcrumb a {
+  color:var(--hema-primary) !important;
+  transition:color .18s !important;
+}
+.page-wrapper a:hover,
+.card a:hover,
+.dropdown-menu a:hover,
+.table a:hover,
+.modal a:hover {
+  color:var(--hema-primary-dark) !important;
+}
+/* white exceptions — btn & badge selalu putih */
 .btn-primary,.btn-primary:hover,.btn-primary a,
 .btn-added,.btn-added:hover,
 .btn-submit,.btn-submit:hover,
-.btn-info,.btn-success,.btn-warning,.btn-danger,
-.sidebar-menu > ul > li.active > a,
-.sidebar-menu > ul > li > a:hover,
-.badge.bg-success,.badge.bg-danger,.badge.bg-info,.badge.bg-warning{
+.btn-info,.btn-success,.btn-danger,
+.badge.bg-success,.badge.bg-danger,.badge.bg-info{
   color:#fff !important;
 }
 .badge.bg-warning{color:#1e1410 !important;}
+/* user-dropdown tetap gelap */
+.menu-drop-user .dropdown-item{color:var(--text-body) !important;}
 
 /* ─── 13. MODAL ───────────────────────────────────────────── */
 .modal-content{
