@@ -4,440 +4,211 @@
 
 <div class="page-header">
     <div class="page-title">
+        <nav class="breadcrumb-admin">
+            <a href="{{ url('/product-list') }}">Data Produk</a>
+            <span class="sep">/</span>
+            <span class="current">Edit: {{ $data->name }}</span>
+        </nav>
         <h4>Edit Produk</h4>
-        <h6>Perubahan akan langsung diperbarui di database dan halaman katalog customer</h6>
+        <h6>Perubahan langsung diperbarui di database dan halaman katalog customer</h6>
     </div>
-    <a href="{{ url('/product-list') }}" class="btn btn-secondary">
-        <i class="bi bi-arrow-left"></i> Kembali
+    <a href="{{ url('/product-list') }}" class="btn btn-secondary btn-cancel-nav" data-form="form-edit-product">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Kembali
     </a>
 </div>
 
-{{-- ── Validation errors summary ── --}}
 @if($errors->any())
 <div class="alert alert-danger d-flex align-items-start gap-3 mb-4">
-    <i class="bi bi-exclamation-triangle-fill flex-shrink-0 mt-1"></i>
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" class="flex-shrink-0 mt-1" style="color:var(--red);"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
     <div>
-        <strong>Terdapat {{ $errors->count() }} kesalahan. Periksa kembali form di bawah:</strong>
-        <ul class="mb-0 mt-1 ps-3">
-            @foreach($errors->all() as $error)
-                <li style="font-size:13px;">{{ $error }}</li>
-            @endforeach
-        </ul>
+        <strong>Terdapat {{ $errors->count() }} kesalahan:</strong>
+        <ul class="mb-0 mt-1 ps-3">@foreach($errors->all() as $e)<li style="font-size:13px;">{{ $e }}</li>@endforeach</ul>
     </div>
 </div>
 @endif
 
-{{--
-    ACTION  : PUT /product-list/edit-product-list/{code_product}
-    METHOD  : POST + @method('PUT') → Laravel baca sebagai PUT
-    ENCTYPE : multipart/form-data  → wajib agar file upload berjalan
-    Semua field di bawah langsung dikirim ke productsListUpdate()
-    yang memanggil $product->update([...]) ke tabel 'products'.
---}}
-<form action="{{ route('productsListPut', $data->code_product) }}"
-      method="POST"
-      enctype="multipart/form-data"
-      id="form-edit-product"
-      novalidate>
-    @csrf
-    @method('PUT')
-
+<form action="{{ route('productsListPut', $data->code_product) }}" method="POST"
+      enctype="multipart/form-data" id="form-edit-product" novalidate>
+    @csrf @method('PUT')
     <div class="row g-3">
-
-        {{-- ════════════════════════════════════════════════
-             KOLOM KIRI — Info produk
-        ════════════════════════════════════════════════ --}}
         <div class="col-lg-8">
 
-            {{-- Card 1: Identitas --}}
             <div class="card mb-3">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="bi bi-tag me-2" style="color:#b17457;"></i>Identitas Produk
-                    </h5>
+                    <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24" style="color:var(--br);"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><circle cx="7" cy="7" r="1.5" fill="white"/></svg>
+                    <h5 class="card-title mb-0">Identitas Produk</h5>
                     <span class="badge badge-brand">{{ $data->code_product }}</span>
                 </div>
                 <div class="card-body">
                     <div class="row">
-
-                        {{-- Nama --}}
                         <div class="col-lg-8">
                             <div class="form-group">
                                 <label>Nama Produk <span class="text-danger">*</span></label>
-                                <input type="text"
-                                       name="name"
-                                       id="inp-name"
-                                       value="{{ old('name', $data->name) }}"
-                                       autocomplete="off"
-                                       class="{{ $errors->has('name') ? 'is-invalid' : '' }}">
-                                @error('name')
-                                    <div style="font-size:12px;color:#dc2626;margin-top:4px;">
-                                        <i class="bi bi-x-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @enderror
+                                <input type="text" name="name" id="inp-name" value="{{ old('name',$data->name) }}"
+                                       autocomplete="off" placeholder="Nama produk"
+                                       class="{{ $errors->has('name')?'is-invalid':'' }}">
+                                @error('name')<span class="field-error">{{ $message }}</span>@enderror
                             </div>
                         </div>
-
-                        {{-- Kode (readonly) --}}
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Kode Produk</label>
-                                <input type="text"
-                                       name="code_product"
-                                       value="{{ $data->code_product }}"
-                                       readonly
-                                       style="background:#f8f6f3;cursor:not-allowed;color:#7a6255;">
-                                <small style="font-size:11px;color:#a89080;margin-top:3px;display:block;">
-                                    Kode tidak dapat diubah
-                                </small>
+                                <input type="text" name="code_product" value="{{ $data->code_product }}" readonly>
+                                <small style="font-size:11px;color:var(--tx-4);margin-top:3px;display:block;">Kode tidak dapat diubah</small>
                             </div>
                         </div>
-
-                        {{-- Kategori --}}
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Kategori <span class="text-danger">*</span></label>
-                                <select name="category_id"
-                                        class="js-example-basic-single select2 {{ $errors->has('category_id') ? 'is-invalid' : '' }}">
+                                <select name="category_id" class="js-example-basic-single select2 {{ $errors->has('category_id')?'is-invalid':'' }}">
                                     <option value="">— Pilih Kategori —</option>
                                     @foreach($categories as $cat)
-                                        <option value="{{ $cat->id }}"
-                                            {{ old('category_id', $data->category_id) == $cat->id ? 'selected' : '' }}>
-                                            {{ $cat->name }}
-                                        </option>
+                                        <option value="{{ $cat->id }}" {{ old('category_id',$data->category_id)==$cat->id?'selected':'' }}>{{ $cat->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('category_id')
-                                    <div style="font-size:12px;color:#dc2626;margin-top:4px;">
-                                        <i class="bi bi-x-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @enderror
+                                @error('category_id')<span class="field-error">{{ $message }}</span>@enderror
                             </div>
                         </div>
-
-                        {{-- Ukuran --}}
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Ukuran Tersedia <span class="text-danger">*</span></label>
-                                @php
-                                    // Ambil dari old() saat validasi gagal, fallback ke DB
-                                    $currentSizes = old('size', $data->sizes_array);
-                                @endphp
-                                <select name="size[]"
-                                        class="form-control basic tagging {{ $errors->has('size') ? 'is-invalid' : '' }}"
-                                        multiple="multiple">
+                                @php $currentSizes=old('size',$data->sizes_array); @endphp
+                                <select name="size[]" class="form-control basic tagging {{ $errors->has('size')?'is-invalid':'' }}" multiple="multiple">
                                     @foreach(['xs','s','m','l','xl','xxl','xxxl','custom'] as $sz)
-                                        <option value="{{ $sz }}"
-                                            {{ in_array($sz, $currentSizes) ? 'selected' : '' }}>
-                                            {{ strtoupper($sz) }}
-                                        </option>
+                                        <option value="{{ $sz }}" {{ in_array($sz,$currentSizes)?'selected':'' }}>{{ strtoupper($sz) }}</option>
                                     @endforeach
                                 </select>
-                                @error('size')
-                                    <div style="font-size:12px;color:#dc2626;margin-top:4px;">
-                                        <i class="bi bi-x-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @enderror
+                                @error('size')<span class="field-error">{{ $message }}</span>@enderror
                             </div>
                         </div>
-
-                        {{-- Deskripsi --}}
                         <div class="col-12">
                             <div class="form-group mb-0">
                                 <label>Deskripsi Produk <span class="text-danger">*</span></label>
-                                <textarea name="description"
-                                          rows="5"
-                                          placeholder="Jelaskan detail produk: bahan, keunggulan, petunjuk perawatan..."
-                                          class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}">{{ old('description', $data->description) }}</textarea>
-                                @error('description')
-                                    <div style="font-size:12px;color:#dc2626;margin-top:4px;">
-                                        <i class="bi bi-x-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @enderror
+                                <textarea name="description" rows="5" placeholder="Detail produk..."
+                                          class="form-control {{ $errors->has('description')?'is-invalid':'' }}">{{ old('description',$data->description) }}</textarea>
+                                @error('description')<span class="field-error">{{ $message }}</span>@enderror
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
 
-            {{-- Card 2: Harga & Stok --}}
             <div class="card mb-3">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="bi bi-cash-stack me-2" style="color:#b17457;"></i>Harga &amp; Stok
-                    </h5>
-                    {{-- Live preview harga akhir --}}
-                    <div id="price-preview"
-                         style="font-size:13px;font-weight:700;color:#b17457;
-                                padding:5px 12px;background:#faf0ea;
-                                border-radius:6px;display:none;">
+                    <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24" style="color:var(--br);"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                    <h5 class="card-title mb-0">Harga &amp; Stok</h5>
+                    <div id="price-preview" style="font-size:13px;font-weight:700;color:var(--br);padding:5px 12px;background:var(--br-soft);border-radius:6px;display:none;">
                         Harga akhir: <span id="price-preview-val">—</span>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
-
-                        {{-- Harga --}}
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Harga (Rp) <span class="text-danger">*</span></label>
-                                <input type="number"
-                                       name="price"
-                                       id="inp-price"
-                                       value="{{ old('price', $data->price) }}"
-                                       min="0" step="100"
-                                       autocomplete="off"
-                                       class="{{ $errors->has('price') ? 'is-invalid' : '' }}">
-                                @error('price')
-                                    <div style="font-size:12px;color:#dc2626;margin-top:4px;">
-                                        <i class="bi bi-x-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @enderror
+                                <input type="number" name="price" id="inp-price" value="{{ old('price',$data->price) }}"
+                                       min="0" step="100" autocomplete="off" placeholder="Contoh: 150000"
+                                       class="{{ $errors->has('price')?'is-invalid':'' }}">
+                                @error('price')<span class="field-error">{{ $message }}</span>@enderror
                             </div>
                         </div>
-
-                        {{-- Diskon --}}
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Diskon (%)</label>
-                                <input type="number"
-                                       name="discount"
-                                       id="inp-discount"
-                                       value="{{ old('discount', $data->discount) }}"
-                                       min="0" max="100" step="1"
-                                       autocomplete="off"
-                                       class="{{ $errors->has('discount') ? 'is-invalid' : '' }}">
-                                @error('discount')
-                                    <div style="font-size:12px;color:#dc2626;margin-top:4px;">
-                                        <i class="bi bi-x-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @enderror
+                                <input type="number" name="discount" id="inp-discount" value="{{ old('discount',$data->discount) }}"
+                                       min="0" max="100" step="1" autocomplete="off" placeholder="0"
+                                       class="{{ $errors->has('discount')?'is-invalid':'' }}">
+                                @error('discount')<span class="field-error">{{ $message }}</span>@enderror
                             </div>
                         </div>
-
-                        {{-- Stok --}}
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Stok <span class="text-danger">*</span></label>
-                                <input type="number"
-                                       name="stock"
-                                       id="inp-stock"
-                                       value="{{ old('stock', $data->stock) }}"
-                                       min="0" step="1"
-                                       autocomplete="off"
-                                       class="{{ $errors->has('stock') ? 'is-invalid' : '' }}">
-                                @error('stock')
-                                    <div style="font-size:12px;color:#dc2626;margin-top:4px;">
-                                        <i class="bi bi-x-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @enderror
+                                <input type="number" name="stock" id="inp-stock" value="{{ old('stock',$data->stock) }}"
+                                       min="0" step="1" autocomplete="off" placeholder="Jumlah stok"
+                                       class="{{ $errors->has('stock')?'is-invalid':'' }}">
+                                @error('stock')<span class="field-error">{{ $message }}</span>@enderror
                             </div>
                         </div>
-
-                        {{-- Status --}}
                         <div class="col-lg-6">
                             <div class="form-group mb-0">
                                 <label>Status Produk <span class="text-danger">*</span></label>
-                                <select name="is_active"
-                                        class="select {{ $errors->has('is_active') ? 'is-invalid' : '' }}">
+                                <select name="is_active" class="select {{ $errors->has('is_active')?'is-invalid':'' }}">
                                     <option value="">— Pilih Status —</option>
-                                    <option value="1"
-                                        {{ old('is_active', $data->is_active) == '1' ? 'selected' : '' }}>
-                                        ✅ Aktif — langsung tampil di katalog
-                                    </option>
-                                    <option value="0"
-                                        {{ old('is_active', $data->is_active) == '0' ? 'selected' : '' }}>
-                                        🚫 Tidak Aktif — disembunyikan dari katalog
-                                    </option>
+                                    <option value="1" {{ old('is_active',$data->is_active)=='1'?'selected':'' }}>✅ Aktif</option>
+                                    <option value="0" {{ old('is_active',$data->is_active)=='0'?'selected':'' }}>🚫 Tidak Aktif</option>
                                 </select>
-                                @error('is_active')
-                                    <div style="font-size:12px;color:#dc2626;margin-top:4px;">
-                                        <i class="bi bi-x-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @enderror
+                                @error('is_active')<span class="field-error">{{ $message }}</span>@enderror
                             </div>
                         </div>
-
-                        {{-- Info box --}}
-                        <div class="col-lg-6">
-                            <div class="form-group mb-0">
-                                <label class="d-block">&nbsp;</label>
-                                <div style="background:#f0fdf6;border:1px solid #bbf7d0;
-                                            border-radius:6px;padding:9px 13px;font-size:12.5px;
-                                            color:#14532d;display:flex;align-items:center;gap:8px;">
-                                    <i class="bi bi-info-circle-fill flex-shrink-0"></i>
-                                    <span>Perubahan status <strong>Aktif</strong> langsung
-                                    mempengaruhi visibilitas produk di halaman customer.</span>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
+        </div>
 
-        </div>{{-- /col-lg-8 --}}
-
-
-        {{-- ════════════════════════════════════════════════
-             KOLOM KANAN — Gambar + Aksi
-        ════════════════════════════════════════════════ --}}
         <div class="col-lg-4">
-
-            {{-- Card: Foto Produk --}}
             <div class="card mb-3">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="bi bi-image me-2" style="color:#b17457;"></i>Foto Produk
-                    </h5>
+                    <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24" style="color:var(--br);"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                    <h5 class="card-title mb-0">Foto Produk</h5>
                 </div>
                 <div class="card-body">
-
-                    {{-- Foto saat ini dari DB --}}
-                    <div id="img-preview-wrap"
-                         style="margin-bottom:14px;text-align:center;">
-                        <img id="img-preview"
-                             src="{{ asset('uploads/products/' . $data->image) }}"
-                             alt="Foto produk"
-                             style="max-width:100%;max-height:200px;
-                                    border-radius:8px;object-fit:contain;
-                                    border:1.5px solid #ede3db;">
-                        <div id="img-preview-name"
-                             style="font-size:11px;color:#7a6255;margin-top:5px;">
-                            {{ $data->image }}
-                        </div>
+                    <div id="img-preview-wrap" style="margin-bottom:14px;text-align:center;">
+                        <img id="img-preview" src="{{ asset('uploads/products/'.$data->image) }}" alt="Foto produk"
+                             style="max-width:100%;max-height:200px;border-radius:8px;object-fit:contain;border:1px solid var(--bd);">
+                        <div id="img-preview-name" style="font-size:11px;color:var(--tx-3);margin-top:5px;">{{ $data->image }}</div>
                     </div>
-
-                    {{-- Upload zona (opsional — kosongkan jika tidak ganti) --}}
-                    <div class="image-upload" id="upload-zone"
-                         onclick="document.getElementById('inp-image').click()">
-                        <input name="image"
-                               id="inp-image"
-                               type="file"
+                    <div class="image-upload" id="upload-zone" onclick="document.getElementById('inp-image').click()">
+                        <input name="image" id="inp-image" type="file"
                                accept="image/jpeg,image/png,image/jpg,image/webp"
-                               style="display:none;"
-                               onchange="previewImage(this)">
+                               style="display:none;" onchange="previewImage(this)">
                         <div id="upload-placeholder">
-                            <img src="{{ asset('admin/img/icons/upload.svg') }}"
-                                 alt="Upload" style="width:38px;opacity:.40;">
-                            <h4 style="font-size:12.5px;color:#7a6255;margin-top:7px;">
-                                Klik untuk ganti foto
-                            </h4>
-                            <p style="font-size:11px;color:#a89080;margin-top:2px;">
-                                JPEG, PNG, WebP — Maks 2 MB<br>
-                                <em>Kosongkan jika tidak ingin mengganti</em>
-                            </p>
+                            <svg width="36" height="36" fill="currentColor" viewBox="0 0 24 24" style="color:var(--br-lt);opacity:.6;margin:0 auto 8px;"><path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                            <h4 style="font-size:12.5px;color:var(--tx-3);margin-top:0;">Klik untuk ganti foto</h4>
+                            <p style="font-size:11px;color:var(--tx-4);margin-top:2px;">Kosongkan jika tidak ingin mengganti</p>
                         </div>
                     </div>
-
-                    @error('image')
-                        <div style="font-size:12px;color:#dc2626;margin-top:6px;">
-                            <i class="bi bi-x-circle me-1"></i>{{ $message }}
-                        </div>
-                    @enderror
+                    @error('image')<span class="field-error mt-2 d-block">{{ $message }}</span>@enderror
                 </div>
             </div>
 
-            {{-- Card: Aksi --}}
             <div class="card">
                 <div class="card-body d-flex flex-column gap-2">
                     <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-check-lg"></i> Simpan Perubahan
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                        Simpan Perubahan
                     </button>
-                    <a href="{{ url('/product-list') }}" class="btn btn-secondary w-100">
-                        <i class="bi bi-x-lg"></i> Batal
+                    <a href="{{ url('/product-list') }}" class="btn btn-secondary w-100 btn-cancel-nav" data-form="form-edit-product">
+                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                        Batal
                     </a>
                 </div>
-                <div class="card-body pt-0">
-                    <div style="background:#fff8ee;border:1px solid #fde68a;
-                                border-radius:6px;padding:10px 13px;font-size:12px;
-                                color:#78350f;line-height:1.6;">
-                        <strong>Setelah simpan:</strong>
-                        <ul class="mb-0 mt-1 ps-3">
-                            <li>Database diperbarui langsung (<code>UPDATE products</code>)</li>
-                            <li>Daftar Produk admin menampilkan data terbaru</li>
-                            <li>Halaman <code>/product</code> customer ikut berubah</li>
-                            <li>Foto lama tetap jika tidak ada unggahan baru</li>
-                        </ul>
-                    </div>
-                </div>
             </div>
-
-        </div>{{-- /col-lg-4 --}}
-    </div>{{-- /row --}}
+        </div>
+    </div>
 </form>
 
-{{-- ════════════════════════════════════════════════════════
-     JAVASCRIPT — Live preview harga & gambar (sama dgn add.blade.php)
-════════════════════════════════════════════════════════ --}}
 <script>
-/* ── Live harga akhir ────────────────────────────────────── */
-(function () {
-    const priceEl    = document.getElementById('inp-price');
-    const discountEl = document.getElementById('inp-discount');
-    const previewBox = document.getElementById('price-preview');
-    const previewVal = document.getElementById('price-preview-val');
-
-    function updatePreview() {
-        const price    = parseFloat(priceEl?.value)    || 0;
-        const discount = parseFloat(discountEl?.value) || 0;
-        if (price <= 0) { previewBox.style.display = 'none'; return; }
-        const final = price - (price * discount / 100);
-        previewVal.textContent = 'Rp ' + final.toLocaleString('id-ID');
-        previewBox.style.display = 'block';
+(function(){
+    const priceEl=document.getElementById('inp-price'),discEl=document.getElementById('inp-discount'),
+          prevBox=document.getElementById('price-preview'),prevVal=document.getElementById('price-preview-val');
+    function upd(){const p=parseFloat(priceEl?.value)||0,d=parseFloat(discEl?.value)||0;if(p<=0){prevBox.style.display='none';return;}prevVal.textContent='Rp '+(p-p*d/100).toLocaleString('id-ID');prevBox.style.display='block';}
+    priceEl?.addEventListener('input',upd);discEl?.addEventListener('input',upd);upd();
+    const zone=document.getElementById('upload-zone'),inp=document.getElementById('inp-image');
+    if(zone&&inp){
+        zone.addEventListener('dragover',e=>{e.preventDefault();zone.style.borderColor='var(--br)';zone.style.background='var(--br-soft)';});
+        zone.addEventListener('dragleave',()=>{zone.style.borderColor='';zone.style.background='';});
+        zone.addEventListener('drop',e=>{e.preventDefault();zone.style.borderColor='';zone.style.background='';if(e.dataTransfer.files.length){inp.files=e.dataTransfer.files;previewImage(inp);}});
     }
-
-    priceEl?.addEventListener('input',    updatePreview);
-    discountEl?.addEventListener('input', updatePreview);
-    updatePreview(); // jalankan langsung saat halaman dimuat
 })();
-
-/* ── Preview gambar baru sebelum upload ──────────────────── */
-function previewImage(input) {
-    if (!input.files || !input.files[0]) return;
-    const file = input.files[0];
-
-    if (file.size > 2 * 1024 * 1024) {
-        alert('Ukuran gambar melebihi 2 MB. Pilih file yang lebih kecil.');
-        input.value = '';
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        document.getElementById('img-preview').src          = e.target.result;
-        document.getElementById('img-preview-name').textContent =
-            file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB) — akan mengganti foto lama';
-    };
-    reader.readAsDataURL(file);
+function previewImage(input){
+    if(!input.files||!input.files[0])return;
+    const file=input.files[0];
+    if(file.size>2*1024*1024){alert('Ukuran gambar melebihi 2 MB.');input.value='';return;}
+    const r=new FileReader();
+    r.onload=e=>{document.getElementById('img-preview').src=e.target.result;document.getElementById('img-preview-name').textContent=file.name+' ('+(file.size/1024).toFixed(1)+' KB) — mengganti foto lama';};
+    r.readAsDataURL(file);
 }
-
-/* ── Drag & drop ke upload zone ─────────────────────────── */
-(function () {
-    const zone  = document.getElementById('upload-zone');
-    const input = document.getElementById('inp-image');
-    if (!zone || !input) return;
-
-    zone.addEventListener('dragover', e => {
-        e.preventDefault();
-        zone.style.borderColor = '#b17457';
-        zone.style.background  = '#fdf5ef';
-    });
-    zone.addEventListener('dragleave', () => {
-        zone.style.borderColor = '';
-        zone.style.background  = '';
-    });
-    zone.addEventListener('drop', e => {
-        e.preventDefault();
-        zone.style.borderColor = '';
-        zone.style.background  = '';
-        if (e.dataTransfer.files.length) {
-            input.files = e.dataTransfer.files;
-            previewImage(input);
-        }
-    });
-})();
 </script>
-
 @endsection
