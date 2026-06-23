@@ -886,3 +886,387 @@ body.sidebar-hidden .page-wrapper { margin-left:0 !important; transition:margin-
   .page-title h4 { font-size:16px !important; }
   .btn { padding:8px 13px !important; font-size:12px !important; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════
+   27. PMO FLUTTER DESIGN SYSTEM
+   Terinspirasi dari projectPMO Flutter (pasar_mobile):
+   • InfoCard     → .pmo-info-card
+   • RoleMenuCard → .pmo-menu-card
+   • ProductCard  → .pmo-product-card
+   • AppButton    → .pmo-app-btn
+   • GradientHeader → .pmo-gradient-header
+   • StatusChip   → .pmo-chip-*
+   • Timeline     → .pmo-timeline
+   Palet: coklat-putih Hema (disesuaikan dari biru Flutter)
+═══════════════════════════════════════════════════════════ */
+
+/* ── InfoCard — terinspirasi widgets/info_card.dart ─────── */
+.pmo-info-card {
+  background   : var(--surf);
+  border       : 1px solid var(--bd);
+  border-radius: 12px;
+  padding      : 18px 14px;
+  text-align   : center;
+  box-shadow   : 0 2px 8px rgba(93,64,55,.08);
+  transition   : box-shadow .2s ease, transform .2s ease;
+  flex         : 1;
+}
+.pmo-info-card:hover {
+  box-shadow: 0 6px 20px rgba(93,64,55,.13);
+  transform : translateY(-3px);
+}
+.pmo-info-card .pmo-ic-avatar {
+  width        : 46px;
+  height       : 46px;
+  border-radius: 50%;
+  display      : flex;
+  align-items  : center;
+  justify-content: center;
+  margin       : 0 auto 10px;
+}
+.pmo-info-card .pmo-ic-avatar svg { width:22px; height:22px; }
+.pmo-info-card .pmo-ic-value {
+  font-size  : 22px;
+  font-weight: 800;
+  color      : var(--tx-1);
+  line-height: 1.2;
+  margin     : 0 0 4px;
+}
+.pmo-info-card .pmo-ic-label {
+  font-size  : 12px;
+  color      : var(--tx-3);
+  font-weight: 500;
+  margin     : 0;
+}
+
+/* Varian warna InfoCard (ikuti palet Flutter: brand/green/amber/blue) */
+.pmo-ic-brand .pmo-ic-avatar { background: rgba(121,85,72,.12); }
+.pmo-ic-brand .pmo-ic-avatar svg { color: var(--c-mid); }
+.pmo-ic-brand .pmo-ic-value   { color: var(--c-dark); }
+.pmo-ic-green .pmo-ic-avatar { background: rgba(22,163,74,.10); }
+.pmo-ic-green .pmo-ic-avatar svg { color: var(--green); }
+.pmo-ic-green .pmo-ic-value   { color: var(--green); }
+.pmo-ic-amber .pmo-ic-avatar { background: rgba(217,119,6,.10); }
+.pmo-ic-amber .pmo-ic-avatar svg { color: var(--amber); }
+.pmo-ic-amber .pmo-ic-value   { color: var(--amber); }
+.pmo-ic-blue  .pmo-ic-avatar { background: rgba(37,99,235,.10); }
+.pmo-ic-blue  .pmo-ic-avatar svg { color: var(--blue); }
+.pmo-ic-blue  .pmo-ic-value   { color: var(--blue); }
+
+
+/* ── RoleMenuCard — terinspirasi widgets/role_menu_card.dart */
+.pmo-menu-card {
+  background   : var(--surf);
+  border       : 1px solid var(--bd);
+  border-radius: 12px;
+  padding      : 16px 18px;
+  display      : flex;
+  align-items  : center;
+  gap          : 16px;
+  text-decoration: none;
+  margin-bottom: 10px;
+  box-shadow   : 0 1px 4px rgba(93,64,55,.06);
+  transition   : box-shadow .18s ease, transform .18s ease, border-color .18s;
+  cursor       : pointer;
+}
+.pmo-menu-card:hover {
+  box-shadow  : 0 4px 16px rgba(93,64,55,.12);
+  transform   : translateY(-2px);
+  border-color: var(--c-light);
+}
+.pmo-menu-card .pmo-mc-icon {
+  width        : 46px;
+  height       : 46px;
+  border-radius: 50%;
+  display      : flex;
+  align-items  : center;
+  justify-content: center;
+  flex-shrink  : 0;
+}
+.pmo-menu-card .pmo-mc-icon svg { width:22px; height:22px; }
+.pmo-menu-card .pmo-mc-body { flex: 1; min-width: 0; }
+.pmo-menu-card .pmo-mc-title {
+  font-size  : 14px;
+  font-weight: 700;
+  color      : var(--tx-1);
+  margin     : 0 0 3px;
+}
+.pmo-menu-card .pmo-mc-subtitle {
+  font-size  : 12px;
+  color      : var(--tx-3);
+  font-weight: 400;
+  margin     : 0;
+}
+.pmo-menu-card .pmo-mc-arrow { color: var(--tx-4); flex-shrink: 0; }
+.pmo-menu-card:hover .pmo-mc-arrow { color: var(--c-mid); }
+
+/* Varian icon warna (sesuai role/section) */
+.pmo-mc-brand .pmo-mc-icon { background: rgba(121,85,72,.12); }
+.pmo-mc-brand .pmo-mc-icon svg { color: var(--c-mid); }
+.pmo-mc-green .pmo-mc-icon { background: rgba(22,163,74,.10); }
+.pmo-mc-green .pmo-mc-icon svg { color: var(--green); }
+.pmo-mc-amber .pmo-mc-icon { background: rgba(217,119,6,.10); }
+.pmo-mc-amber .pmo-mc-icon svg { color: var(--amber); }
+.pmo-mc-blue  .pmo-mc-icon { background: rgba(37,99,235,.10); }
+.pmo-mc-blue  .pmo-mc-icon svg { color: var(--blue); }
+.pmo-mc-purple .pmo-mc-icon { background: rgba(124,58,237,.10); }
+.pmo-mc-purple .pmo-mc-icon svg { color: var(--purple); }
+.pmo-mc-red .pmo-mc-icon { background: rgba(220,38,38,.10); }
+.pmo-mc-red .pmo-mc-icon svg { color: var(--red); }
+
+
+/* ── ProductCard — terinspirasi widgets/product_card.dart ── */
+.pmo-product-card {
+  background   : var(--surf);
+  border       : 1px solid var(--bd);
+  border-radius: 12px;
+  padding      : 14px 16px;
+  display      : flex;
+  align-items  : center;
+  gap          : 14px;
+  margin-bottom: 10px;
+  box-shadow   : 0 1px 6px rgba(93,64,55,.06);
+  transition   : box-shadow .18s ease, transform .18s ease;
+}
+.pmo-product-card:hover {
+  box-shadow: 0 4px 16px rgba(93,64,55,.12);
+  transform : translateY(-2px);
+}
+.pmo-product-card .pmo-pc-img {
+  width        : 52px;
+  height       : 52px;
+  border-radius: 50%;
+  background   : rgba(121,85,72,.10);
+  display      : flex;
+  align-items  : center;
+  justify-content: center;
+  flex-shrink  : 0;
+  overflow     : hidden;
+}
+.pmo-product-card .pmo-pc-img img {
+  width:52px; height:52px; object-fit:cover; border-radius:50%;
+}
+.pmo-product-card .pmo-pc-img svg { width:24px; height:24px; color:var(--c-mid); }
+.pmo-product-card .pmo-pc-body { flex:1; min-width:0; }
+.pmo-product-card .pmo-pc-name {
+  font-size:14px; font-weight:700; color:var(--tx-1);
+  margin:0 0 3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.pmo-product-card .pmo-pc-price {
+  font-size:13px; color:var(--c-mid); font-weight:600; margin:0 0 2px;
+}
+.pmo-product-card .pmo-pc-stock {
+  font-size:12px; font-weight:500; margin:0;
+}
+.pmo-product-card .pmo-pc-stock.in-stock  { color: var(--green); }
+.pmo-product-card .pmo-pc-stock.out-stock { color: var(--red); }
+.pmo-product-card .pmo-pc-arrow { color:var(--tx-4); flex-shrink:0; }
+.pmo-product-card:hover .pmo-pc-arrow { color:var(--c-mid); }
+
+/* ── AppButton — terinspirasi widgets/app_button.dart ────── */
+.pmo-app-btn {
+  width          : 100%;
+  height         : 48px;
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+  gap            : 8px;
+  border         : none;
+  border-radius  : 10px;
+  font-family    : "Urbanist", sans-serif;
+  font-size      : 15px;
+  font-weight    : 600;
+  cursor         : pointer;
+  transition     : opacity .18s ease, transform .12s ease, box-shadow .18s ease;
+  text-decoration: none;
+  white-space    : nowrap;
+}
+.pmo-app-btn:active { transform: translateY(1px) !important; }
+.pmo-app-btn:disabled { opacity:.55 !important; cursor:not-allowed !important; }
+
+/* Varian warna AppButton */
+.pmo-app-btn-brand {
+  background : var(--c-g);
+  color      : #fff;
+  box-shadow : 0 3px 10px rgba(93,64,55,.28);
+}
+.pmo-app-btn-brand:hover { opacity:.87; box-shadow:0 5px 18px rgba(93,64,55,.36); color:#fff; }
+.pmo-app-btn-green {
+  background : var(--green);
+  color      : #fff;
+  box-shadow : 0 3px 10px rgba(22,163,74,.25);
+}
+.pmo-app-btn-green:hover { background:#15803D; color:#fff; }
+.pmo-app-btn-amber {
+  background : var(--amber);
+  color      : #1e1410;
+  box-shadow : 0 3px 10px rgba(217,119,6,.22);
+}
+.pmo-app-btn-amber:hover { background:#B45309; }
+.pmo-app-btn-outline {
+  background  : transparent;
+  border      : 1.5px solid var(--c-mid);
+  color       : var(--c-mid);
+}
+.pmo-app-btn-outline:hover { background:var(--c-mid); color:#fff; }
+
+/* Spinner dalam AppButton */
+.pmo-app-btn .pmo-btn-spinner {
+  width:20px; height:20px; border-radius:50%;
+  border:2.5px solid rgba(255,255,255,.30);
+  border-top-color:#fff;
+  animation:hema-spin .7s linear infinite;
+  flex-shrink:0;
+}
+
+
+/* ── GradientHeader — terinspirasi customer_dashboard_page ─ */
+.pmo-gradient-header {
+  background   : linear-gradient(135deg, var(--c-dark) 0%, var(--c-mid) 100%);
+  border-radius: 16px;
+  padding      : 20px 22px;
+  color        : #fff;
+  margin-bottom: 22px;
+  position     : relative;
+  overflow     : hidden;
+  box-shadow   : 0 4px 18px rgba(93,64,55,.28);
+}
+.pmo-gradient-header::before {
+  content      : "";
+  position     : absolute;
+  right        : -20px; top:-20px;
+  width        : 100px; height:100px;
+  border-radius: 50%;
+  background   : rgba(255,255,255,.08);
+  pointer-events:none;
+}
+.pmo-gradient-header::after {
+  content      : "";
+  position     : absolute;
+  right        : 30px; bottom:-30px;
+  width        : 70px; height:70px;
+  border-radius: 50%;
+  background   : rgba(255,255,255,.05);
+  pointer-events:none;
+}
+.pmo-gradient-header .pmo-gh-avatar {
+  width:48px; height:48px; border-radius:50%;
+  background:rgba(255,255,255,.18);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.pmo-gradient-header .pmo-gh-avatar svg { width:26px; height:26px; color:#fff; }
+.pmo-gradient-header .pmo-gh-subtitle { font-size:12px; color:rgba(255,255,255,.72); margin:0; }
+.pmo-gradient-header .pmo-gh-title { font-size:18px; font-weight:800; color:#fff; margin:2px 0 0; }
+
+/* ── Revenue Card — terinspirasi admin_dashboard deepPurple ─ */
+.pmo-revenue-card {
+  background   : linear-gradient(135deg, var(--c-dark) 0%, #6D4C41 100%);
+  border-radius: 14px;
+  padding      : 20px 22px;
+  color        : #fff;
+  position     : relative;
+  overflow     : hidden;
+  box-shadow   : 0 4px 16px rgba(93,64,55,.25);
+}
+.pmo-revenue-card::before {
+  content:""; position:absolute; right:-14px; top:-14px;
+  width:80px; height:80px; border-radius:50%;
+  background:rgba(255,255,255,.08); pointer-events:none;
+}
+.pmo-revenue-card .pmo-rc-label {
+  font-size:13px; color:rgba(255,255,255,.78); margin:0 0 6px;
+  display:flex; align-items:center; gap:6px;
+}
+.pmo-revenue-card .pmo-rc-value {
+  font-size:26px; font-weight:800; color:#fff; margin:0 0 4px; letter-spacing:-.5px;
+}
+.pmo-revenue-card .pmo-rc-sub { font-size:12px; color:rgba(255,255,255,.60); margin:0; }
+
+/* ── Timeline — terinspirasi customer_tracking_page.dart ─── */
+.pmo-timeline { list-style:none; padding:0; margin:0; }
+.pmo-timeline li {
+  display:flex; align-items:flex-start; gap:14px; padding-bottom:22px;
+  position:relative;
+}
+.pmo-timeline li:last-child { padding-bottom:0; }
+.pmo-timeline .pmo-tl-dot {
+  width:24px; height:24px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; position:relative; z-index:1;
+}
+.pmo-timeline .pmo-tl-dot.done {
+  background:var(--green); color:#fff;
+}
+.pmo-timeline .pmo-tl-dot.done svg { width:13px; height:13px; }
+.pmo-timeline .pmo-tl-dot.pending {
+  background:var(--bd); color:var(--tx-4);
+}
+.pmo-timeline .pmo-tl-dot.current {
+  background:var(--c-mid); color:#fff;
+  box-shadow:0 0 0 4px rgba(121,85,72,.20);
+}
+/* Vertical connector line */
+.pmo-timeline li:not(:last-child) .pmo-tl-dot::after {
+  content    :""; position:absolute;
+  top:24px; left:50%; transform:translateX(-50%);
+  width:2px; height:calc(100% + 22px - 24px);
+  background:var(--bd); z-index:0;
+}
+.pmo-timeline li:not(:last-child) .pmo-tl-dot.done::after { background:var(--green); }
+.pmo-timeline .pmo-tl-content { flex:1; padding-top:2px; }
+.pmo-timeline .pmo-tl-title {
+  font-size:13.5px; font-weight:600; color:var(--tx-1); margin:0 0 2px;
+}
+.pmo-timeline .pmo-tl-title.active { color:var(--c-mid); font-weight:700; }
+.pmo-timeline .pmo-tl-meta { font-size:12px; color:var(--tx-3); margin:0; }
+
+/* ── StatusChip — versi Flutter adaptasi ─────────────────── */
+.pmo-chip {
+  display     : inline-flex;
+  align-items : center;
+  gap         : 5px;
+  padding     : 4px 11px;
+  border-radius: 20px;
+  font-size   : 11.5px;
+  font-weight : 700;
+  white-space : nowrap;
+}
+.pmo-chip .pmo-chip-dot {
+  width:6px; height:6px; border-radius:50%; flex-shrink:0;
+}
+.pmo-chip-success { background:var(--s-completed-bg); color:var(--s-completed-tx); }
+.pmo-chip-success .pmo-chip-dot { background:var(--s-completed-tx); }
+.pmo-chip-pending { background:var(--s-pending-bg); color:var(--s-pending-tx); }
+.pmo-chip-pending .pmo-chip-dot { background:var(--s-pending-tx); }
+.pmo-chip-cancel  { background:var(--s-cancelled-bg); color:var(--s-cancelled-tx); }
+.pmo-chip-cancel  .pmo-chip-dot { background:var(--s-cancelled-tx); }
+.pmo-chip-ship    { background:var(--s-shipped-bg); color:var(--s-shipped-tx); }
+.pmo-chip-ship    .pmo-chip-dot { background:var(--s-shipped-tx); }
+.pmo-chip-paid    { background:var(--s-paid-bg); color:var(--s-paid-tx); }
+.pmo-chip-paid    .pmo-chip-dot { background:var(--s-paid-tx); }
+.pmo-chip-brand   { background:var(--c-mid-soft); color:var(--c-dark); }
+.pmo-chip-brand   .pmo-chip-dot { background:var(--c-mid); }
+
+/* ── Stock Badge — terinspirasi product_card stok habis ─── */
+.pmo-stock-ok   { color:var(--green); font-size:12px; font-weight:600; }
+.pmo-stock-low  { color:var(--amber); font-size:12px; font-weight:600; }
+.pmo-stock-out  { color:var(--red);   font-size:12px; font-weight:600; }
+
+/* ── Stat Row — InfoCard baris horizontal dashboard ──────── */
+.pmo-stat-row {
+  display:flex; gap:14px; flex-wrap:nowrap;
+  margin-bottom:22px;
+}
+.pmo-stat-row .pmo-info-card { min-width:0; }
+
+@media (max-width:767px) {
+  .pmo-stat-row { flex-wrap:wrap; }
+  .pmo-stat-row .pmo-info-card { min-width:calc(50% - 7px); }
+  .pmo-gradient-header .pmo-gh-title { font-size:16px; }
+  .pmo-revenue-card .pmo-rc-value { font-size:22px; }
+}
+@media (max-width:575px) {
+  .pmo-stat-row .pmo-info-card { min-width:100%; }
+}
