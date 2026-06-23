@@ -37,7 +37,7 @@
         {{-- Logo zone --}}
         <div class="header-left active">
             <a href="{{ url('dashboard') }}" class="logo">
-                <img src="{{ asset('admin/img/logo.png') }}" alt="Hema Indonesia">
+                <img src="{{ asset('admin/img/trendify.png') }}" alt="Hema Indonesia">
             </a>
             <a href="{{ url('dashboard') }}" class="logo-small">
                 <img src="{{ asset('admin/img/logo-small.png') }}" alt="">
