@@ -99,13 +99,13 @@ body {
   height        : 64px !important;
 }
 .header .header-left {
-  background  : var(--sb-bg) !important;
-  border-right: none !important;
+  background  : #ffffff !important;
+  border-right: 1.5px solid #ede3db !important;
   width       : 260px !important;
 }
 .header .header-left .logo img,
 .header .header-left .logo-small img {
-  filter: brightness(0) invert(1) !important;
+  filter: none !important;
 }
 .bar-icon span  { background: var(--hp) !important; }
 #toggle_btn:hover { color: var(--hp) !important; }
@@ -176,130 +176,187 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   4. SIDEBAR — background #c29470 statis, dropdown selaras
+   4. SIDEBAR — Redesign v2: white bg, pill active, bullet dot,
+      chevron arrow, dropdown cream-light
    ───────────────────────────────────────────────────────────── */
+
+/* ── Token baru khusus sidebar ── */
+:root {
+  --sb2-bg        : #ffffff;          /* background sidebar */
+  --sb2-border    : #ede3db;          /* border kanan */
+  --sb2-txt       : #3d2e26;          /* teks idle */
+  --sb2-txt-muted : #9b8880;          /* teks section label */
+  --sb2-icon      : #9b8880;          /* icon idle */
+  --sb2-hover-bg  : #fdf5ef;          /* hover bg */
+  --sb2-hover-txt : #b17457;          /* hover teks */
+  --sb2-act-bg    : #fff0e6;          /* active bg — orange peach */
+  --sb2-act-txt   : #b17457;          /* active teks — orange brand */
+  --sb2-act-icon  : #b17457;          /* active icon */
+  --sb2-dot-idle  : #c4b5ac;          /* bullet dot idle */
+  --sb2-dot-act   : #b17457;          /* bullet dot aktif */
+  --sb2-sub-bg    : #fdf8f5;          /* submenu bg cream */
+  --sb2-sub-txt   : #5c4033;          /* submenu teks idle */
+  --sb2-sub-act   : #b17457;          /* submenu teks aktif */
+  --sb2-chevron   : #b0a09a;          /* chevron idle */
+  --sb2-chevron-open: #b17457;        /* chevron open/aktif */
+}
+
+/* ── Wrapper sidebar ─────────────────────────────────────── */
 .sidebar,
 .sidebar-inner,
 #sidebar {
-  background : var(--sb-bg) !important;
-  border-right: none !important;
-  box-shadow : 3px 0 16px rgba(61,26,10,.18) !important;
-  width      : 260px !important;
-  animation  : none !important;
-  transition : width .2s ease !important;
-}
-/* Brand strip atas */
-.sidebar::before {
-  content   : "";
-  display   : block;
-  height    : 3px;
-  background: var(--hg);
-  animation : none !important;
+  background   : var(--sb2-bg) !important;
+  border-right : 1.5px solid var(--sb2-border) !important;
+  box-shadow   : 2px 0 12px rgba(177,116,87,.07) !important;
+  width        : 260px !important;
+  animation    : none !important;
+  transition   : transform .28s cubic-bezier(.4,0,.2,1), width .2s ease !important;
 }
 
-/* Section label */
+/* Hapus pseudo strip bawaan */
+.sidebar::before { display: none !important; }
+
+/* ── Section label ──────────────────────────────────────── */
 .sidebar-menu ul li.menu-title,
 .sidebar-menu ul li.menu-title span {
-  color         : rgba(61,26,10,.50) !important;
+  color         : var(--sb2-txt-muted) !important;
   background    : transparent !important;
-  font-size     : 10px !important;
-  font-weight   : 800 !important;
-  letter-spacing: 1.8px !important;
+  font-size     : 10.5px !important;
+  font-weight   : 700 !important;
+  letter-spacing: 1.6px !important;
   text-transform: uppercase !important;
-  padding       : 20px 24px 6px !important;
+  padding       : 22px 20px 7px !important;
   pointer-events: none !important;
   user-select   : none !important;
   display       : block !important;
 }
 
-/* Menu item */
+/* ── Top-level menu item (link) ─────────────────────────── */
 .sidebar-menu > ul > li > a,
 .sidebar-menu > ul > li > a:link,
 .sidebar-menu > ul > li > a:visited {
-  display      : flex !important;
-  align-items  : center !important;
-  gap          : 10px !important;
-  color        : var(--sb-txt) !important;
-  background   : transparent !important;
-  padding      : 10px 16px !important;
-  margin       : 2px 10px !important;
-  border-radius: var(--r-sm) !important;
-  font-size    : 13.5px !important;
-  font-weight  : 600 !important;
+  display        : flex !important;
+  align-items    : center !important;
+  gap            : 10px !important;
+  color          : var(--sb2-txt) !important;
+  background     : transparent !important;
+  padding        : 10px 14px !important;
+  margin         : 2px 10px !important;
+  border-radius  : 50px !important;       /* ← pill shape */
+  font-size      : 13.5px !important;
+  font-weight    : 600 !important;
   text-decoration: none !important;
-  transition   : color .15s, background .15s !important;
+  transition     : color .18s, background .18s !important;
+  position       : relative !important;
 }
+
+/* Hover */
 .sidebar-menu > ul > li > a:hover {
-  background: var(--sb-hov-bg) !important;
-  color     : #ffffff !important;
+  background: var(--sb2-hover-bg) !important;
+  color     : var(--sb2-hover-txt) !important;
 }
+
+/* ACTIVE — pill orange peach */
 .sidebar-menu > ul > li.active > a,
 .sidebar-menu > ul > li.active > a:link,
 .sidebar-menu > ul > li.active > a:visited,
 .sidebar-menu > ul > li.active > a:hover,
 .sidebar-menu > ul > li.active > a:focus {
-  background   : var(--sb-act-bg) !important;
-  color        : #ffffff !important;
+  background   : var(--sb2-act-bg) !important;
+  color        : var(--sb2-act-txt) !important;
   font-weight  : 700 !important;
-  border-radius: var(--r-sm) !important;
-  box-shadow   : var(--sb-shadow) !important;
+  border-radius: 50px !important;
+  box-shadow   : none !important;
 }
 
-/* Icon BI */
+/* ── Icon Bootstrap Icons ───────────────────────────────── */
 .sidebar-menu > ul > li > a .bi {
-  font-size  : 16px !important;
-  color      : var(--sb-txt) !important;
-  flex-shrink: 0 !important;
-  transition : color .15s !important;
+  font-size   : 17px !important;
+  color       : var(--sb2-icon) !important;
+  flex-shrink : 0 !important;
+  transition  : color .18s !important;
+  width       : 22px !important;
+  text-align  : center !important;
 }
-.sidebar-menu > ul > li > a:hover .bi { color: #ffffff !important; }
-.sidebar-menu > ul > li.active > a .bi { color: #ffffff !important; }
+.sidebar-menu > ul > li > a:hover .bi {
+  color: var(--sb2-hover-txt) !important;
+}
+.sidebar-menu > ul > li.active > a .bi {
+  color: var(--sb2-act-icon) !important;
+}
 
-/* Icon SVG/IMG */
+/* ── Icon SVG/IMG ───────────────────────────────────────── */
 .sidebar-menu > ul > li > a img {
-  width     : 18px !important;
-  height    : 18px !important;
-  filter    : brightness(0) saturate(0) opacity(0.6) !important;
+  width      : 18px !important;
+  height     : 18px !important;
+  filter     : brightness(0) saturate(100%) opacity(0.45) sepia(1) hue-rotate(340deg) !important;
   flex-shrink: 0 !important;
-  transition: filter .15s !important;
+  transition : filter .18s !important;
 }
-.sidebar-menu > ul > li > a:hover img {
-  filter: brightness(0) invert(1) !important;
-}
+.sidebar-menu > ul > li > a:hover img,
 .sidebar-menu > ul > li.active > a img {
-  filter: brightness(0) invert(1) !important;
+  filter: saturate(100%) brightness(0.7) sepia(1) hue-rotate(330deg) !important;
 }
 
-/* Menu arrow */
+/* ── Chevron panah (menggantikan .menu-arrow) ────────────── */
 .menu-arrow {
   margin-left  : auto !important;
-  width        : 16px !important;
-  height       : 16px !important;
-  background   : rgba(61,26,10,.15) !important;
-  border-radius: 4px !important;
+  width        : 18px !important;
+  height       : 18px !important;
+  background   : transparent !important;
+  border       : none !important;
+  border-radius: 0 !important;
+  display      : flex !important;
+  align-items  : center !important;
+  justify-content: center !important;
+  flex-shrink  : 0 !important;
+  transition   : transform .22s ease, color .18s !important;
+  color        : var(--sb2-chevron) !important;
+  font-size    : 13px !important;
+  /* Isi dengan chevron via CSS — pakai border trick */
+  position     : relative !important;
 }
-.sidebar-menu > ul > li > a:hover .menu-arrow,
-.sidebar-menu > ul > li.active > a .menu-arrow {
-  background: rgba(255,255,255,.28) !important;
+/* Gambar chevron ">" via pseudo element */
+.menu-arrow::after {
+  content      : "" !important;
+  display      : block !important;
+  width        : 7px !important;
+  height       : 7px !important;
+  border-right : 2px solid var(--sb2-chevron) !important;
+  border-top   : 2px solid var(--sb2-chevron) !important;
+  transform    : rotate(45deg) !important;
+  transition   : border-color .18s, transform .22s !important;
+  flex-shrink  : 0 !important;
+}
+/* Hover / aktif warna chevron */
+.sidebar-menu > ul > li > a:hover .menu-arrow::after {
+  border-color: var(--sb2-hover-txt) !important;
+}
+.sidebar-menu > ul > li.active > a .menu-arrow::after {
+  border-color: var(--sb2-act-txt) !important;
+}
+/* Saat submenu terbuka → chevron rotate ↓ */
+.sidebar-menu > ul > li.submenu.open > a .menu-arrow::after,
+.sidebar-menu > ul > li.subdrop > a .menu-arrow::after {
+  transform    : rotate(135deg) !important;
+  border-color : var(--sb2-chevron-open) !important;
 }
 
-/* ─── Submenu — warna sidebar, BUKAN putih/biru ─────────────
-   Selector sangat spesifik untuk override Bootstrap style.css
-   dan script.js bawaan template yang pakai inline/spesifik.
-───────────────────────────────────────────────────────────── */
+/* ── Submenu container ──────────────────────────────────── */
 #sidebar .sidebar-inner .sidebar-menu ul li ul,
 #sidebar .sidebar-inner .sidebar-menu ul li ul.sub-menu,
 .sidebar .sidebar-inner .sidebar-menu ul li ul,
 .sidebar .sub-menu,
 ul.sub-menu {
-  background   : #b5825a !important;  /* coklat sedikit lebih gelap dari sidebar */
-  border-radius: 0 0 var(--r-sm) var(--r-sm) !important;
-  margin       : 0 10px 4px !important;
+  background   : var(--sb2-sub-bg) !important;
+  border-radius: 0 0 14px 14px !important;
+  margin       : 0 10px 6px !important;
   overflow     : hidden !important;
-  box-shadow   : inset 0 2px 6px rgba(61,26,10,.18) !important;
+  box-shadow   : inset 0 1px 0 rgba(177,116,87,.10) !important;
+  padding      : 4px 0 6px !important;
 }
 
-/* Semua link di dalam submenu */
+/* ── Sub-item link ──────────────────────────────────────── */
 #sidebar .sidebar-inner .sidebar-menu ul li ul a,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a:link,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a:visited,
@@ -309,36 +366,68 @@ ul.sub-menu {
 ul.sub-menu li a,
 ul.sub-menu li a:link,
 ul.sub-menu li a:visited {
-  color          : #3d1a0a !important;   /* coklat gelap — bold & jelas */
-  font-weight    : 700 !important;
+  color          : var(--sb2-sub-txt) !important;
+  font-weight    : 500 !important;
   font-size      : 13px !important;
-  padding        : 9px 14px 9px 40px !important;
-  display        : block !important;
+  padding        : 8px 14px 8px 42px !important;
+  display        : flex !important;
+  align-items    : center !important;
+  gap            : 8px !important;
   text-decoration: none !important;
   background     : transparent !important;
   transition     : color .15s, background .15s !important;
   font-family    : "Urbanist", sans-serif !important;
+  border-radius  : 0 !important;
+  margin         : 0 !important;
+  position       : relative !important;
 }
 
-/* Hover */
+/* Bullet dot idle — via pseudo before */
+#sidebar .sidebar-inner .sidebar-menu ul li ul a::before,
+.sidebar .sub-menu a::before,
+ul.sub-menu li a::before {
+  content      : "" !important;
+  display      : inline-block !important;
+  width        : 7px !important;
+  height       : 7px !important;
+  border-radius: 50% !important;
+  background   : var(--sb2-dot-idle) !important;
+  flex-shrink  : 0 !important;
+  transition   : background .18s, transform .18s !important;
+  margin-right : 2px !important;
+}
+
+/* Hover sub-item */
 #sidebar .sidebar-inner .sidebar-menu ul li ul a:hover,
 .sidebar .sub-menu a:hover,
 ul.sub-menu li a:hover {
-  background: rgba(61,26,10,.18) !important;
-  color     : #1e0a00 !important;
+  background: rgba(177,116,87,.07) !important;
+  color     : var(--sb2-sub-act) !important;
+}
+#sidebar .sidebar-inner .sidebar-menu ul li ul a:hover::before,
+.sidebar .sub-menu a:hover::before,
+ul.sub-menu li a:hover::before {
+  background: var(--sb2-dot-act) !important;
 }
 
-/* Active */
+/* Active sub-item */
 #sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a:link,
 #sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a:visited,
 .sidebar .sub-menu li.active > a,
+.sidebar .sub-menu li.active > a:link,
 .sidebar .sub-menu li.active > a:visited {
-  color      : #ffffff !important;
-  font-weight: 800 !important;
-  background : rgba(61,26,10,.30) !important;
+  color      : var(--sb2-sub-act) !important;
+  font-weight: 700 !important;
+  background : rgba(177,116,87,.08) !important;
+}
+#sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a::before,
+.sidebar .sub-menu li.active > a::before {
+  background: var(--sb2-dot-act) !important;
+  transform : scale(1.25) !important;
 }
 
-/* Paksa hapus warna biru link dari Bootstrap */
+/* ── Hapus warna biru Bootstrap dari semua link sidebar ─── */
 .sidebar a,
 .sidebar a:link,
 .sidebar a:visited,
@@ -346,17 +435,18 @@ ul.sub-menu li a:hover {
 .sidebar-menu a,
 .sidebar-menu a:link,
 .sidebar-menu a:visited {
-  color: #3d1a0a !important;
+  color: var(--sb2-txt) !important;
 }
+/* Override khusus: active top-level → brand orange */
 .sidebar-menu > ul > li.active > a,
 .sidebar-menu > ul > li.active > a:link,
 .sidebar-menu > ul > li.active > a:visited {
-  color: #ffffff !important;
+  color: var(--sb2-act-txt) !important;
 }
 
 @media (max-width: 991px) {
   .sidebar,.sidebar-inner,#sidebar {
-    background: var(--sb-bg) !important;
+    background: var(--sb2-bg) !important;
   }
 }
 
@@ -929,6 +1019,67 @@ textarea::placeholder {
 ::-webkit-scrollbar-thumb:hover { background: var(--hp); }
 
 /* ─────────────────────────────────────────────────────────────
+   23. SUBMENU SLIDE ANIMATION
+   — ul submenu mulai hidden, JS yang handle show/hide
+   ───────────────────────────────────────────────────────────── */
+
+/* Submenu tersembunyi saat halaman load (jika tidak active) */
+#sidebar .sidebar-menu ul li.submenu:not(.subdrop) > ul {
+  display    : none !important;
+  max-height : 0 !important;
+  opacity    : 0 !important;
+  overflow   : hidden !important;
+}
+
+/* Submenu yang sedang aktif dari server (subdrop) → tampil */
+#sidebar .sidebar-menu ul li.submenu.subdrop > ul {
+  display    : block !important;
+  max-height : none !important;
+  opacity    : 1 !important;
+  overflow   : visible !important;
+}
+
+/* Saat subdrop aktif, parent item punya highlight ringan */
+#sidebar .sidebar-menu > ul > li.submenu.subdrop > a,
+.sidebar-menu > ul > li.submenu.subdrop > a {
+  background   : var(--sb2-hover-bg) !important;
+  color        : var(--sb2-hover-txt) !important;
+  border-radius: 50px !important;
+}
+#sidebar .sidebar-menu > ul > li.submenu.subdrop > a .bi,
+.sidebar-menu > ul > li.submenu.subdrop > a .bi {
+  color: var(--sb2-hover-txt) !important;
+}
+/* Chevron rotate saat subdrop */
+#sidebar .sidebar-menu > ul > li.submenu.subdrop > a .menu-arrow::after,
+.sidebar-menu > ul > li.submenu.subdrop > a .menu-arrow::after {
+  transform   : rotate(135deg) !important;
+  border-color: var(--sb2-chevron-open) !important;
+}
+
+/* ── Sidebar PIN button — selaras bg putih ─────────────── */
+#sidebar-pin-btn {
+  background  : rgba(177,116,87,.10) !important;
+  border      : 1.5px solid rgba(177,116,87,.22) !important;
+  color       : var(--sb2-act-txt) !important;
+}
+#sidebar-pin-btn:hover {
+  background  : rgba(177,116,87,.20) !important;
+  border-color: rgba(177,116,87,.40) !important;
+}
+body.sidebar-pinned #sidebar-pin-btn {
+  background  : rgba(177,116,87,.25) !important;
+  border-color: rgba(177,116,87,.50) !important;
+}
+#sidebar-pin-btn::after {
+  background: var(--sb2-act-txt) !important;
+}
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--pg-bg); }
+::-webkit-scrollbar-thumb { background: var(--hp-lt); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--hp); }
+
+/* ─────────────────────────────────────────────────────────────
    20. RESPONSIVE
    ───────────────────────────────────────────────────────────── */
 @media (max-width: 991px) {
@@ -1047,12 +1198,12 @@ body.sidebar-pinned #sidebar-pin-btn {
 
 
 /* ─────────────────────────────────────────────────────────────
-   22. SIDEBAR FONT OVERRIDE — paksa coklat, hover putih
+   22. SIDEBAR FONT OVERRIDE v2 — selaras redesign section 4
    Override Bootstrap/template yang masih pakai warna biru.
    Selector sangat spesifik agar pasti menang.
    ───────────────────────────────────────────────────────────── */
 
-/* ── Semua link di sidebar → coklat gelap (#3d1a0a) ──────── */
+/* ── Semua link sidebar → coklat medium (idle) ───────────── */
 .sidebar .sidebar-inner .sidebar-menu ul li a,
 .sidebar .sidebar-inner .sidebar-menu ul li a:link,
 .sidebar .sidebar-inner .sidebar-menu ul li a:visited,
@@ -1062,79 +1213,92 @@ body.sidebar-pinned #sidebar-pin-btn {
 #sidebar .sidebar-inner .sidebar-menu ul li a,
 #sidebar .sidebar-inner .sidebar-menu ul li a:link,
 #sidebar .sidebar-inner .sidebar-menu ul li a:visited {
-  color: #3d1a0a !important;
+  color: var(--sb2-txt) !important;
   text-decoration: none !important;
 }
 
-/* ── Hover → putih ───────────────────────────────────────── */
+/* ── Hover → brand orange ────────────────────────────────── */
 .sidebar .sidebar-inner .sidebar-menu ul li a:hover,
 .sidebar .sidebar-inner .sidebar-menu > ul > li > a:hover,
 #sidebar .sidebar-inner .sidebar-menu ul li a:hover {
-  color: #ffffff !important;
+  color: var(--sb2-hover-txt) !important;
 }
 
-/* ── Active → putih ──────────────────────────────────────── */
-.sidebar .sidebar-inner .sidebar-menu ul li.active > a,
-.sidebar .sidebar-inner .sidebar-menu ul li.active > a:link,
-.sidebar .sidebar-inner .sidebar-menu ul li.active > a:visited,
-.sidebar .sidebar-inner .sidebar-menu ul li.active > a:hover,
-#sidebar .sidebar-inner .sidebar-menu ul li.active > a,
-#sidebar .sidebar-inner .sidebar-menu ul li.active > a:hover {
-  color: #ffffff !important;
+/* ── Active top-level → brand orange ────────────────────── */
+.sidebar .sidebar-inner .sidebar-menu > ul > li.active > a,
+.sidebar .sidebar-inner .sidebar-menu > ul > li.active > a:link,
+.sidebar .sidebar-inner .sidebar-menu > ul > li.active > a:visited,
+.sidebar .sidebar-inner .sidebar-menu > ul > li.active > a:hover,
+#sidebar .sidebar-inner .sidebar-menu > ul > li.active > a,
+#sidebar .sidebar-inner .sidebar-menu > ul > li.active > a:hover {
+  color: var(--sb2-act-txt) !important;
+  background: var(--sb2-act-bg) !important;
+}
+
+/* ── Active submenu parent (subdrop) → bg tetap transparan ─ */
+.sidebar .sidebar-inner .sidebar-menu ul li.submenu.subdrop > a,
+#sidebar .sidebar-inner .sidebar-menu ul li.submenu.subdrop > a {
+  background: var(--sb2-hover-bg) !important;
+  color     : var(--sb2-hover-txt) !important;
+  border-radius: 50px !important;
 }
 
 /* ── Icon .bi → ikut warna teks ──────────────────────────── */
 .sidebar .sidebar-inner .sidebar-menu ul li a .bi,
 #sidebar .sidebar-inner .sidebar-menu ul li a .bi {
-  color: #3d1a0a !important;
+  color: var(--sb2-icon) !important;
 }
 .sidebar .sidebar-inner .sidebar-menu ul li a:hover .bi,
 #sidebar .sidebar-inner .sidebar-menu ul li a:hover .bi {
-  color: #ffffff !important;
+  color: var(--sb2-hover-txt) !important;
 }
-.sidebar .sidebar-inner .sidebar-menu ul li.active > a .bi,
-#sidebar .sidebar-inner .sidebar-menu ul li.active > a .bi {
-  color: #ffffff !important;
+.sidebar .sidebar-inner .sidebar-menu > ul > li.active > a .bi,
+#sidebar .sidebar-inner .sidebar-menu > ul > li.active > a .bi {
+  color: var(--sb2-act-icon) !important;
 }
 
-/* ── Icon SVG/IMG → gelap idle, putih hover/active ───────── */
+/* ── Icon SVG/IMG → abu idle, orange hover/active ────────── */
 .sidebar .sidebar-inner .sidebar-menu ul li a img,
 #sidebar .sidebar-inner .sidebar-menu ul li a img {
-  filter: brightness(0) saturate(0) opacity(0.55) !important;
+  filter: brightness(0) saturate(0) opacity(0.45) !important;
 }
 .sidebar .sidebar-inner .sidebar-menu ul li a:hover img,
 #sidebar .sidebar-inner .sidebar-menu ul li a:hover img,
 .sidebar .sidebar-inner .sidebar-menu ul li.active > a img,
 #sidebar .sidebar-inner .sidebar-menu ul li.active > a img {
-  filter: brightness(0) invert(1) !important;
+  filter: saturate(80%) brightness(0.65) sepia(1) hue-rotate(330deg) !important;
 }
 
-/* ── Submenu font → coklat gelap, hover putih ────────────── */
+/* ── Submenu font → coklat medium idle, orange hover/active ─ */
 .sidebar .sidebar-inner .sidebar-menu ul li ul li a,
 .sidebar .sidebar-inner .sidebar-menu ul li ul li a:link,
 .sidebar .sidebar-inner .sidebar-menu ul li ul li a:visited,
 #sidebar .sidebar-inner .sidebar-menu ul li ul li a,
 #sidebar .sidebar-inner .sidebar-menu ul li ul li a:link,
 #sidebar .sidebar-inner .sidebar-menu ul li ul li a:visited {
-  color: #3d1a0a !important;
-  font-weight: 700 !important;
+  color      : var(--sb2-sub-txt) !important;
+  font-weight: 500 !important;
 }
 .sidebar .sidebar-inner .sidebar-menu ul li ul li a:hover,
 #sidebar .sidebar-inner .sidebar-menu ul li ul li a:hover {
-  color: #ffffff !important;
+  color: var(--sb2-sub-act) !important;
 }
 .sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a,
 #sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a {
-  color: #ffffff !important;
-  font-weight: 800 !important;
+  color      : var(--sb2-sub-act) !important;
+  font-weight: 700 !important;
 }
 
-/* ── Hapus shadow kotak pada item aktif dan hover ─────────── */
+/* ── Hapus box-shadow warisan dari template ──────────────── */
 .sidebar .sidebar-inner .sidebar-menu ul li.active > a,
-#sidebar .sidebar-inner .sidebar-menu ul li.active > a {
-  box-shadow: none !important;
-}
+#sidebar .sidebar-inner .sidebar-menu ul li.active > a,
 .sidebar .sidebar-inner .sidebar-menu ul li a:hover,
 #sidebar .sidebar-inner .sidebar-menu ul li a:hover {
   box-shadow: none !important;
+}
+
+/* ── Header logo area: putih bersih selaras sidebar ─────── */
+.header .header-left {
+  background  : var(--sb2-bg) !important;
+  border-right: 1.5px solid var(--sb2-border) !important;
 }
