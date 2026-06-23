@@ -139,7 +139,7 @@
             <div id="sidebar-menu" class="sidebar-menu">
                 <ul>
 
-                    {{-- Dashboard --}}
+                    {{-- ── Dashboard ── --}}
                     <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
                         <a href="{{ url('dashboard') }}">
                             <i class="bi bi-grid-1x2-fill"></i>
@@ -147,16 +147,22 @@
                         </a>
                     </li>
 
-                    {{-- PRODUK --}}
+                    {{-- ── KATALOG ── --}}
                     <li class="menu-title"><span>Katalog</span></li>
 
-                    <li class="submenu {{ request()->is('product-list*','categories*') ? 'active' : '' }}">
-                        <a href="javascript:void(0);">
+                    {{-- Produk (submenu) --}}
+                    @php
+                        $produkOpen = request()->is('product-list*','categories*');
+                    @endphp
+                    <li class="submenu {{ $produkOpen ? 'active subdrop' : '' }}">
+                        <a href="javascript:void(0);"
+                           class="sidebar-submenu-toggle"
+                           aria-expanded="{{ $produkOpen ? 'true' : 'false' }}">
                             <i class="bi bi-box-seam"></i>
                             <span>Produk</span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <ul>
+                        <ul @if(!$produkOpen) style="display:none;" @endif>
                             <li class="{{ request()->is('product-list*') ? 'active' : '' }}">
                                 <a href="{{ url('/product-list') }}">Data Produk</a>
                             </li>
@@ -166,9 +172,10 @@
                         </ul>
                     </li>
 
-                    {{-- PESANAN --}}
+                    {{-- ── TRANSAKSI ── --}}
                     <li class="menu-title"><span>Transaksi</span></li>
 
+                    {{-- Pesanan --}}
                     <li class="{{ request()->is('order-list*') ? 'active' : '' }}">
                         <a href="{{ url('/order-list') }}">
                             <i class="bi bi-bag-check"></i>
@@ -176,9 +183,10 @@
                         </a>
                     </li>
 
-                    {{-- DATA MASTER --}}
+                    {{-- ── MASTER ── --}}
                     <li class="menu-title"><span>Master</span></li>
 
+                    {{-- Pelanggan --}}
                     <li class="{{ request()->is('customer*') ? 'active' : '' }}">
                         <a href="{{ url('/customer') }}">
                             <i class="bi bi-people"></i>
@@ -186,13 +194,19 @@
                         </a>
                     </li>
 
-                    <li class="submenu {{ request()->is('gallery-company*','faq-company*','about-company*') ? 'active' : '' }}">
-                        <a href="javascript:void(0);">
+                    {{-- Konten Web (submenu) --}}
+                    @php
+                        $kontenOpen = request()->is('gallery-company*','faq-company*','about-company*');
+                    @endphp
+                    <li class="submenu {{ $kontenOpen ? 'active subdrop' : '' }}">
+                        <a href="javascript:void(0);"
+                           class="sidebar-submenu-toggle"
+                           aria-expanded="{{ $kontenOpen ? 'true' : 'false' }}">
                             <i class="bi bi-building"></i>
                             <span>Konten Web</span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <ul>
+                        <ul @if(!$kontenOpen) style="display:none;" @endif>
                             <li class="{{ request()->is('gallery-company*') ? 'active' : '' }}">
                                 <a href="{{ url('gallery-company') }}">Galeri</a>
                             </li>
@@ -248,11 +262,15 @@
      2. Klik di luar sidebar (.page-wrapper / .header) → sidebar geser kiri
      3. Klik konten → sidebar muncul lagi
      4. Tombol PIN (☉) → sidebar terkunci (tidak auto-hide)
+     5. Submenu toggle: klik trigger → expand/collapse dengan animasi slide
      Tidak mengubah logika script.js / toggle_btn / mini-sidebar yang ada.
 ═══════════════════════════════════════ --}}
 <div id="sidebar-overlay"></div>
 <script>
 (function () {
+    /* ══════════════════════════════════════════════════════════
+       A. SIDEBAR PIN & AUTO-HIDE
+    ══════════════════════════════════════════════════════════ */
     var STORAGE_KEY = 'hema_sidebar_pinned';
     var body        = document.body;
     var pinBtn      = document.getElementById('sidebar-pin-btn');
@@ -261,43 +279,37 @@
     var overlay     = document.getElementById('sidebar-overlay');
     var isPinned    = localStorage.getItem(STORAGE_KEY) === '1';
 
-    /* ── Terapkan state pin dari localStorage ─────────────── */
     function applyPin(pinned) {
         isPinned = pinned;
         localStorage.setItem(STORAGE_KEY, pinned ? '1' : '0');
-
         if (pinned) {
             body.classList.add('sidebar-pinned');
             body.classList.remove('sidebar-hidden', 'sidebar-float');
-            pinIcon.className     = 'bi bi-pin-fill';
+            pinIcon.className = 'bi bi-pin-fill';
             pinBtn.setAttribute('data-tooltip', 'Lepas kunci');
-            pinBtn.title          = 'Lepas kunci sidebar';
+            pinBtn.title      = 'Lepas kunci sidebar';
         } else {
             body.classList.remove('sidebar-pinned');
-            pinIcon.className     = 'bi bi-pin-angle-fill';
+            pinIcon.className = 'bi bi-pin-angle-fill';
             pinBtn.setAttribute('data-tooltip', 'Kunci sidebar');
-            pinBtn.title          = 'Kunci sidebar';
+            pinBtn.title      = 'Kunci sidebar';
         }
     }
 
-    /* ── Tampilkan sidebar (float: tampil di atas konten) ─── */
     function showSidebar() {
-        if (isPinned) return; // kalau terkunci, tidak perlu float
+        if (isPinned) return;
         body.classList.remove('sidebar-hidden');
         body.classList.add('sidebar-float');
     }
 
-    /* ── Sembunyikan sidebar ──────────────────────────────── */
     function hideSidebar() {
         if (isPinned) return;
         body.classList.add('sidebar-hidden');
         body.classList.remove('sidebar-float');
     }
 
-    /* ── Init saat halaman load ───────────────────────────── */
     applyPin(isPinned);
 
-    /* ── Klik tombol pin ──────────────────────────────────── */
     if (pinBtn) {
         pinBtn.addEventListener('click', function (e) {
             e.stopPropagation();
@@ -305,46 +317,127 @@
         });
     }
 
-    /* ── Klik overlay (area gelap) → sembunyikan sidebar ─── */
     if (overlay) {
-        overlay.addEventListener('click', function () {
-            hideSidebar();
-        });
+        overlay.addEventListener('click', function () { hideSidebar(); });
     }
 
-    /* ── Klik di dalam sidebar → jangan propagate ke document ─ */
     if (sidebar) {
-        sidebar.addEventListener('click', function (e) {
-            e.stopPropagation();
-        });
+        sidebar.addEventListener('click', function (e) { e.stopPropagation(); });
     }
 
-    /* ── Klik di luar sidebar (page-wrapper / header) ─────── */
     document.addEventListener('click', function (e) {
         if (isPinned) return;
-
         var inSidebar = sidebar && sidebar.contains(e.target);
         var inPinBtn  = pinBtn  && pinBtn.contains(e.target);
         if (inSidebar || inPinBtn) return;
-
-        // Hanya toggle jika di layar desktop (> 991px)
         if (window.innerWidth <= 991) return;
-
-        // Klik di konten/topbar: toggle
         var isHidden = body.classList.contains('sidebar-hidden');
-        if (isHidden) {
-            showSidebar();
-        } else {
-            hideSidebar();
-        }
+        if (isHidden) { showSidebar(); } else { hideSidebar(); }
     });
 
-    /* ── Jaga ukuran layar ────────────────────────────────── */
     window.addEventListener('resize', function () {
         if (window.innerWidth <= 991) {
             body.classList.remove('sidebar-hidden', 'sidebar-float');
         }
     });
+
+    /* ══════════════════════════════════════════════════════════
+       B. SUBMENU ACCORDION TOGGLE
+       — Menangani klik pada .sidebar-submenu-toggle secara
+         mandiri, tanpa bergantung pada script.js template.
+       — Hanya satu submenu terbuka dalam satu waktu.
+    ══════════════════════════════════════════════════════════ */
+    var triggers = document.querySelectorAll('.sidebar-submenu-toggle');
+
+    triggers.forEach(function (trigger) {
+        trigger.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var parentLi  = this.closest('li.submenu');
+            var subUl     = parentLi ? parentLi.querySelector(':scope > ul') : null;
+            if (!parentLi || !subUl) return;
+
+            var isOpen = parentLi.classList.contains('subdrop');
+
+            /* Tutup semua submenu lain dulu */
+            document.querySelectorAll('#sidebar-menu li.submenu.subdrop').forEach(function (li) {
+                if (li !== parentLi) {
+                    li.classList.remove('subdrop', 'active');
+                    var ul = li.querySelector(':scope > ul');
+                    if (ul) {
+                        ul.style.maxHeight = ul.scrollHeight + 'px'; /* anchor dari saat ini */
+                        requestAnimationFrame(function () {
+                            ul.style.transition  = 'max-height .28s cubic-bezier(.4,0,.2,1), opacity .22s ease';
+                            ul.style.maxHeight   = '0';
+                            ul.style.opacity     = '0';
+                            ul.style.overflow    = 'hidden';
+                        });
+                        ul.addEventListener('transitionend', function handler() {
+                            ul.style.display = 'none';
+                            ul.style.maxHeight = '';
+                            ul.style.opacity   = '';
+                            ul.style.overflow  = '';
+                            ul.removeEventListener('transitionend', handler);
+                        });
+                    }
+                    var tog = li.querySelector('.sidebar-submenu-toggle');
+                    if (tog) tog.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            if (isOpen) {
+                /* ── Tutup submenu ini ─────────────────────── */
+                parentLi.classList.remove('subdrop');
+                /* Jika tidak ada child aktif, hapus juga active */
+                if (!parentLi.querySelector('ul li.active')) {
+                    parentLi.classList.remove('active');
+                }
+                subUl.style.maxHeight  = subUl.scrollHeight + 'px';
+                subUl.style.overflow   = 'hidden';
+                requestAnimationFrame(function () {
+                    subUl.style.transition = 'max-height .28s cubic-bezier(.4,0,.2,1), opacity .22s ease';
+                    subUl.style.maxHeight  = '0';
+                    subUl.style.opacity    = '0';
+                });
+                subUl.addEventListener('transitionend', function handler() {
+                    subUl.style.display   = 'none';
+                    subUl.style.maxHeight = '';
+                    subUl.style.opacity   = '';
+                    subUl.style.overflow  = '';
+                    subUl.removeEventListener('transitionend', handler);
+                });
+                this.setAttribute('aria-expanded', 'false');
+            } else {
+                /* ── Buka submenu ini ──────────────────────── */
+                parentLi.classList.add('subdrop', 'active');
+                subUl.style.display   = 'block';
+                subUl.style.maxHeight = '0';
+                subUl.style.opacity   = '0';
+                subUl.style.overflow  = 'hidden';
+                /* Ukur tinggi asli */
+                var targetH = subUl.scrollHeight;
+                requestAnimationFrame(function () {
+                    subUl.style.transition = 'max-height .28s cubic-bezier(.4,0,.2,1), opacity .22s ease';
+                    subUl.style.maxHeight  = targetH + 'px';
+                    subUl.style.opacity    = '1';
+                });
+                subUl.addEventListener('transitionend', function handler() {
+                    subUl.style.maxHeight = '';
+                    subUl.style.overflow  = '';
+                    subUl.removeEventListener('transitionend', handler);
+                });
+                this.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+
+    /* Pastikan submenu yang sudah aktif dari server terlihat tanpa animasi */
+    document.querySelectorAll('#sidebar-menu li.submenu.subdrop > ul').forEach(function (ul) {
+        ul.style.display = 'block';
+        ul.style.opacity = '1';
+    });
+
 }());
 </script>
 
