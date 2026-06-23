@@ -942,13 +942,11 @@ textarea::placeholder {
 
 
 /* ─────────────────────────────────────────────────────────────
-   21. SIDEBAR AUTO-HIDE & PIN
+   21. SIDEBAR AUTO-HIDE
    ─────────────────────────────────────────────────────────────
    Behaviour:
-   • Default (tidak di-pin): sidebar tampil
    • Klik di luar sidebar → sidebar geser hilang ke kiri
    • Klik konten/topbar → sidebar tampil lagi
-   • Pin checkbox (☉) dicentang → sidebar terkunci, tidak auto-hide
    ───────────────────────────────────────────────────────────── */
 
 /* Transisi slide sidebar */
@@ -985,64 +983,7 @@ body.sidebar-float #sidebar-overlay {
   display: block;
 }
 
-/* ── Pin button (☉ / ✕) ──────────────────────────────────── */
-#sidebar-pin-btn {
-  position       : absolute;
-  top            : 14px;
-  right          : 12px;
-  z-index        : 1001;
-  width          : 28px;
-  height         : 28px;
-  border-radius  : 50%;
-  background     : rgba(61,26,10,.15);
-  border         : 1.5px solid rgba(61,26,10,.25);
-  display        : flex;
-  align-items    : center;
-  justify-content: center;
-  cursor         : pointer;
-  transition     : background .18s, border-color .18s, transform .18s;
-  flex-shrink    : 0;
-  color          : #3d1a0a;
-  font-size      : 13px;
-  user-select    : none;
-}
-#sidebar-pin-btn:hover {
-  background  : rgba(61,26,10,.28);
-  border-color: rgba(61,26,10,.45);
-  transform   : scale(1.08);
-}
-/* State terkunci — warna berbeda */
-body.sidebar-pinned #sidebar-pin-btn {
-  background  : rgba(61,26,10,.35);
-  border-color: rgba(61,26,10,.55);
-  color       : #1e0a00;
-}
-/* Tooltip teks */
-#sidebar-pin-btn::after {
-  content      : attr(data-tooltip);
-  position     : absolute;
-  left         : calc(100% + 8px);
-  top          : 50%;
-  transform    : translateY(-50%);
-  background   : #1e0a00;
-  color        : #fff;
-  font-size    : 11px;
-  font-weight  : 600;
-  white-space  : nowrap;
-  padding      : 4px 9px;
-  border-radius: 5px;
-  pointer-events: none;
-  opacity      : 0;
-  transition   : opacity .15s;
-  font-family  : "Urbanist", sans-serif;
-}
-#sidebar-pin-btn:hover::after { opacity: 1; }
-
-@media (max-width: 991px) {
-  /* Di mobile tidak pakai fitur pin — sudah ada toggle bawaan */
-  #sidebar-pin-btn { display: none; }
-  body.sidebar-hidden .page-wrapper { margin-left: 0 !important; }
-}
+/* ── Pin button dihapus ── */
 
 
 
