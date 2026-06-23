@@ -53,33 +53,25 @@ class PaymentController extends Controller
 
         $payload = [
             'transaction_details' => [
-                'order_id' => $midtransOrderId,
+                'order_id'     => $midtransOrderId,
                 'gross_amount' => (int) round($order->total_price),
             ],
             'item_details' => $items,
             'customer_details' => [
                 'first_name' => $order->user->first_name ?? 'Customer',
-                'last_name' => $order->user->last_name ?? '',
-                'email' => $order->user->email ?? '',
-                'phone' => $order->user->no_telp ?? '',
+                'last_name'  => $order->user->last_name  ?? '',
+                'email'      => $order->user->email      ?? '',
+                'phone'      => $order->user->no_telp    ?? '',
+            ],
+            /*
+             * credit_card: required=false agar Midtrans tidak hanya
+             * menampilkan kartu kredit sebagai satu-satunya opsi.
+             */
+            'credit_card' => [
+                'secure' => true,
             ],
         ];
 
-        /*
-         * enabled_payments — hanya kirim jika metode yang dipilih
-         * sudah pasti aktif di Midtrans Dashboard.
-         *
-         * CATATAN: Jika metode belum diaktifkan di Midtrans Dashboard
-         * (Settings → Snap Preferences → Payment Channels), Midtrans
-         * akan menampilkan "Metode pembayaran tidak tersedia".
-         *
-         * Untuk saat ini: kirim tanpa enabled_payments agar Midtrans
-         * menampilkan SEMUA metode yang aktif di Dashboard.
-         * Customer sudah memilih preferensi di halaman kita sebelumnya.
-         *
-         * Aktifkan enabled_payments kembali setelah metode diaktifkan
-         * di Midtrans Dashboard (Settings → Snap Preferences).
-         */
         $allowedMethods = ['qris', 'bri_va', 'bca_va'];
         $chosenMethod   = $request->query('method');
 
@@ -87,9 +79,19 @@ class PaymentController extends Controller
             ->acceptJson()
             ->post($this->snapBaseUrl() . '/snap/v1/transactions', $payload);
 
+        // Log payload dan response untuk diagnosis
+        Log::info('Midtrans payload sent', [
+            'url'     => $this->snapBaseUrl() . '/snap/v1/transactions',
+            'payload' => $payload,
+        ]);
+        Log::info('Midtrans response', [
+            'status' => $response->status(),
+            'body'   => $response->body(),
+        ]);
+
         if (!$response->successful() || !$response->json('token')) {
             Log::error('Midtrans Snap error', ['body' => $response->body()]);
-            Session::flash('error', 'Gagal membuat transaksi pembayaran. Coba lagi nanti.');
+            Session::flash('error', 'Gagal membuat transaksi pembayaran. Coba lagi nanti. Error: ' . $response->body());
             return redirect('/orders/' . $order->id);
         }
 
