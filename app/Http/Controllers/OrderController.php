@@ -39,6 +39,16 @@ class OrderController extends Controller
             return redirect('/cart');
         }
 
+        // Validasi: No. Telp dan Alamat harus sudah diisi sebelum order
+        $user = Auth::user();
+        if (empty($user->no_telp) || empty($user->address)) {
+            $missing = [];
+            if (empty($user->no_telp)) $missing[] = 'No. Telepon';
+            if (empty($user->address)) $missing[] = 'Alamat Lengkap';
+            Session::flash('error', 'Harap lengkapi ' . implode(' dan ', $missing) . ' di halaman profil sebelum melanjutkan pesanan.');
+            return redirect('/checkout');
+        }
+
         $order = null;
         try {
             $order = DB::transaction(function () use ($cart) {

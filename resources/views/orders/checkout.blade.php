@@ -106,12 +106,35 @@
                     <span>Total</span>
                     <span class="amount">Rp. {{ number_format($total,0,',','.') }}</span>
                 </div>
-                <form action="{{ route('orderStore') }}" method="post" class="mt-5">
-                    @csrf
-                    <button type="submit" class="btn-brand w-full py-3 text-sm text-center block rounded-xl">
-                        <i class="fas fa-check-circle text-xs"></i> Konfirmasi Pesanan
-                    </button>
-                </form>
+
+                @php
+                    $missingFields = [];
+                    if (empty($user->no_telp))  $missingFields[] = 'No. Telepon';
+                    if (empty($user->address))  $missingFields[] = 'Alamat Lengkap';
+                    $canCheckout = empty($missingFields);
+                @endphp
+
+                @if($canCheckout)
+                    {{-- Data lengkap — form normal --}}
+                    <form action="{{ route('orderStore') }}" method="post" class="mt-5">
+                        @csrf
+                        <button type="submit" class="btn-brand w-full py-3 text-sm text-center block rounded-xl">
+                            <i class="fas fa-check-circle text-xs"></i> Konfirmasi Pesanan
+                        </button>
+                    </form>
+                @else
+                    {{-- Data belum lengkap — tombol dicegat oleh JS --}}
+                    <div class="mt-5">
+                        <button type="button"
+                                id="btn-checkout-blocked"
+                                class="btn-brand w-full py-3 text-sm text-center block rounded-xl"
+                                data-missing="{{ implode(' dan ', $missingFields) }}"
+                                style="opacity:.7;cursor:not-allowed;">
+                            <i class="fas fa-lock text-xs"></i> Konfirmasi Pesanan
+                        </button>
+                    </div>
+                @endif
+
                 <p class="text-xs text-gray-400 text-center mt-3">
                     Pesanan dibuat dengan status "Menunggu Pembayaran".
                 </p>
@@ -119,5 +142,66 @@
         </div>
     </div>
 </section>
+
+@if(!$canCheckout)
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('btn-checkout-blocked');
+    if (!btn) return;
+
+    var missing = btn.getAttribute('data-missing');
+
+    // Tampilkan SweetAlert otomatis saat halaman dimuat
+    Swal.fire({
+        title          : 'Profil Belum Lengkap',
+        html           : '<p>Harap lengkapi <strong>' + missing + '</strong> terlebih dahulu sebelum melanjutkan konfirmasi pesanan.</p>',
+        icon           : 'warning',
+        confirmButtonText: 'Lengkapi Profil',
+        showCancelButton : true,
+        cancelButtonText : 'Nanti Saja',
+        reverseButtons   : true,
+        customClass    : {
+            confirmButton: 'btn-brand',
+            cancelButton : 'btn-outline-brand',
+            popup        : 'swal-brand-popup',
+        },
+        buttonsStyling: false,
+    }).then(function (result) {
+        if (result.isConfirmed) {
+            window.location.href = '{{ url('/profile') }}';
+        }
+    });
+
+    // Klik tombol yang diblokir → tampilkan SweetAlert lagi
+    btn.addEventListener('click', function () {
+        Swal.fire({
+            title          : 'Profil Belum Lengkap',
+            html           : '<p>Harap lengkapi <strong>' + missing + '</strong> di halaman profil sebelum melanjutkan konfirmasi pesanan.</p>'
+                           + '<p style="margin-top:10px;font-size:13px;color:#7a6255;">Pesanan tidak dapat dibuat tanpa informasi pengiriman yang lengkap.</p>',
+            icon           : 'warning',
+            confirmButtonText: '<i class="fas fa-user me-2"></i>Lengkapi Profil Sekarang',
+            showCancelButton : true,
+            cancelButtonText : 'Batal',
+            reverseButtons   : true,
+            customClass    : {
+                confirmButton: 'btn-brand',
+                cancelButton : 'btn-outline-brand',
+                popup        : 'swal-brand-popup',
+            },
+            buttonsStyling: false,
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                window.location.href = '{{ url('/profile') }}';
+            }
+        });
+    });
+});
+</script>
+<style>
+.swal-brand-popup { font-family: "Urbanist", sans-serif !important; border-radius: 14px !important; }
+.swal-brand-popup .swal2-title { font-family: "Urbanist", sans-serif !important; font-weight: 800; color: #1e1410; }
+.swal-brand-popup .swal2-html-container { font-family: "Urbanist", sans-serif !important; color: #7a6255; }
+</style>
+@endif
 
 @endsection
