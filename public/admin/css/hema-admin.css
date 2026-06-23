@@ -1138,3 +1138,89 @@ body.sidebar-pinned #sidebar-pin-btn {
 #sidebar .sidebar-inner .sidebar-menu ul li a:hover {
   box-shadow: none !important;
 }
+
+
+
+/* ─────────────────────────────────────────────────────────────
+   23. SIDEBAR FONT HOVER = COKLAT + POSISI BULLET SEJAJAR
+   ─────────────────────────────────────────────────────────────
+   1. Hover font → #3d1a0a (coklat gelap, bukan putih)
+   2. Bullet submenu ::after → diselaraskan dengan teks
+   ───────────────────────────────────────────────────────────── */
+
+/* ── 1. Hover font menu utama → coklat gelap ─────────────── */
+.sidebar .sidebar-inner .sidebar-menu ul li a:hover,
+.sidebar .sidebar-inner .sidebar-menu > ul > li > a:hover,
+#sidebar .sidebar-inner .sidebar-menu ul li a:hover,
+.sidebar-menu > ul > li > a:hover {
+  color: #3d1a0a !important;
+}
+
+/* Icon .bi saat hover → coklat gelap */
+.sidebar .sidebar-inner .sidebar-menu ul li a:hover .bi,
+.sidebar-menu > ul > li > a:hover .bi,
+#sidebar .sidebar-inner .sidebar-menu ul li a:hover .bi {
+  color: #3d1a0a !important;
+}
+
+/* Icon SVG/IMG saat hover → tetap gelap */
+.sidebar .sidebar-inner .sidebar-menu ul li a:hover img,
+.sidebar-menu > ul > li > a:hover img,
+#sidebar .sidebar-inner .sidebar-menu ul li a:hover img {
+  filter: brightness(0) saturate(0) opacity(0.8) !important;
+}
+
+/* ── 2. Hover font submenu → coklat gelap ────────────────── */
+.sidebar .sidebar-inner .sidebar-menu ul li ul li a:hover,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li a:hover,
+.sidebar .sub-menu li a:hover,
+.sidebar .sidebar-menu > ul > li.submenu ul li a:hover {
+  color: #3d1a0a !important;
+}
+
+/* ── 3. Bullet submenu ::after — sejajar dengan font ─────── */
+/*
+   style.css bawaan template:
+     ::after { left: 16px; top: 13px; width:10px; height:10px; }
+   Teks link kita pakai padding-left: 40px → bullet di 16px
+   tidak sejajar dengan font di 40px.
+
+   Fix: pindahkan bullet ke dalam alur flex, bukan absolute.
+   Gunakan padding-left yang memberi ruang pas untuk bullet.
+*/
+.sidebar .sidebar-menu > ul > li.submenu ul li a,
+.sidebar .sidebar-inner .sidebar-menu ul li ul li a,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li a {
+  padding-left : 36px !important;  /* ruang cukup: bullet(16px) + gap(8px) + ruang */
+  position     : relative !important;
+}
+
+/* Bullet tetap di posisi absolut tapi selaras dengan padding */
+.sidebar .sidebar-menu > ul > li.submenu ul li a::after,
+.sidebar .sidebar-inner .sidebar-menu ul li ul li a::after,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li a::after {
+  left        : 16px !important;
+  top         : 50% !important;
+  transform   : translateY(-50%) !important;
+  width       : 7px !important;
+  height      : 7px !important;
+  border-radius: 50% !important;
+  border      : 1.5px solid rgba(61,26,10,.50) !important;
+  background  : transparent !important;
+}
+
+/* Bullet hover → coklat solid */
+.sidebar .sidebar-menu > ul > li.submenu ul li a:hover::after,
+.sidebar .sidebar-inner .sidebar-menu ul li ul li a:hover::after,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li a:hover::after {
+  background  : #3d1a0a !important;
+  border-color: #3d1a0a !important;
+}
+
+/* Bullet active → coklat tua */
+.sidebar .sidebar-menu > ul > li.submenu ul li a.active::after,
+.sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a::after,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a::after {
+  background  : var(--sb-act-bg) !important;
+  border-color: var(--sb-act-bg) !important;
+}
