@@ -66,6 +66,7 @@ class CartController extends Controller
         ];
 
         Session::put('cart', $cart);
+        Session::save();
 
         return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang');
     }
@@ -96,16 +97,23 @@ class CartController extends Controller
 
         $cart[$key]['qty'] = (int) $request->qty;
         Session::put('cart', $cart);
+        Session::save();
 
         return redirect()->back()->with('success', 'Keranjang diperbarui');
     }
 
     public function remove($key)
     {
+        // Guard: jangan hapus jika key adalah 'clear' (menghindari route conflict)
+        if ($key === 'clear') {
+            return $this->clear();
+        }
+
         $cart = Session::get('cart', []);
         if (isset($cart[$key])) {
             unset($cart[$key]);
             Session::put('cart', $cart);
+            Session::save();
         }
         return redirect()->back()->with('success', 'Item dihapus dari keranjang');
     }
@@ -113,6 +121,7 @@ class CartController extends Controller
     public function clear()
     {
         Session::forget('cart');
+        Session::save();
         return redirect()->back()->with('success', 'Keranjang dikosongkan');
     }
 }

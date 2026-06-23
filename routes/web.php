@@ -149,6 +149,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/cart',               [CartController::class, 'index'])->name('cart');
     Route::post('/cart',              [CartController::class, 'store'])->name('cartStore');
     Route::put('/cart/{key}',         [CartController::class, 'update'])->name('cartUpdate');
+    // PENTING: cartClear harus SEBELUM cartRemove agar '/cart/clear'
+    // tidak di-tangkap oleh Route::delete('/cart/{key}') sebagai key='clear'
     Route::delete('/cart/clear',      [CartController::class, 'clear'])->name('cartClear');
     Route::delete('/cart/{key}',      [CartController::class, 'remove'])->name('cartRemove');
 
