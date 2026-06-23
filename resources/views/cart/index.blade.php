@@ -48,10 +48,6 @@
                                         <input type="number" name="qty" value="{{ $item['qty'] }}" min="1"
                                             class="input-brand text-center cart-qty-input" style="width:64px;padding:6px 8px;"
                                             data-price="{{ $item['price'] }}">
-                                        <button type="submit" class="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                                            style="background:#f3ede9;color:#b17457;" title="Perbarui">
-                                            <i class="fas fa-rotate text-xs"></i>
-                                        </button>
                                     </form>
                                 </td>
                                 <td class="font-bold cart-subtotal" style="color:#b17457;">
