@@ -108,7 +108,67 @@ body {
   filter: brightness(0) invert(1) !important;
 }
 .bar-icon span  { background: var(--hp) !important; }
-#toggle_btn:hover { color: var(--hp) !important; }
+
+/* ── #toggle_btn → ikon panah, CSS only (JS tidak diubah) ──
+   script.js toggle class .mini-sidebar di body saat diklik.
+   • Default (sidebar penuh)  : panah ‹ (kiri)
+   • body.mini-sidebar aktif  : panah › (kanan)
+   • mini-sidebar + expand-menu (hover): panah ‹ kembali
+─────────────────────────────────────────────────────────── */
+#toggle_btn {
+  display        : inline-flex !important;
+  align-items    : center !important;
+  justify-content: center !important;
+  width          : 28px !important;
+  height         : 28px !important;
+  border-radius  : 50% !important;
+  background     : #fff0e6 !important;
+  border         : 1.5px solid #ede3db !important;
+  cursor         : pointer !important;
+  flex-shrink    : 0 !important;
+  text-decoration: none !important;
+  transition     : background .18s, border-color .18s !important;
+}
+#toggle_btn:hover {
+  background  : #ffe0cc !important;
+  border-color: #b17457 !important;
+  color       : #b17457 !important;
+}
+
+/* Ikon panah via ::before — panah kiri ‹ saat sidebar terbuka */
+#toggle_btn::before {
+  content      : "" !important;
+  display      : block !important;
+  width        : 7px !important;
+  height       : 7px !important;
+  border-left  : 2.5px solid #b17457 !important;
+  border-bottom: 2.5px solid #b17457 !important;
+  transform    : rotate(45deg) translateX(2px) !important;
+  transition   : transform .25s cubic-bezier(.4,0,.2,1) !important;
+  flex-shrink  : 0 !important;
+}
+
+/* Sidebar mengecil → panah › (kanan) */
+body.mini-sidebar #toggle_btn::before {
+  transform: rotate(-135deg) translateX(-2px) !important;
+}
+
+/* Sidebar mengecil tapi di-hover expand → panah ‹ lagi */
+body.mini-sidebar.expand-menu #toggle_btn::before {
+  transform: rotate(45deg) translateX(2px) !important;
+}
+
+/* ── Nonaktifkan overlay gelap bawaan (style.css) ──────────
+   .sidebar-overlay.opened dari script.js mobile_btn:
+   overlay rgba(0,0,0,0.6) dimatikan via CSS agar konten
+   halaman tetap bisa diklik tanpa blur. JS tidak diubah.
+─────────────────────────────────────────────────────────── */
+.sidebar-overlay,
+.sidebar-overlay.opened {
+  display        : none !important;
+  background-color: transparent !important;
+  pointer-events  : none !important;
+}
 
 /* Search bar */
 .top-nav-search .searchinputs input {
