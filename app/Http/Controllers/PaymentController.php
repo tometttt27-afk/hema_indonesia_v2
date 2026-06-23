@@ -105,13 +105,10 @@ class PaymentController extends Controller
         $clientKey = config('services.midtrans.client_key');
         $snapJs = $this->snapBaseUrl() . '/snap/snap.js';
 
-        // Jika ada method terpilih → tampilkan snap langsung (snap.blade.php)
-        // Jika tidak ada method → tampilkan halaman pilih metode (pay.blade.php)
-        if ($chosenMethod && in_array($chosenMethod, $allowedMethods)) {
-            return view('payment.snap', compact('order', 'token', 'clientKey', 'snapJs', 'chosenMethod'));
-        }
-
-        return view('payment.pay', compact('order', 'token', 'clientKey', 'snapJs'));
+        // Langsung tampilkan snap.blade.php (auto-open Midtrans)
+        // tanpa halaman pemilihan metode di tengah.
+        // chosenMethod = null → Midtrans tampil semua metode aktif di Dashboard.
+        return view('payment.snap', compact('order', 'token', 'clientKey', 'snapJs', 'chosenMethod'));
     }
 
     public function notification(Request $request)

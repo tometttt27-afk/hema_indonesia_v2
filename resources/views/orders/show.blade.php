@@ -72,7 +72,7 @@
                 </div>
 
                 @if($data->status==='pending')
-                    <a href="{{ route('orderPay',$data->id) }}"
+                    <a href="{{ route('orderPay', $data->id) }}"
                        class="btn-brand w-full text-center mt-5 py-3 rounded-xl text-sm block">
                         <i class="fas fa-credit-card text-xs"></i> Bayar Sekarang
                     </a>

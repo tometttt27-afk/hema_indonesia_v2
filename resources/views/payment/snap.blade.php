@@ -23,25 +23,13 @@
                 <span style="color:#b17457;">Hema</span><span style="color:#1e1410;">.Indonesia</span>
             </a>
 
-            {{-- Icon metode --}}
+            {{-- Icon pembayaran --}}
             <div class="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
                  style="background:linear-gradient(135deg,#b17457,#c29470);">
-                @if($chosenMethod === 'qris')
-                    <i class="fas fa-qrcode text-white text-2xl"></i>
-                @else
-                    <i class="fas fa-building-columns text-white text-2xl"></i>
-                @endif
+                <i class="fas fa-credit-card text-white text-2xl"></i>
             </div>
 
-            @php
-                $methodLabel = [
-                    'qris'   => 'QRIS',
-                    'bri_va' => 'Virtual Account BRI',
-                    'bca_va' => 'Virtual Account BCA',
-                ][$chosenMethod] ?? $chosenMethod;
-            @endphp
-
-            <h2 class="text-xl font-bold text-gray-900 mb-1">Pembayaran {{ $methodLabel }}</h2>
+            <h2 class="text-xl font-bold text-gray-900 mb-1">Pembayaran</h2>
             <p class="text-gray-500 text-sm mb-4">Pesanan #{{ $order->id }}</p>
 
             <div class="rounded-xl py-4 px-6 mb-6"
@@ -70,12 +58,12 @@
                 <i class="fas fa-lock me-2"></i> Buka Pembayaran Manual
             </button>
 
-            <a href="{{ url('/orders/'.$order->id.'/pay') }}"
+            <a href="{{ url('/orders/'.$order->id) }}"
                style="display:block;text-align:center;font-size:13px;color:#a89080;
                       text-decoration:none;margin-bottom:8px;"
                onmouseover="this.style.color='#7a6255'"
                onmouseout="this.style.color='#a89080'">
-                <i class="fas fa-arrow-left text-xs me-1"></i> Ganti metode pembayaran
+                <i class="fas fa-arrow-left text-xs me-1"></i> Kembali ke detail pesanan
             </a>
 
             <p style="font-size:11px;color:#d1c4bc;margin-top:12px;">
