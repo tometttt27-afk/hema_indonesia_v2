@@ -1057,22 +1057,14 @@ textarea::placeholder {
   border-color: var(--sb2-chevron-open) !important;
 }
 
-/* ── Sidebar PIN button — selaras bg putih ─────────────── */
-#sidebar-pin-btn {
-  background  : rgba(177,116,87,.10) !important;
-  border      : 1.5px solid rgba(177,116,87,.22) !important;
+/* ── Sidebar toggle button — warna selaras bg putih ────────── */
+#sidebar-toggle-btn {
+  background  : #ffffff !important;
+  border-color: var(--sb2-border) !important;
   color       : var(--sb2-act-txt) !important;
 }
-#sidebar-pin-btn:hover {
-  background  : rgba(177,116,87,.20) !important;
-  border-color: rgba(177,116,87,.40) !important;
-}
-body.sidebar-pinned #sidebar-pin-btn {
-  background  : rgba(177,116,87,.25) !important;
-  border-color: rgba(177,116,87,.50) !important;
-}
-#sidebar-pin-btn::after {
-  background: var(--sb2-act-txt) !important;
+#sidebar-toggle-btn:hover {
+  background  : var(--sb2-act-bg) !important;
 }
 ::-webkit-scrollbar       { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: var(--pg-bg); }
@@ -1109,89 +1101,81 @@ body.sidebar-pinned #sidebar-pin-btn {
   transition: transform .28s cubic-bezier(.4,0,.2,1), width .2s ease !important;
 }
 
-/* State: sidebar tersembunyi */
-body.sidebar-hidden .sidebar,
-body.sidebar-hidden #sidebar {
+/* State: sidebar tersembunyi (collapsed) */
+body.sidebar-collapsed .sidebar,
+body.sidebar-collapsed #sidebar {
   transform: translateX(-100%) !important;
 }
 
-/* Page wrapper menyesuaikan ketika sidebar hilang */
-body.sidebar-hidden .page-wrapper {
-  margin-left: 0 !important;
-  transition: margin-left .28s cubic-bezier(.4,0,.2,1) !important;
+/* Page wrapper penuh ketika sidebar collapsed */
+body.sidebar-collapsed .page-wrapper {
+  margin-left : 0 !important;
+  transition  : margin-left .28s cubic-bezier(.4,0,.2,1) !important;
 }
 
-/* Overlay gelap ringan ketika sidebar muncul dan belum di-pin */
+/* Overlay tipis — tidak dipakai di mode toggle baru, dipertahankan untuk kompatibilitas */
 #sidebar-overlay {
   display        : none;
   position       : fixed;
   inset          : 0;
   z-index        : 998;
-  background     : rgba(30, 14, 5, .18);
+  background     : rgba(30, 14, 5, .10);
   backdrop-filter: blur(1px);
   cursor         : pointer;
   transition     : opacity .25s ease;
 }
-body.sidebar-float #sidebar-overlay {
-  display: block;
-}
 
-/* ── Pin button (☉ / ✕) ──────────────────────────────────── */
-#sidebar-pin-btn {
-  position       : absolute;
-  top            : 14px;
-  right          : 12px;
-  z-index        : 1001;
-  width          : 28px;
-  height         : 28px;
-  border-radius  : 50%;
-  background     : rgba(61,26,10,.15);
-  border         : 1.5px solid rgba(61,26,10,.25);
+/* ── Tombol panah toggle sidebar ─────────────────────────── */
+#sidebar-toggle-btn {
+  /* Menempel persis di tepi kanan sidebar, vertikal center */
+  position       : fixed;
+  top            : 50%;
+  left           : 260px;                    /* lebar sidebar */
+  transform      : translateY(-50%) translateX(-50%);
+  z-index        : 1050;
+
+  width          : 24px;
+  height         : 48px;
+  border-radius  : 0 8px 8px 0;             /* rounded kanan saja */
+  background     : #ffffff;
+  border         : 1.5px solid var(--sb2-border);
+  border-left    : none;                     /* menyatu dengan sidebar */
+  box-shadow     : 3px 0 10px rgba(177,116,87,.12);
+
   display        : flex;
   align-items    : center;
   justify-content: center;
   cursor         : pointer;
-  transition     : background .18s, border-color .18s, transform .18s;
-  flex-shrink    : 0;
-  color          : #3d1a0a;
+  transition     : background .18s, box-shadow .18s, left .28s cubic-bezier(.4,0,.2,1);
+  color          : var(--sb2-act-txt);
   font-size      : 13px;
+  padding        : 0;
   user-select    : none;
+  outline        : none;
 }
-#sidebar-pin-btn:hover {
-  background  : rgba(61,26,10,.28);
-  border-color: rgba(61,26,10,.45);
-  transform   : scale(1.08);
+#sidebar-toggle-btn:hover {
+  background : var(--sb2-act-bg);
+  box-shadow : 4px 0 14px rgba(177,116,87,.20);
 }
-/* State terkunci — warna berbeda */
-body.sidebar-pinned #sidebar-pin-btn {
-  background  : rgba(61,26,10,.35);
-  border-color: rgba(61,26,10,.55);
-  color       : #1e0a00;
+/* Ikon panah */
+#sidebar-toggle-btn #toggle-icon {
+  transition: transform .28s cubic-bezier(.4,0,.2,1);
+  font-size : 13px;
+  color     : var(--sb2-act-txt);
 }
-/* Tooltip teks */
-#sidebar-pin-btn::after {
-  content      : attr(data-tooltip);
-  position     : absolute;
-  left         : calc(100% + 8px);
-  top          : 50%;
-  transform    : translateY(-50%);
-  background   : #1e0a00;
-  color        : #fff;
-  font-size    : 11px;
-  font-weight  : 600;
-  white-space  : nowrap;
-  padding      : 4px 9px;
-  border-radius: 5px;
-  pointer-events: none;
-  opacity      : 0;
-  transition   : opacity .15s;
-  font-family  : "Urbanist", sans-serif;
+/* Saat sidebar tertutup → tombol geser ke kiri & ikon balik arah */
+body.sidebar-collapsed #sidebar-toggle-btn {
+  left: 0;
+  transform: translateY(-50%) translateX(0);
+  border-radius: 0 8px 8px 0;
+  border-left  : 1.5px solid var(--sb2-border);
 }
-#sidebar-pin-btn:hover::after { opacity: 1; }
+body.sidebar-collapsed #sidebar-toggle-btn #toggle-icon {
+  transform: rotate(180deg);
+}
 
 @media (max-width: 991px) {
-  /* Di mobile tidak pakai fitur pin — sudah ada toggle bawaan */
-  #sidebar-pin-btn { display: none; }
+  #sidebar-toggle-btn { display: none !important; }
   body.sidebar-hidden .page-wrapper { margin-left: 0 !important; }
 }
 

@@ -127,12 +127,12 @@
 
     {{-- ═══ SIDEBAR ═══ --}}
     <div class="sidebar" id="sidebar">
-        {{-- Pin button: klik untuk kunci/lepas sidebar --}}
-        <button id="sidebar-pin-btn"
-                title="Kunci Sidebar"
-                data-tooltip="Kunci sidebar"
-                aria-label="Pin sidebar">
-            <i class="bi bi-pin-angle-fill" id="pin-icon"></i>
+
+        {{-- Tombol panah toggle: menempel di tepi kanan sidebar --}}
+        <button id="sidebar-toggle-btn"
+                title="Tutup / Buka sidebar"
+                aria-label="Toggle sidebar">
+            <i class="bi bi-chevron-left" id="toggle-icon"></i>
         </button>
 
         <div class="sidebar-inner slimscroll">
@@ -256,90 +256,61 @@
 <script src="{{ asset('admin/js/form-input.js') }}"></script>
 <script src="{{ asset('js/alert.js') }}"></script>
 
-{{-- ═══ SIDEBAR AUTO-HIDE & PIN — JS ═══
+{{-- ═══ SIDEBAR TOGGLE & SUBMENU — JS ═══
      Logika:
-     1. Sidebar muncul by default
-     2. Klik di luar sidebar (.page-wrapper / .header) → sidebar geser kiri
-     3. Klik konten → sidebar muncul lagi
-     4. Tombol PIN (☉) → sidebar terkunci (tidak auto-hide)
-     5. Submenu toggle: klik trigger → expand/collapse dengan animasi slide
+     1. Tombol panah (‹/›) di tepi kanan sidebar → collapse/expand sidebar
+     2. State disimpan di localStorage agar persisten antar halaman
+     3. Saat collapsed: sidebar geser kiri, page-wrapper melebar penuh
+     4. Submenu accordion: klik trigger → expand/collapse smooth
      Tidak mengubah logika script.js / toggle_btn / mini-sidebar yang ada.
 ═══════════════════════════════════════ --}}
 <div id="sidebar-overlay"></div>
 <script>
 (function () {
     /* ══════════════════════════════════════════════════════════
-       A. SIDEBAR PIN & AUTO-HIDE
+       A. SIDEBAR TOGGLE (panah ‹/›)
     ══════════════════════════════════════════════════════════ */
-    var STORAGE_KEY = 'hema_sidebar_pinned';
-    var body        = document.body;
-    var pinBtn      = document.getElementById('sidebar-pin-btn');
-    var pinIcon     = document.getElementById('pin-icon');
-    var sidebar     = document.getElementById('sidebar');
-    var overlay     = document.getElementById('sidebar-overlay');
-    var isPinned    = localStorage.getItem(STORAGE_KEY) === '1';
+    var STORAGE_KEY  = 'hema_sidebar_collapsed';
+    var body         = document.body;
+    var toggleBtn    = document.getElementById('sidebar-toggle-btn');
+    var toggleIcon   = document.getElementById('toggle-icon');
+    var isCollapsed  = localStorage.getItem(STORAGE_KEY) === '1';
 
-    function applyPin(pinned) {
-        isPinned = pinned;
-        localStorage.setItem(STORAGE_KEY, pinned ? '1' : '0');
-        if (pinned) {
-            body.classList.add('sidebar-pinned');
-            body.classList.remove('sidebar-hidden', 'sidebar-float');
-            pinIcon.className = 'bi bi-pin-fill';
-            pinBtn.setAttribute('data-tooltip', 'Lepas kunci');
-            pinBtn.title      = 'Lepas kunci sidebar';
+    /* ── Terapkan state dari localStorage ─────────────────── */
+    function applyCollapsed(collapsed) {
+        isCollapsed = collapsed;
+        localStorage.setItem(STORAGE_KEY, collapsed ? '1' : '0');
+
+        if (collapsed) {
+            body.classList.add('sidebar-collapsed');
+            if (toggleBtn) toggleBtn.title = 'Buka sidebar';
         } else {
-            body.classList.remove('sidebar-pinned');
-            pinIcon.className = 'bi bi-pin-angle-fill';
-            pinBtn.setAttribute('data-tooltip', 'Kunci sidebar');
-            pinBtn.title      = 'Kunci sidebar';
+            body.classList.remove('sidebar-collapsed');
+            if (toggleBtn) toggleBtn.title = 'Tutup sidebar';
         }
     }
 
-    function showSidebar() {
-        if (isPinned) return;
-        body.classList.remove('sidebar-hidden');
-        body.classList.add('sidebar-float');
-    }
+    /* Init saat halaman load */
+    applyCollapsed(isCollapsed);
 
-    function hideSidebar() {
-        if (isPinned) return;
-        body.classList.add('sidebar-hidden');
-        body.classList.remove('sidebar-float');
-    }
-
-    applyPin(isPinned);
-
-    if (pinBtn) {
-        pinBtn.addEventListener('click', function (e) {
+    /* Klik tombol panah → toggle */
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function (e) {
             e.stopPropagation();
-            applyPin(!isPinned);
+            applyCollapsed(!isCollapsed);
         });
     }
 
-    if (overlay) {
-        overlay.addEventListener('click', function () { hideSidebar(); });
-    }
-
-    if (sidebar) {
-        sidebar.addEventListener('click', function (e) { e.stopPropagation(); });
-    }
-
-    document.addEventListener('click', function (e) {
-        if (isPinned) return;
-        var inSidebar = sidebar && sidebar.contains(e.target);
-        var inPinBtn  = pinBtn  && pinBtn.contains(e.target);
-        if (inSidebar || inPinBtn) return;
-        if (window.innerWidth <= 991) return;
-        var isHidden = body.classList.contains('sidebar-hidden');
-        if (isHidden) { showSidebar(); } else { hideSidebar(); }
-    });
-
+    /* Jaga layar mobile: selalu tampil, abaikan state collapsed */
     window.addEventListener('resize', function () {
         if (window.innerWidth <= 991) {
-            body.classList.remove('sidebar-hidden', 'sidebar-float');
+            body.classList.remove('sidebar-collapsed');
         }
     });
+    if (window.innerWidth <= 991) {
+        body.classList.remove('sidebar-collapsed');
+    }
+
 
     /* ══════════════════════════════════════════════════════════
        B. SUBMENU ACCORDION TOGGLE
@@ -349,90 +320,80 @@
     ══════════════════════════════════════════════════════════ */
     var triggers = document.querySelectorAll('.sidebar-submenu-toggle');
 
+    function closeSubmenu(li) {
+        li.classList.remove('subdrop', 'active');
+        var ul  = li.querySelector(':scope > ul');
+        var tog = li.querySelector('.sidebar-submenu-toggle');
+        if (ul) {
+            ul.style.maxHeight = ul.scrollHeight + 'px';
+            ul.style.overflow  = 'hidden';
+            requestAnimationFrame(function () {
+                ul.style.transition = 'max-height .28s cubic-bezier(.4,0,.2,1), opacity .22s ease';
+                ul.style.maxHeight  = '0';
+                ul.style.opacity    = '0';
+            });
+            ul.addEventListener('transitionend', function handler() {
+                ul.style.display   = 'none';
+                ul.style.maxHeight = '';
+                ul.style.opacity   = '';
+                ul.style.overflow  = '';
+                ul.removeEventListener('transitionend', handler);
+            });
+        }
+        if (tog) tog.setAttribute('aria-expanded', 'false');
+    }
+
+    function openSubmenu(li) {
+        var ul  = li.querySelector(':scope > ul');
+        var tog = li.querySelector('.sidebar-submenu-toggle');
+        li.classList.add('subdrop', 'active');
+        if (ul) {
+            ul.style.display   = 'block';
+            ul.style.maxHeight = '0';
+            ul.style.opacity   = '0';
+            ul.style.overflow  = 'hidden';
+            var targetH = ul.scrollHeight;
+            requestAnimationFrame(function () {
+                ul.style.transition = 'max-height .28s cubic-bezier(.4,0,.2,1), opacity .22s ease';
+                ul.style.maxHeight  = targetH + 'px';
+                ul.style.opacity    = '1';
+            });
+            ul.addEventListener('transitionend', function handler() {
+                ul.style.maxHeight = '';
+                ul.style.overflow  = '';
+                ul.removeEventListener('transitionend', handler);
+            });
+        }
+        if (tog) tog.setAttribute('aria-expanded', 'true');
+    }
+
     triggers.forEach(function (trigger) {
         trigger.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
 
-            var parentLi  = this.closest('li.submenu');
-            var subUl     = parentLi ? parentLi.querySelector(':scope > ul') : null;
-            if (!parentLi || !subUl) return;
+            var parentLi = this.closest('li.submenu');
+            if (!parentLi) return;
 
             var isOpen = parentLi.classList.contains('subdrop');
 
             /* Tutup semua submenu lain dulu */
             document.querySelectorAll('#sidebar-menu li.submenu.subdrop').forEach(function (li) {
-                if (li !== parentLi) {
-                    li.classList.remove('subdrop', 'active');
-                    var ul = li.querySelector(':scope > ul');
-                    if (ul) {
-                        ul.style.maxHeight = ul.scrollHeight + 'px'; /* anchor dari saat ini */
-                        requestAnimationFrame(function () {
-                            ul.style.transition  = 'max-height .28s cubic-bezier(.4,0,.2,1), opacity .22s ease';
-                            ul.style.maxHeight   = '0';
-                            ul.style.opacity     = '0';
-                            ul.style.overflow    = 'hidden';
-                        });
-                        ul.addEventListener('transitionend', function handler() {
-                            ul.style.display = 'none';
-                            ul.style.maxHeight = '';
-                            ul.style.opacity   = '';
-                            ul.style.overflow  = '';
-                            ul.removeEventListener('transitionend', handler);
-                        });
-                    }
-                    var tog = li.querySelector('.sidebar-submenu-toggle');
-                    if (tog) tog.setAttribute('aria-expanded', 'false');
-                }
+                if (li !== parentLi) closeSubmenu(li);
             });
 
             if (isOpen) {
-                /* ── Tutup submenu ini ─────────────────────── */
-                parentLi.classList.remove('subdrop');
-                /* Jika tidak ada child aktif, hapus juga active */
+                /* Jika tidak ada child aktif, tutup */
                 if (!parentLi.querySelector('ul li.active')) {
-                    parentLi.classList.remove('active');
+                    closeSubmenu(parentLi);
                 }
-                subUl.style.maxHeight  = subUl.scrollHeight + 'px';
-                subUl.style.overflow   = 'hidden';
-                requestAnimationFrame(function () {
-                    subUl.style.transition = 'max-height .28s cubic-bezier(.4,0,.2,1), opacity .22s ease';
-                    subUl.style.maxHeight  = '0';
-                    subUl.style.opacity    = '0';
-                });
-                subUl.addEventListener('transitionend', function handler() {
-                    subUl.style.display   = 'none';
-                    subUl.style.maxHeight = '';
-                    subUl.style.opacity   = '';
-                    subUl.style.overflow  = '';
-                    subUl.removeEventListener('transitionend', handler);
-                });
-                this.setAttribute('aria-expanded', 'false');
             } else {
-                /* ── Buka submenu ini ──────────────────────── */
-                parentLi.classList.add('subdrop', 'active');
-                subUl.style.display   = 'block';
-                subUl.style.maxHeight = '0';
-                subUl.style.opacity   = '0';
-                subUl.style.overflow  = 'hidden';
-                /* Ukur tinggi asli */
-                var targetH = subUl.scrollHeight;
-                requestAnimationFrame(function () {
-                    subUl.style.transition = 'max-height .28s cubic-bezier(.4,0,.2,1), opacity .22s ease';
-                    subUl.style.maxHeight  = targetH + 'px';
-                    subUl.style.opacity    = '1';
-                });
-                subUl.addEventListener('transitionend', function handler() {
-                    subUl.style.maxHeight = '';
-                    subUl.style.overflow  = '';
-                    subUl.removeEventListener('transitionend', handler);
-                });
-                this.setAttribute('aria-expanded', 'true');
+                openSubmenu(parentLi);
             }
         });
     });
 
-    /* Pastikan submenu yang sudah aktif dari server terlihat tanpa animasi */
+    /* Pastikan submenu aktif dari server langsung tampil tanpa animasi */
     document.querySelectorAll('#sidebar-menu li.submenu.subdrop > ul').forEach(function (ul) {
         ul.style.display = 'block';
         ul.style.opacity = '1';
