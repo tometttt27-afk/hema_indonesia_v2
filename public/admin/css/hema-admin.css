@@ -1,76 +1,126 @@
 /* ============================================================
-   HEMA INDONESIA — Admin Design System v10
-   Palet: Coklat Tua #5D4037 · Coklat Medium #795548
-          Coklat Muda #A1887F · Cream #F5F1EB · Putih #FFFFFF
-   Font : Urbanist | Premium · Modern · Bersih · Profesional
+   HEMA INDONESIA — Admin Design System v11
+   ── CSS digabungkan dari PmwebFigma (theme.css + AdminDashboard.tsx + AdminSidebar.tsx)
+   ── Palet: #5D4037 · #795548 · #A1887F · #F5F1EB · #FFFFFF
+   ── Font : Urbanist
+   ============================================================
+
+   SUMBER PmwebFigma yang diadopsi:
+   • theme.css     → design tokens (--background, --primary, --sidebar-*, --radius, --chart-*)
+   • AdminSidebar  → sidebar bg #5D4037, active cream #F5F1EB, icon box 28px rounded-7px,
+                     submenu bg rgba(0,0,0,.15), bullet dot, logo box gradient
+   • AdminDashboard→ topbar putih h:62px, stat card gradient 16px radius,
+                     card border #E8DED8, shadow rgba(93,64,55,.06),
+                     table thead separator #F5F1EB, status chip rounded-50px,
+                     alert banner border-left 4px
    ============================================================ */
 
-/* ─── 1. DESIGN TOKENS ──────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   1. DESIGN TOKENS — dari PmwebFigma/theme.css
+      Dikombinasikan dengan token hema_indonesia_v2 yang sudah ada
+   ───────────────────────────────────────────────────────────── */
 :root {
-  /* ── Palet Warna Utama ── */
-  --c-dark   : #5D4037;   /* Coklat Tua   — heading, sidebar aktif, navbar */
-  --c-mid    : #795548;   /* Coklat Medium — tombol utama, elemen interaktif */
-  --c-light  : #A1887F;   /* Coklat Muda  — aksen sekunder, ikon muted */
-  --c-cream  : #F5F1EB;   /* Cream        — bg section, card tertentu */
-  --c-white  : #FFFFFF;   /* Putih        — background utama */
+  /* ── PmwebFigma: palet coklat utama ── */
+  --background          : #FFFFFF;
+  --foreground          : #2C1810;
+  --card                : #FFFFFF;
+  --card-foreground     : #2C1810;
+  --primary             : #5D4037;
+  --primary-foreground  : #FFFFFF;
+  --secondary           : #F5F1EB;
+  --secondary-foreground: #5D4037;
+  --muted               : #F5F1EB;
+  --muted-foreground    : #A1887F;
+  --accent              : #EDE5D8;
+  --accent-foreground   : #5D4037;
+  --destructive         : #D4183D;
+  --destructive-foreground: #FFFFFF;
+  --border              : #E8DED8;
+  --input-background    : #F5F1EB;
+  --switch-background   : #C4A99F;
+  --ring                : #A1887F;
+  --font-weight-medium  : 500;
+  --font-weight-normal  : 400;
 
-  /* ── Gradasi & Turunan ── */
-  --c-dark-dk : #4E342E;  /* hover dark */
-  --c-dark-lt : #8D6E63;  /* teks muted */
-  --c-mid-soft: #F3EDE8;  /* bg tombol soft */
-  --c-cream-dk: #EDE5D8;  /* border cream */
-  --c-cream-lt: #FAF8F5;  /* page background */
+  /* ── PmwebFigma: chart colors (coklat tone) ── */
+  --chart-1: #795548;
+  --chart-2: #A1887F;
+  --chart-3: #5D4037;
+  --chart-4: #BCAAA4;
+  --chart-5: #D7CCC8;
 
-  /* ── Gradien brand ── */
-  --c-g  : linear-gradient(135deg, #5D4037 0%, #795548 100%);
-  --c-g2 : linear-gradient(135deg, #795548 0%, #A1887F 100%);
+  /* ── PmwebFigma: radius ── */
+  --radius   : 0.75rem;   /* 12px */
+  --radius-sm: calc(0.75rem - 4px);  /* 8px */
+  --radius-md: calc(0.75rem - 2px);  /* 10px */
+  --radius-lg: 0.75rem;
+  --radius-xl: calc(0.75rem + 4px);  /* 16px */
 
-  /* ── Layout ── */
-  --sb-w  : 240px;
-  --tb-h  : 62px;
+  /* ── PmwebFigma: sidebar tokens ── */
+  --sidebar                    : #5D4037;
+  --sidebar-foreground         : #FFFFFF;
+  --sidebar-primary            : #F5F1EB;
+  --sidebar-primary-foreground : #5D4037;
+  --sidebar-accent             : rgba(255,255,255,0.10);
+  --sidebar-accent-foreground  : #FFFFFF;
+  --sidebar-border             : rgba(255,255,255,0.08);
+  --sidebar-ring               : #A1887F;
 
-  /* ── Teks ── */
-  --tx-1  : #2C1810;   /* heading utama */
-  --tx-2  : #4A3728;   /* body */
-  --tx-3  : #8D7066;   /* muted */
-  --tx-4  : #B5A09A;   /* placeholder / dim */
+  /* ── Gradien brand (AdminDashboard stat cards) ── */
+  --g-1: linear-gradient(135deg, #5D4037, #795548);
+  --g-2: linear-gradient(135deg, #795548, #A1887F);
+  --g-3: linear-gradient(135deg, #6D4C41, #8D6E63);
+  --g-4: linear-gradient(135deg, #4E342E, #6D4C41);
 
-  /* ── Surface ── */
-  --bg    : #FAF8F5;   /* page background */
-  --surf  : #FFFFFF;   /* card / panel */
-  --bd    : #E8DED8;   /* border */
-  --bd-lt : #F0EAE4;   /* border light */
+  /* ── Ekstensi untuk hema_indonesia_v2 ── */
+  --c-dark    : #5D4037;
+  --c-dark-dk : #4E342E;
+  --c-mid     : #795548;
+  --c-mid-dk  : #6D4C41;
+  --c-light   : #A1887F;
+  --c-cream   : #F5F1EB;
+  --c-cream-dk: #EDE5D8;
+  --c-offwhite: #FAF8F5;
+  --c-g       : var(--g-1);
 
-  /* ── Semantik ── */
+  /* Surface & teks */
+  --bg    : #FAF8F5;
+  --surf  : #FFFFFF;
+  --bd    : #E8DED8;
+  --bd-lt : #F0EAE4;
+  --tx-1  : #2C1810;
+  --tx-2  : #4A3728;
+  --tx-3  : #8D7066;
+  --tx-4  : #B5A09A;
+
+  /* Semantik status */
   --s-pending-bg  : #FEF9C3; --s-pending-tx  : #854D0E;
   --s-paid-bg     : #DBEAFE; --s-paid-tx     : #1D4ED8;
   --s-shipped-bg  : #EDE9FE; --s-shipped-tx  : #6D28D9;
   --s-completed-bg: #DCFCE7; --s-completed-tx: #166534;
   --s-cancelled-bg: #FEE2E2; --s-cancelled-tx: #991B1B;
 
-  /* ── Warna sistem ── */
+  /* Warna sistem */
   --green   : #16A34A; --green-lt : #F0FDF4;
   --blue    : #2563EB; --blue-lt  : #EFF6FF;
   --red     : #DC2626; --red-lt   : #FEF2F2;
   --amber   : #D97706; --amber-lt : #FFFBEB;
   --purple  : #7C3AED; --purple-lt: #F5F3FF;
 
-  /* ── Bayangan (warm brown-tinted) ── */
+  /* Shadow (AdminDashboard: rgba(93,64,55,...)) */
   --sh-xs : 0 1px 4px  rgba(93,64,55,.06);
   --sh-sm : 0 4px 16px rgba(93,64,55,.10);
   --sh-md : 0 8px 28px rgba(93,64,55,.13);
   --sh-lg : 0 16px 48px rgba(93,64,55,.16);
-  --sh-inset: inset 0 1px 0 rgba(255,255,255,.06);
 
-  /* ── Radius ── */
-  --r     : 12px;
-  --r-sm  : 8px;
-  --r-xs  : 6px;
-  --r-pill: 50px;
-  --r-full: 9999px;
+  /* Layout */
+  --sb-w : 240px;
+  --tb-h : 62px;
 }
 
-/* ─── 2. RESET & FONT ───────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   2. RESET & FONT — Urbanist (PmwebFigma memakai font ini)
+   ───────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
 body, h1, h2, h3, h4, h5, h6,
@@ -85,66 +135,76 @@ textarea, button, table, td, th,
 body {
   background : var(--bg) !important;
   color      : var(--tx-2) !important;
-  font-size  : 13px !important;
-  line-height: 1.6 !important;
+  font-size  : 14px !important;          /* PmwebFigma: --font-size: 14px */
+  line-height: 1.5 !important;           /* PmwebFigma: line-height: 1.5 */
 }
 
-svg { flex-shrink: 0; }
+/* PmwebFigma typography scale */
+h1 { font-size: 1.5rem;   font-weight: var(--font-weight-medium); line-height: 1.5; }
+h2 { font-size: 1.25rem;  font-weight: var(--font-weight-medium); line-height: 1.5; }
+h3 { font-size: 1.125rem; font-weight: var(--font-weight-medium); line-height: 1.5; }
+h4 { font-size: 1rem;     font-weight: var(--font-weight-medium); line-height: 1.5; }
 
-/* Spinner loading */
+svg   { flex-shrink: 0; }
 @keyframes hema-spin { to { transform: rotate(360deg); } }
 .spin-icon { animation: hema-spin .7s linear infinite !important; }
 .animated  { animation: none !important; }
 
-/* ─── SIDEBAR ICON ──────────────────────────────────────── */
+/* ── Sidebar icon box (PmwebFigma AdminSidebar: width:28px, borderRadius:7px) ── */
 .sb-icon {
-  width          : 30px !important;
-  height         : 30px !important;
-  min-width      : 30px !important;
+  width          : 28px !important;
+  height         : 28px !important;
+  min-width      : 28px !important;
   display        : inline-flex !important;
   align-items    : center !important;
   justify-content: center !important;
-  border-radius  : 8px !important;
-  background     : rgba(255,255,255,.10) !important;
+  border-radius  : 7px !important;
+  background     : rgba(255,255,255,.08) !important;
   flex-shrink    : 0 !important;
-  transition     : background .15s !important;
+  transition     : background .15s ease !important;
   padding        : 5px !important;
 }
-.sb-icon svg { width: 16px !important; height: 16px !important; }
+.sb-icon svg { width: 15px !important; height: 15px !important; }
 
 
-/* ─── 3. TOPBAR ─────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   3. TOPBAR — dari PmwebFigma AdminDashboard topbar
+      bg:#FFFFFF, h:62px, borderBottom:#E8DED8,
+      shadow: "0 1px 0 #F0EAE4, 0 2px 6px rgba(93,64,55,0.04)"
+   ───────────────────────────────────────────────────────────── */
 .header {
   background   : var(--surf) !important;
   border-bottom: 1px solid var(--bd) !important;
-  box-shadow   : 0 1px 0 var(--bd-lt), 0 2px 8px rgba(93,64,55,.04) !important;
+  box-shadow   : 0 1px 0 #F0EAE4, 0 2px 6px rgba(93,64,55,.04) !important;
   height       : var(--tb-h) !important;
 }
 .header .header-left {
-  background  : var(--c-dark) !important;
+  background  : var(--sidebar) !important;
   border-right: none !important;
   width       : var(--sb-w) !important;
+  height      : var(--tb-h) !important;
+  display     : flex !important;
+  align-items : center !important;
 }
 .header .header-left .logo img,
 .header .header-left .logo-small img { filter: brightness(0) invert(1) !important; }
 
-/* Hamburger */
 .bar-icon span { background: var(--c-mid) !important; }
 
-/* ── toggle_btn — lingkaran coklat medium + double chevron putih ── */
+/* toggle_btn — PmwebFigma: rounded full, bg gradient, double chevron */
 #toggle_btn {
   display:inline-flex !important; align-items:center !important;
   justify-content:center !important;
-  width:30px !important; height:30px !important;
-  border-radius:var(--r-full) !important;
+  width:28px !important; height:28px !important;
+  border-radius:9999px !important;
   background:var(--c-mid) !important; border:none !important;
-  box-shadow:0 2px 8px rgba(93,64,55,.30) !important;
+  box-shadow:0 2px 8px rgba(93,64,55,.28) !important;
   cursor:pointer !important; flex-shrink:0 !important;
   position:relative !important; overflow:hidden !important;
   transition:background .15s, transform .12s !important;
   text-decoration:none !important;
 }
-#toggle_btn:hover  { background:var(--c-dark) !important; transform:scale(1.08) !important; }
+#toggle_btn:hover  { background:var(--c-dark) !important; transform:scale(1.07) !important; }
 #toggle_btn:active { transform:scale(0.93) !important; }
 #toggle_btn::before {
   content:"" !important; position:absolute !important;
@@ -165,115 +225,127 @@ body.mini-sidebar #toggle_btn::after   { border-left:none !important; border-top
 body.mini-sidebar.expand-menu #toggle_btn::before { border-right:none !important; border-bottom:none !important; border-left:2px solid #fff !important; border-top:2px solid #fff !important; left:8px !important; }
 body.mini-sidebar.expand-menu #toggle_btn::after  { border-right:none !important; border-bottom:none !important; border-left:2px solid #fff !important; border-top:2px solid #fff !important; left:14px !important; }
 
-/* Matikan overlay bawaan */
+/* matikan overlay bawaan template */
 .sidebar-overlay, .sidebar-overlay.opened { display:none !important; pointer-events:none !important; }
 
-/* Search */
+/* search — PmwebFigma: bg cream, border #E8DED8, radius 9px */
 .top-nav-search .searchinputs input {
-  border:1px solid var(--bd) !important; border-radius:var(--r-sm) !important;
-  background:var(--c-cream-lt) !important; color:var(--tx-1) !important;
-  font-size:12.5px !important; font-weight:500 !important;
-  transition:border-color .15s, box-shadow .15s !important;
+  border:1.5px solid var(--bd) !important; border-radius:9px !important;
+  background:var(--c-cream) !important; color:var(--tx-1) !important;
+  font-size:13px !important; font-weight:var(--font-weight-normal) !important;
+  transition:border-color .15s !important;
 }
 .top-nav-search .searchinputs input:focus {
   border-color:var(--c-mid) !important;
   box-shadow:0 0 0 3px rgba(121,85,72,.15) !important; outline:none !important;
 }
 
-/* Avatar topbar */
+/* avatar */
 .user-img img {
-  width:34px !important; height:34px !important;
-  border-radius:var(--r-full) !important;
+  width:36px !important; height:36px !important;
+  border-radius:9999px !important;
   border:2px solid var(--bd) !important; object-fit:cover !important;
 }
 .status.online { background:#22C55E !important; border:2px solid #fff !important; width:8px !important; height:8px !important; }
 
-/* User dropdown */
+/* user dropdown */
 .menu-drop-user {
-  border:1px solid var(--bd) !important; border-radius:var(--r) !important;
+  border:1px solid var(--bd) !important; border-radius:var(--radius) !important;
   box-shadow:var(--sh-md) !important; min-width:215px !important;
   padding:6px 0 !important; background:var(--surf) !important;
 }
 .menu-drop-user .dropdown-item {
-  padding:9px 18px !important; font-size:13px !important; font-weight:500 !important;
-  color:var(--tx-2) !important; display:flex !important; align-items:center !important;
-  gap:8px !important; transition:background .12s, color .12s !important;
+  padding:9px 18px !important; font-size:13px !important;
+  font-weight:var(--font-weight-medium) !important; color:var(--tx-2) !important;
+  display:flex !important; align-items:center !important; gap:8px !important;
+  transition:background .12s, color .12s !important;
 }
-.menu-drop-user .dropdown-item:hover { background:var(--c-mid-soft) !important; color:var(--c-dark) !important; }
+.menu-drop-user .dropdown-item:hover { background:var(--c-cream) !important; color:var(--c-dark) !important; }
 .menu-drop-user .dropdown-item.logout:hover { background:#FEF2F2 !important; color:var(--red) !important; }
 .profilesets h6 { color:var(--tx-1) !important; font-weight:700 !important; font-size:13.5px !important; }
 .profilesets h5 { color:var(--tx-3) !important; font-size:11px !important; font-weight:500 !important; text-transform:capitalize !important; }
 
 
-/* ─── 4. SIDEBAR — Coklat Tua Premium ───────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   4. SIDEBAR — dari PmwebFigma AdminSidebar.tsx
+      bg: #5D4037, active bg: #F5F1EB, active color: #5D4037
+      hover bg: rgba(255,255,255,0.10), idle: rgba(255,255,255,0.70)
+      submenu bg: rgba(0,0,0,0.15), bullet dot 5px
+      logo box: gradient #A1887F→#795548, radius 10px
+   ───────────────────────────────────────────────────────────── */
 .sidebar, .sidebar-inner, #sidebar {
-  background  : var(--c-dark) !important;
+  background  : var(--sidebar) !important;
   border-right: none !important;
-  box-shadow  : 4px 0 20px rgba(46,26,18,.18) !important;
+  box-shadow  : 4px 0 20px rgba(46,26,18,.20) !important;
   width       : var(--sb-w) !important;
   animation   : none !important;
   transition  : transform .24s cubic-bezier(.4,0,.2,1), width .2s ease !important;
 }
 .sidebar::before { display:none !important; }
 
-/* Logo area di sidebar */
-.sidebar-inner { padding-top: 0 !important; }
-
-/* Section label */
-.sidebar-menu ul li.menu-title,
-.sidebar-menu ul li.menu-title span {
-  color         : rgba(255,255,255,.35) !important;
-  font-size     : 10px !important; font-weight:700 !important;
-  letter-spacing: 1.4px !important; text-transform:uppercase !important;
-  padding       : 18px 16px 5px !important;
-  pointer-events: none !important; user-select:none !important;
-  display:block !important; background:transparent !important;
+/* slimscroll — match tinggi sidebar */
+.sidebar .slimScrollDiv,
+.sidebar-inner {
+  height    : 100% !important;
+  max-height: 100% !important;
 }
 
-/* Top-level item */
+/* section label — PmwebFigma: 10px, 700, rgba(255,255,255,0.30), letterSpacing 0.10em */
+.sidebar-menu ul li.menu-title,
+.sidebar-menu ul li.menu-title span {
+  color         : rgba(255,255,255,.30) !important;
+  font-size     : 10px !important;
+  font-weight   : 700 !important;
+  letter-spacing: 0.10em !important;
+  text-transform: uppercase !important;
+  padding       : 16px 10px 5px !important;
+  pointer-events: none !important;
+  user-select   : none !important;
+  display       : block !important;
+  background    : transparent !important;
+}
+
+/* top-level item — PmwebFigma: padding 9px 10px, radius 10px, gap 10px */
 .sidebar-menu > ul > li > a,
 .sidebar-menu > ul > li > a:link,
 .sidebar-menu > ul > li > a:visited {
-  display:flex !important; align-items:center !important; gap:10px !important;
-  color:rgba(255,255,255,.70) !important; background:transparent !important;
-  padding:9px 12px !important; margin:2px 10px !important;
-  border-radius:var(--r-sm) !important;
-  font-size:13px !important; font-weight:500 !important;
-  text-decoration:none !important;
-  transition:background .15s, color .15s !important;
+  display       : flex !important;
+  align-items   : center !important;
+  gap           : 10px !important;
+  color         : rgba(255,255,255,.70) !important;
+  background    : transparent !important;
+  padding       : 9px 10px !important;
+  margin        : 1px 8px !important;
+  border-radius : 10px !important;
+  font-size     : 13px !important;
+  font-weight   : var(--font-weight-medium) !important;
+  text-decoration: none !important;
+  transition    : background .15s ease, color .15s ease !important;
 }
 .sidebar-menu > ul > li > a:hover {
-  background:rgba(255,255,255,.10) !important;
-  color:#ffffff !important;
+  background: rgba(255,255,255,.10) !important;
+  color     : #ffffff !important;
 }
 
-/* ACTIVE — Cream highlight seperti referensi */
+/* ACTIVE — PmwebFigma: bg #F5F1EB (cream), color #5D4037, shadow */
 .sidebar-menu > ul > li.active > a,
 .sidebar-menu > ul > li.active > a:link,
 .sidebar-menu > ul > li.active > a:visited,
 .sidebar-menu > ul > li.active > a:hover,
 .sidebar-menu > ul > li.active > a:focus {
-  background : var(--c-cream) !important;
-  color      : var(--c-dark) !important;
+  background : var(--sidebar-primary) !important;
+  color      : var(--sidebar-primary-foreground) !important;
   font-weight: 700 !important;
-  box-shadow : 0 2px 12px rgba(93,64,55,.20) !important;
+  box-shadow : 0 2px 8px rgba(93,64,55,.20) !important;
 }
 
-/* sb-icon */
-.sidebar-menu > ul > li > a .sb-icon {
-  background:rgba(255,255,255,.08) !important;
-  color:rgba(255,255,255,.70) !important;
-}
-.sidebar-menu > ul > li > a:hover .sb-icon {
-  background:rgba(255,255,255,.15) !important;
-  color:#ffffff !important;
-}
-.sidebar-menu > ul > li.active > a .sb-icon {
-  background:rgba(93,64,55,.12) !important;
-  color:var(--c-dark) !important;
-}
+/* sb-icon dalam item */
+.sidebar-menu > ul > li > a .sb-icon { background:rgba(255,255,255,.08) !important; color:rgba(255,255,255,.80) !important; }
+.sidebar-menu > ul > li > a:hover .sb-icon { background:rgba(255,255,255,.15) !important; color:#fff !important; }
+/* Active icon — PmwebFigma: bg rgba(93,64,55,0.12) */
+.sidebar-menu > ul > li.active > a .sb-icon { background:rgba(93,64,55,.12) !important; color:var(--c-dark) !important; }
 
-/* Chevron */
+/* chevron */
 .menu-arrow {
   margin-left:auto !important; width:16px !important; height:16px !important;
   background:transparent !important; border:none !important;
@@ -284,7 +356,7 @@ body.mini-sidebar.expand-menu #toggle_btn::after  { border-right:none !important
   content:"" !important; display:block !important;
   width:6px !important; height:6px !important;
   border-right:1.5px solid rgba(255,255,255,.40) !important;
-  border-top  :1.5px solid rgba(255,255,255,.40) !important;
+  border-top:1.5px solid rgba(255,255,255,.40) !important;
   transform:rotate(45deg) !important;
   transition:border-color .15s, transform .2s !important;
 }
@@ -293,256 +365,207 @@ body.mini-sidebar.expand-menu #toggle_btn::after  { border-right:none !important
 .sidebar-menu > ul > li.subdrop > a .menu-arrow::after,
 .sidebar-menu > ul > li.submenu.open > a .menu-arrow::after { transform:rotate(135deg) !important; }
 
-/* Subdrop parent */
-.sidebar-menu > ul > li.submenu.subdrop > a {
-  background:rgba(255,255,255,.10) !important;
-  color:#ffffff !important;
-}
-.sidebar-menu > ul > li.submenu.subdrop > a .sb-icon {
-  background:rgba(255,255,255,.15) !important;
-  color:#ffffff !important;
-}
+/* subdrop parent */
+.sidebar-menu > ul > li.submenu.subdrop > a { background:rgba(255,255,255,.10) !important; color:#fff !important; }
+.sidebar-menu > ul > li.submenu.subdrop > a .sb-icon { background:rgba(255,255,255,.15) !important; color:#fff !important; }
 
-/* Submenu container */
+/* submenu container — PmwebFigma: rgba(0,0,0,0.15), radius 10px, paddingLeft 16px */
 .sidebar .sidebar-inner .sidebar-menu ul li ul,
 #sidebar .sidebar-inner .sidebar-menu ul li ul,
 .sidebar .sub-menu, ul.sub-menu {
-  background   : rgba(0,0,0,.12) !important;
-  border-radius: var(--r-sm) !important;
-  margin       : 2px 10px 4px !important;
-  padding      : 4px 0 4px 0 !important;
+  background   : rgba(0,0,0,.15) !important;
+  border-radius: 10px !important;
+  margin       : 3px 8px 4px !important;
+  padding      : 4px 0 4px 16px !important;
   overflow     : hidden !important;
   box-shadow   : none !important;
 }
 
-/* Sub-item link */
+/* sub-item — PmwebFigma: 12.5px, padding 8px 10px, gap 8px, radius 8px */
 .sidebar .sidebar-inner .sidebar-menu ul li ul a,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a,
 .sidebar .sub-menu a, ul.sub-menu li a {
-  color          : rgba(255,255,255,.65) !important;
-  font-size      : 12.5px !important; font-weight:500 !important;
-  padding        : 7px 12px 7px 42px !important;
-  display        : flex !important; align-items:center !important; gap:8px !important;
-  text-decoration: none !important; background:transparent !important;
-  border-radius  : var(--r-xs) !important;
-  margin         : 1px 6px !important;
+  color          : rgba(255,255,255,.50) !important;
+  font-size      : 12.5px !important;
+  font-weight    : 400 !important;
+  padding        : 8px 10px !important;
+  display        : flex !important;
+  align-items    : center !important;
+  gap            : 8px !important;
+  text-decoration: none !important;
+  background     : transparent !important;
+  border-radius  : 8px !important;
+  margin         : 1px 6px 1px 0 !important;
   transition     : background .12s, color .12s !important;
   position       : relative !important;
 }
+/* bullet dot — PmwebFigma: 5px, rgba(255,255,255,0.35) → #F5F1EB saat active */
 .sidebar .sidebar-inner .sidebar-menu ul li ul a::before,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a::before,
 .sidebar .sub-menu a::before, ul.sub-menu li a::before {
   content:"" !important; display:inline-block !important;
   width:5px !important; height:5px !important;
-  border-radius:50% !important;
-  background:rgba(255,255,255,.30) !important;
+  border-radius:50% !important; background:rgba(255,255,255,.35) !important;
   flex-shrink:0 !important; transition:background .12s !important;
 }
 .sidebar .sidebar-inner .sidebar-menu ul li ul a:hover,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a:hover,
 .sidebar .sub-menu a:hover, ul.sub-menu li a:hover {
-  background:rgba(255,255,255,.10) !important;
-  color:#ffffff !important;
+  background:rgba(255,255,255,.08) !important; color:rgba(255,255,255,.80) !important;
 }
 .sidebar .sidebar-inner .sidebar-menu ul li ul a:hover::before,
 .sidebar .sub-menu a:hover::before { background:var(--c-cream) !important; }
+/* active sub-item — PmwebFigma: rgba(245,241,235,0.15) bg, color #F5F1EB */
 .sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a,
 .sidebar .sub-menu li.active > a {
   color:var(--c-cream) !important; font-weight:700 !important;
-  background:rgba(255,255,255,.08) !important;
+  background:rgba(245,241,235,.15) !important;
 }
 .sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a::before,
 .sidebar .sub-menu li.active > a::before { background:var(--c-cream) !important; }
 
-/* Override Bootstrap biru */
+/* override Bootstrap biru */
 .sidebar a, .sidebar a:link, .sidebar a:visited,
 .sidebar-menu a, .sidebar-menu a:link { color:rgba(255,255,255,.70) !important; }
 .sidebar-menu > ul > li.active > a,
 .sidebar-menu > ul > li.active > a:link,
-.sidebar-menu > ul > li.active > a:visited { color:var(--c-dark) !important; }
+.sidebar-menu > ul > li.active > a:visited { color:var(--sidebar-primary-foreground) !important; }
 
-/* Toggle label */
+/* sidebar scrollbar tipis */
+.sidebar::-webkit-scrollbar { width:3px !important; }
+.sidebar::-webkit-scrollbar-track { background:transparent !important; }
+.sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.20) !important; border-radius:10px !important; }
+
+/* toggle label status */
 .toggle-label-text { font-size:10px !important; font-weight:700 !important; margin-top:2px !important; line-height:1 !important; display:block !important; }
 .toggle-label-text.is-active   { color:var(--green) !important; }
 .toggle-label-text.is-inactive { color:#9CA3AF !important; }
 
-/* Slide state */
+/* slide state */
 #sidebar .sidebar-menu ul li.submenu:not(.subdrop) > ul { display:none !important; }
 #sidebar .sidebar-menu ul li.submenu.subdrop > ul { display:block !important; }
 
-/* Scrollbar di sidebar */
-.slimscroll::-webkit-scrollbar { width:3px; }
-.slimscroll::-webkit-scrollbar-track { background:transparent; }
-.slimscroll::-webkit-scrollbar-thumb { background:rgba(255,255,255,.20); border-radius:10px; }
-
-@media (max-width:991px) { .sidebar,.sidebar-inner,#sidebar { background:var(--c-dark) !important; } }
+@media (max-width:991px) { .sidebar,.sidebar-inner,#sidebar { background:var(--sidebar) !important; } }
 
 
-/* ─── 5. PAGE WRAPPER & HEADER — FULL SCREEN LAYOUT ────── */
-/*
-   STRATEGI: Ikuti pola style.css (margin + padding untuk page-wrapper)
-   Bukan position:fixed agar tidak konflik dengan sidebar template.
-
-   style.css bawaan:
-     .sidebar { position:fixed; top:60px; bottom:0; left:0; width:260px }
-     .page-wrapper { margin:0 0 0 260px; padding:60px 0 0 }
-     .page-wrapper .content { padding:25px }
-
-   Kita override agar:
-     • html, body            → 100vh, overflow:hidden (hapus scroll browser)
-     • .main-wrapper         → 100vh, overflow:hidden
-     • .header               → height pas --tb-h, tidak lebih
-     • .sidebar              → top:var(--tb-h), height:calc(100vh - --tb-h),
-                               overflow-y:auto (scroll sidebar sendiri)
-     • .page-wrapper         → margin-left:var(--sb-w), margin-top:0, padding:0,
-                               height:calc(100vh - var(--tb-h)),
-                               overflow:hidden (tidak scroll ke browser)
-     • .page-wrapper .content → height:100%, overflow-y:auto (scroll konten)
-*/
-
-html {
-  height   : 100vh !important;
-  max-height: 100vh !important;
-  overflow  : hidden !important;
-}
-
-body {
-  height   : 100vh !important;
-  max-height: 100vh !important;
-  overflow  : hidden !important;
-}
-
-.main-wrapper {
-  height   : 100vh !important;
-  max-height: 100vh !important;
-  overflow  : hidden !important;
-}
-
-/* ── Sidebar: tinggi sisa layar, scroll internal ── */
-.sidebar,
-.sidebar-inner,
-#sidebar {
-  top       : var(--tb-h) !important;
-  bottom    : 0 !important;
-  height    : calc(100vh - var(--tb-h)) !important;
-  width     : var(--sb-w) !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  /* Scrollbar tipis khusus sidebar */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,.20) transparent;
-}
-.sidebar::-webkit-scrollbar        { width: 3px !important; }
-.sidebar::-webkit-scrollbar-track  { background: transparent !important; }
-.sidebar::-webkit-scrollbar-thumb  { background: rgba(255,255,255,.25) !important; border-radius: 10px !important; }
-
-/* ── Page wrapper: ikuti pola margin template, tapi height pas ── */
-.page-wrapper {
-  /* Ikuti pola style.css: margin-left = lebar sidebar */
-  margin-left : var(--sb-w) !important;
-  margin-top  : 0 !important;
-  /* Hapus padding-top bawaan template (padding:60px 0 0) */
-  padding-top : var(--tb-h) !important;
-  padding-left : 0 !important;
-  padding-right: 0 !important;
-  padding-bottom: 0 !important;
-  /* Tinggi pas viewport — tidak overflow ke browser */
-  height     : 100vh !important;
-  max-height : 100vh !important;
-  overflow   : hidden !important;
-  /* Background */
-  background : var(--bg) !important;
-  /* Transisi saat mini-sidebar */
-  transition : margin-left .24s cubic-bezier(.4,0,.2,1),
-               padding-left .24s cubic-bezier(.4,0,.2,1) !important;
-}
-
-/* ── Content: tinggi penuh sisa, scroll internal ── */
+/* ─────────────────────────────────────────────────────────────
+   5. PAGE WRAPPER — full-screen, mengikuti pola style.css
+   ───────────────────────────────────────────────────────────── */
+.page-wrapper { background:var(--bg) !important; }
 .page-wrapper .content {
   height     : calc(100vh - var(--tb-h)) !important;
   max-height : calc(100vh - var(--tb-h)) !important;
   overflow-y : auto !important;
   overflow-x : hidden !important;
   padding    : 22px !important;
-  /* Scrollbar konten yang halus */
   scrollbar-width: thin;
   scrollbar-color: var(--c-light) var(--bd-lt);
 }
-.page-wrapper .content::-webkit-scrollbar        { width: 5px !important; }
-.page-wrapper .content::-webkit-scrollbar-track  { background: var(--bd-lt) !important; }
-.page-wrapper .content::-webkit-scrollbar-thumb  { background: var(--c-light) !important; border-radius: 10px !important; }
-.page-wrapper .content::-webkit-scrollbar-thumb:hover { background: var(--c-mid) !important; }
+.page-wrapper .content::-webkit-scrollbar       { width:5px !important; }
+.page-wrapper .content::-webkit-scrollbar-track { background:var(--bd-lt) !important; }
+.page-wrapper .content::-webkit-scrollbar-thumb { background:var(--c-light) !important; border-radius:10px !important; }
+.page-wrapper .content::-webkit-scrollbar-thumb:hover { background:var(--c-mid) !important; }
 
-/* ── Mini-sidebar: page-wrapper geser ke kiri ── */
-body.mini-sidebar .page-wrapper {
-  margin-left : 80px !important;
+/* page header */
+.page-header {
+  display:flex !important; align-items:center !important;
+  justify-content:space-between !important; flex-wrap:wrap !important;
+  gap:10px !important; margin-bottom:16px !important;
+  padding-bottom:14px !important; border-bottom:1px solid var(--bd) !important;
+  flex-shrink:0 !important;
 }
+.page-title h4 {
+  color:var(--tx-1) !important; font-weight:800 !important;
+  font-size:20px !important; margin:0 0 2px !important; letter-spacing:-.3px !important;
+}
+.page-title h6 { color:var(--tx-3) !important; font-size:12.5px !important; font-weight:400 !important; margin:0 !important; }
 
-/* ── Mobile ── */
-@media (max-width: 991px) {
-  .page-wrapper {
-    margin-left : 0 !important;
-    padding-top : var(--tb-h) !important;
-  }
-}
-@media (max-width: 575px) {
-  .page-wrapper .content { padding: 14px !important; }
-}
+/* breadcrumb */
+.breadcrumb-admin { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:4px; }
+.breadcrumb-admin a { font-size:12px; color:var(--tx-3); text-decoration:none; transition:color .12s; }
+.breadcrumb-admin a:hover { color:var(--c-mid); }
+.breadcrumb-admin span.sep { font-size:11px; color:var(--tx-4); }
+.breadcrumb-admin span.current { font-size:12px; color:var(--tx-2); font-weight:600; }
 
-/* ─── 6. CARD ────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   6. CARD — dari PmwebFigma AdminDashboard
+      bg:#FFFFFF, border:#E8DED8, radius:16px (xl),
+      shadow: "0 1px 6px rgba(93,64,55,0.06)"
+   ───────────────────────────────────────────────────────────── */
 .card {
-  background   : var(--surf) !important;
-  border       : 1px solid var(--bd) !important;
-  border-radius: var(--r) !important;
-  box-shadow   : var(--sh-xs) !important;
+  background   : var(--card) !important;
+  border       : 1px solid var(--border) !important;
+  border-radius: var(--radius-xl) !important;   /* 16px — PmwebFigma stat card */
+  box-shadow   : 0 1px 6px rgba(93,64,55,.06) !important;
   overflow     : hidden !important;
-  margin-bottom: 22px !important;
+  margin-bottom: 20px !important;
   transition   : box-shadow .2s ease, transform .2s ease !important;
 }
 .card:hover { box-shadow:var(--sh-sm) !important; transform:translateY(-2px) !important; }
 .card-body .card:hover,
 .modal .card:hover,
-.table .card:hover { transform:none !important; box-shadow:var(--sh-xs) !important; }
+.table .card:hover { transform:none !important; box-shadow:0 1px 6px rgba(93,64,55,.06) !important; }
 
 .card-header {
-  padding        : 15px 20px 12px !important;
-  display        : flex !important;
-  align-items    : center !important;
-  gap            : 10px !important;
-  border-bottom  : 1px solid var(--bd) !important;
-  background     : transparent !important;
+  padding       : 14px 18px 12px !important;
+  display       : flex !important; align-items:center !important;
+  gap           : 10px !important;
+  border-bottom : 1px solid var(--border) !important;
+  background    : transparent !important;
 }
-.card-title {
-  flex:1 !important; color:var(--tx-1) !important;
-  font-weight:700 !important; font-size:14px !important; margin:0 !important;
-}
+.card-title { flex:1 !important; color:var(--tx-1) !important; font-weight:700 !important; font-size:15px !important; margin:0 !important; }
 .card-body { padding:18px 20px !important; }
+.card-icon-box { width:34px; height:34px; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
 
-/* Icon box di card-header */
-.card-icon-box {
-  width:34px; height:34px; border-radius:9px;
-  display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+/* stat card gradient (PmwebFigma AdminDashboard) */
+.stat-card-g1 { background:var(--g-1) !important; color:#fff !important; border:none !important; border-radius:var(--radius-xl) !important; box-shadow:0 4px 16px rgba(93,64,55,.22) !important; }
+.stat-card-g2 { background:var(--g-2) !important; color:#fff !important; border:none !important; border-radius:var(--radius-xl) !important; box-shadow:0 4px 16px rgba(93,64,55,.18) !important; }
+.stat-card-g3 { background:var(--g-3) !important; color:#fff !important; border:none !important; border-radius:var(--radius-xl) !important; box-shadow:0 4px 16px rgba(93,64,55,.18) !important; }
+.stat-card-g4 { background:var(--g-4) !important; color:#fff !important; border:none !important; border-radius:var(--radius-xl) !important; box-shadow:0 4px 16px rgba(93,64,55,.22) !important; }
+
+/* stat card dekorasi circle (PmwebFigma) */
+.stat-card-g1::after,.stat-card-g2::after,.stat-card-g3::after,.stat-card-g4::after {
+  content:"" !important; position:absolute !important;
+  right:-14px !important; top:-14px !important;
+  width:80px !important; height:80px !important;
+  border-radius:50% !important; background:rgba(255,255,255,.08) !important;
+  pointer-events:none !important;
 }
 
-/* Stat card border-left accent */
-.stat-card-brand { border-left:3px solid var(--c-mid)  !important; }
+/* icon box dalam stat card (PmwebFigma: rgba(255,255,255,0.18), radius 10px) */
+.stat-icon-white {
+  background:rgba(255,255,255,.18) !important;
+  border-radius:10px !important;
+  padding:9px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+/* border-left accent (fallback untuk stat card biasa) */
+.stat-card-brand { border-left:3px solid var(--c-mid) !important; }
 .stat-card-green { border-left:3px solid var(--green) !important; }
-.stat-card-red   { border-left:3px solid var(--red)   !important; }
+.stat-card-red   { border-left:3px solid var(--red) !important; }
 .stat-card-amber { border-left:3px solid var(--amber) !important; }
-.stat-card-blue  { border-left:3px solid var(--blue)  !important; }
-
+.stat-card-blue  { border-left:3px solid var(--blue) !important; }
 .stat-icon-brand { background:rgba(121,85,72,.12); }
-.stat-icon-green { background:rgba(22,163,74,.10);  }
-.stat-icon-red   { background:rgba(220,38,38,.10);  }
-.stat-icon-amber { background:rgba(217,119,6,.10);  }
-.stat-icon-blue  { background:rgba(37,99,235,.10);  }
+.stat-icon-green { background:rgba(22,163,74,.10); }
+.stat-icon-red   { background:rgba(220,38,38,.10); }
+.stat-icon-amber { background:rgba(217,119,6,.10); }
+.stat-icon-blue  { background:rgba(37,99,235,.10); }
 
-/* ─── 7. BUTTONS ─────────────────────────────────────────── */
+
+/* ─────────────────────────────────────────────────────────────
+   7. BUTTONS — dari PmwebFigma AdminDashboard
+      primary: gradient --g-1, radius var(--radius-sm)
+      "Lihat Semua": rgba(255,255,255,0.18), radius 6px
+      hover: opacity .87
+   ───────────────────────────────────────────────────────────── */
 .btn {
-  border-radius  : var(--r-sm) !important;
+  border-radius  : var(--radius-sm) !important;
   font-family    : "Urbanist", sans-serif !important;
   font-weight    : 700 !important;
-  font-size      : 12.5px !important;
+  font-size      : 13px !important;
   padding        : 9px 18px !important;
   line-height    : 1.4 !important;
   min-height     : 38px !important;
@@ -554,107 +577,85 @@ body.mini-sidebar .page-wrapper {
   text-decoration: none !important;
   cursor         : pointer !important;
   white-space    : nowrap !important;
-  transition     : background .15s, border-color .15s, box-shadow .15s, transform .1s, opacity .15s !important;
-  letter-spacing : .1px !important;
+  transition     : background .15s, opacity .15s, box-shadow .15s, transform .1s !important;
 }
 .btn:active { transform:translateY(1px) !important; }
 
-/* PRIMARY — Coklat Medium Gradient */
+/* PRIMARY — PmwebFigma: gradient #5D4037 → #795548 */
 .btn-primary, .btn-submit, .btn-added {
-  background  : var(--c-g) !important;
+  background : var(--g-1) !important;
   border-color: var(--c-dark) !important;
-  color       : #fff !important;
-  box-shadow  : 0 2px 8px rgba(93,64,55,.28) !important;
+  color      : #fff !important;
+  box-shadow : 0 2px 8px rgba(93,64,55,.28) !important;
 }
-.btn-primary:hover, .btn-submit:hover, .btn-added:hover {
-  background  : var(--c-dark-dk) !important;
-  border-color: var(--c-dark-dk) !important;
-  color       : #fff !important;
-  box-shadow  : 0 4px 16px rgba(93,64,55,.36) !important;
-  transform   : translateY(-1px) !important;
+.btn-primary:hover,.btn-submit:hover,.btn-added:hover {
+  opacity:  .87 !important; color:#fff !important;
+  box-shadow:0 4px 16px rgba(93,64,55,.38) !important;
+  transform:translateY(-1px) !important;
 }
 
 /* SECONDARY */
-.btn-secondary {
-  background  : var(--surf) !important;
-  border-color: var(--bd) !important;
-  color       : var(--tx-1) !important;
-}
-.btn-secondary:hover {
-  background  : var(--c-cream) !important;
-  border-color: var(--c-light) !important;
-  color       : var(--c-dark) !important;
-}
-
-/* OUTLINE brand */
-.btn-outline-brand {
-  background  : transparent !important;
-  border      : 1.5px solid var(--c-mid) !important;
-  color       : var(--c-mid) !important;
-}
-.btn-outline-brand:hover { background:var(--c-mid) !important; color:#fff !important; }
+.btn-secondary { background:var(--surf) !important; border-color:var(--bd) !important; color:var(--tx-1) !important; }
+.btn-secondary:hover { background:var(--c-cream) !important; border-color:var(--c-light) !important; color:var(--c-dark) !important; }
 
 /* CANCEL */
-.btn-cancel, .btn-default {
-  background  : var(--c-cream) !important;
-  border-color: var(--c-cream-dk) !important;
-  color       : var(--tx-2) !important;
-}
+.btn-cancel,.btn-default { background:var(--c-cream) !important; border-color:var(--c-cream-dk) !important; color:var(--tx-2) !important; }
 .btn-cancel:hover { background:var(--c-cream-dk) !important; }
 
-/* SUCCESS */
-.btn-success { background:var(--green) !important; border-color:#15803D !important; color:#fff !important; }
-.btn-success:hover { background:#15803D !important; color:#fff !important; transform:translateY(-1px) !important; }
-
-/* DANGER */
+/* SUCCESS / DANGER / WARNING / INFO */
+.btn-success { background:#16A34A !important; border-color:#15803D !important; color:#fff !important; }
+.btn-success:hover { background:#15803D !important; color:#fff !important; }
 .btn-danger { background:var(--red) !important; border-color:#B91C1C !important; color:#fff !important; }
-.btn-danger:hover { background:#B91C1C !important; color:#fff !important; transform:translateY(-1px) !important; }
-
-/* WARNING */
+.btn-danger:hover { background:#B91C1C !important; color:#fff !important; }
 .btn-warning { background:var(--amber) !important; border-color:#B45309 !important; color:#1E1410 !important; }
-.btn-info    { background:var(--blue)  !important; border-color:#1D4ED8 !important; color:#fff !important; }
+.btn-info { background:var(--blue) !important; border-color:#1D4ED8 !important; color:#fff !important; }
 
-/* SOFT DANGER */
+/* SOFT DANGER — PmwebFigma statusStyles border-based */
 .btn-soft-danger { background:transparent !important; border:1.5px solid #FCA5A5 !important; color:var(--red) !important; }
 .btn-soft-danger:hover { background:var(--red) !important; border-color:var(--red) !important; color:#fff !important; }
 
-/* TEXT only */
+/* OUTLINE brand */
+.btn-outline-brand { background:transparent !important; border:1.5px solid var(--c-mid) !important; color:var(--c-mid) !important; }
+.btn-outline-brand:hover { background:var(--c-mid) !important; color:#fff !important; }
+
+/* TEXT — PmwebFigma "Lihat Semua" btn */
 .btn-text {
   background:none !important; border:none !important;
   color:var(--c-mid) !important; font-size:12px !important;
   font-weight:700 !important; cursor:pointer !important;
-  padding:4px 8px !important; border-radius:6px !important;
+  padding:4px 8px !important; border-radius:7px !important;
   font-family:"Urbanist",sans-serif !important;
   text-decoration:none !important; min-height:auto !important;
-  transition:background .12s, color .12s !important;
+  display:inline-flex !important; align-items:center !important; gap:3px !important;
+  transition:background .12s !important;
 }
-.btn-text:hover { background:var(--c-mid-soft) !important; color:var(--c-dark) !important; }
+.btn-text:hover { background:var(--c-cream) !important; color:var(--c-dark) !important; }
 
 /* Sizes */
 .btn-sm  { padding:5px 12px !important; font-size:11.5px !important; gap:4px !important; min-height:32px !important; }
 .btn-lg  { padding:12px 26px !important; font-size:14.5px !important; }
 .btn-icon{ padding:7px 9px !important; min-width:36px !important; }
-a.btn, a.btn:hover, a.btn:focus { text-decoration:none !important; }
-
-/* Disabled */
+a.btn,a.btn:hover,a.btn:focus { text-decoration:none !important; }
 .btn:disabled { opacity:.55 !important; cursor:not-allowed !important; pointer-events:none !important; transform:none !important; }
 
-
-/* ─── 8. FORMS ───────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   8. FORMS — dari PmwebFigma AdminDashboard search input
+      bg cream, border #E8DED8, radius 9px, focus #795548 ring
+   ───────────────────────────────────────────────────────────── */
 .form-group { margin-bottom:16px !important; }
 .form-group label, .form-label {
   display:block !important; color:var(--tx-1) !important;
-  font-weight:600 !important; font-size:12.5px !important; margin-bottom:6px !important;
+  font-weight:var(--font-weight-medium) !important;
+  font-size:12.5px !important; margin-bottom:6px !important;
 }
 .form-control,
 .form-group input:not([type=checkbox]):not([type=radio]):not([type=file]),
 .form-group select,
 .form-group textarea {
-  width:100% !important;
-  border:1.5px solid var(--bd) !important;
-  border-radius:var(--r-xs) !important;
-  padding:9px 13px !important;
-  font-size:13px !important; font-weight:500 !important;
+  width:100% !important; border:1.5px solid var(--bd) !important;
+  border-radius:var(--radius-sm) !important;
+  padding:9px 13px !important; font-size:13px !important;
+  font-weight:var(--font-weight-normal) !important;
   color:var(--tx-1) !important; background:var(--surf) !important;
   font-family:"Urbanist",sans-serif !important;
   transition:border-color .15s, box-shadow .15s !important;
@@ -668,722 +669,318 @@ a.btn, a.btn:hover, a.btn:focus { text-decoration:none !important; }
   box-shadow:0 0 0 3px rgba(121,85,72,.15) !important;
   outline:none !important;
 }
-.form-control[readonly], input[readonly] {
-  background:var(--c-cream) !important; cursor:not-allowed !important; color:var(--tx-3) !important;
-}
-.form-group input[type=file] { padding:7px !important; font-size:12px !important; }
-.form-control::placeholder,
-input::placeholder, textarea::placeholder { color:var(--tx-4) !important; font-weight:400 !important; }
+.form-control[readonly],input[readonly] { background:var(--c-cream) !important; cursor:not-allowed !important; color:var(--tx-3) !important; }
+.form-group input[type=file] { padding:6px !important; font-size:12px !important; }
+.form-control::placeholder,input::placeholder,textarea::placeholder { color:var(--tx-4) !important; font-weight:400 !important; }
 
 /* Validation */
-.invalid-feedback, .field-error {
-  display:block !important; font-size:11.5px !important;
-  color:var(--red) !important; margin-top:4px !important; font-weight:500 !important;
-}
+.invalid-feedback,.field-error { display:block !important; font-size:11.5px !important; color:var(--red) !important; margin-top:4px !important; font-weight:500 !important; }
 .is-invalid { border-color:var(--red) !important; }
 .is-invalid:focus { box-shadow:0 0 0 3px rgba(220,38,38,.13) !important; }
 
 /* Select2 */
-.select2-container--default .select2-selection--single {
-  border:1.5px solid var(--bd) !important; border-radius:var(--r-xs) !important;
-  height:40px !important; background:var(--surf) !important;
-}
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-  line-height:38px !important; color:var(--tx-1) !important;
-  font-weight:500 !important; padding-left:13px !important;
-  font-family:"Urbanist",sans-serif !important; font-size:13px !important;
-}
+.select2-container--default .select2-selection--single { border:1.5px solid var(--bd) !important; border-radius:var(--radius-sm) !important; height:40px !important; background:var(--surf) !important; }
+.select2-container--default .select2-selection--single .select2-selection__rendered { line-height:38px !important; color:var(--tx-1) !important; font-weight:500 !important; padding-left:13px !important; font-family:"Urbanist",sans-serif !important; font-size:13px !important; }
 .select2-container--default.select2-container--open .select2-selection--single,
-.select2-container--default.select2-container--focus .select2-selection--single {
-  border-color:var(--c-mid) !important;
-  box-shadow:0 0 0 3px rgba(121,85,72,.15) !important;
-}
-.select2-container--default .select2-results__option--highlighted {
-  background:var(--c-mid) !important; color:#fff !important;
-}
-.select2-dropdown {
-  border:1.5px solid var(--bd) !important; border-radius:var(--r-xs) !important;
-  box-shadow:var(--sh-md) !important;
-}
-.select2-container--default .select2-results__option {
-  font-family:"Urbanist",sans-serif !important; font-size:13px !important;
-  color:var(--tx-2) !important; padding:8px 13px !important;
-}
-.select2-container--default .select2-results__option:hover {
-  background:var(--c-cream) !important; color:var(--c-dark) !important;
-}
+.select2-container--default.select2-container--focus .select2-selection--single { border-color:var(--c-mid) !important; box-shadow:0 0 0 3px rgba(121,85,72,.15) !important; }
+.select2-container--default .select2-results__option--highlighted { background:var(--c-mid) !important; color:#fff !important; }
+.select2-dropdown { border:1.5px solid var(--bd) !important; border-radius:var(--radius-sm) !important; box-shadow:var(--sh-md) !important; }
+.select2-container--default .select2-results__option { font-family:"Urbanist",sans-serif !important; font-size:13px !important; color:var(--tx-2) !important; padding:8px 13px !important; }
 
-/* Image Upload Zone */
-.image-upload {
-  border:2px dashed var(--bd) !important; border-radius:var(--r-sm) !important;
-  background:var(--c-cream-lt) !important; padding:22px !important;
-  text-align:center !important; cursor:pointer !important;
-  transition:border-color .18s, background .18s !important;
-}
-.image-upload:hover { border-color:var(--c-mid) !important; background:var(--c-cream) !important; }
+/* Image upload */
+.image-upload { border:2px dashed var(--bd) !important; border-radius:var(--radius-sm) !important; background:var(--c-cream) !important; padding:22px !important; text-align:center !important; cursor:pointer !important; transition:border-color .18s, background .18s !important; }
+.image-upload:hover { border-color:var(--c-mid) !important; background:var(--c-cream-dk) !important; }
 .image-uploads h4 { font-size:12.5px !important; color:var(--tx-3) !important; margin-top:8px !important; font-weight:500 !important; }
 
 
-/* ─── 9. TABLE & DATATABLES ─────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   9. TABLE & DATATABLES — dari PmwebFigma AdminDashboard
+      thead separator: 1.5px solid #F5F1EB (cream)
+      td border: 1px solid #F5F1EB
+      row hover: background cream
+      th: 11px uppercase, color --tx-4
+   ───────────────────────────────────────────────────────────── */
 .table { border-collapse:separate !important; border-spacing:0 !important; font-size:13px !important; }
 .table thead tr { background:var(--c-cream) !important; }
 .table thead th {
-  color         : var(--tx-1) !important; font-weight:700 !important;
-  font-size     : 11px !important; text-transform:uppercase !important;
-  letter-spacing: .6px !important; border-bottom:1.5px solid var(--bd) !important;
-  padding       : 12px 16px !important; white-space:nowrap !important;
+  color:var(--tx-1) !important; font-weight:700 !important;
+  font-size:11px !important; text-transform:uppercase !important;
+  letter-spacing:.06em !important;
+  border-bottom:1.5px solid var(--c-cream) !important;
+  padding:11px 14px !important; white-space:nowrap !important;
 }
 .table td {
-  vertical-align:middle !important; border-bottom:1px solid var(--bd-lt) !important;
-  border-top:none !important; padding:12px 16px !important; color:var(--tx-2) !important;
+  vertical-align:middle !important;
+  border-bottom:1px solid var(--c-cream) !important;
+  border-top:none !important; padding:12px 14px !important;
+  color:var(--tx-2) !important;
 }
 .table tbody tr { transition:background .1s !important; }
 .table tbody tr:hover { background:var(--c-cream) !important; }
-.table tfoot th, .table tfoot td {
-  background:var(--c-cream) !important; font-size:13px !important;
-  padding:12px 16px !important; border-top:1.5px solid var(--bd) !important;
-}
-.table-row-danger  > td:first-child { border-left:3px solid var(--red)   !important; }
+.table tfoot th,.table tfoot td { background:var(--c-cream) !important; font-size:13px !important; padding:11px 14px !important; border-top:1.5px solid var(--bd) !important; }
+.table-row-danger  > td:first-child { border-left:3px solid var(--red) !important; }
 .table-row-warning > td:first-child { border-left:3px solid var(--amber) !important; }
-
-/* Touch target tabel */
 .table .btn-sm { min-height:34px !important; min-width:34px !important; }
 
-/* DataTables controls */
+/* DataTables */
 .dataTables_wrapper .dataTables_length select,
-.dataTables_wrapper .dataTables_filter input {
-  border:1.5px solid var(--bd) !important; border-radius:var(--r-xs) !important;
-  padding:6px 11px !important; font-size:12.5px !important;
-  font-family:"Urbanist",sans-serif !important; color:var(--tx-1) !important;
-  background:var(--surf) !important;
-  transition:border-color .15s, box-shadow .15s !important;
-}
-.dataTables_wrapper .dataTables_filter input:focus {
-  border-color:var(--c-mid) !important;
-  box-shadow:0 0 0 3px rgba(121,85,72,.15) !important; outline:none !important;
-}
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-  border-radius:var(--r-xs) !important; font-size:12px !important;
-  font-family:"Urbanist",sans-serif !important; border:1.5px solid var(--bd) !important;
-  margin:0 2px !important; color:var(--tx-2) !important;
-  transition:background .12s, color .12s, border-color .12s !important;
-}
+.dataTables_wrapper .dataTables_filter input { border:1.5px solid var(--bd) !important; border-radius:var(--radius-sm) !important; padding:5px 10px !important; font-size:12.5px !important; font-family:"Urbanist",sans-serif !important; color:var(--tx-1) !important; background:var(--surf) !important; }
+.dataTables_wrapper .dataTables_filter input:focus { border-color:var(--c-mid) !important; box-shadow:0 0 0 3px rgba(121,85,72,.15) !important; outline:none !important; }
+.dataTables_wrapper .dataTables_paginate .paginate_button { border-radius:var(--radius-sm) !important; font-size:12px !important; font-family:"Urbanist",sans-serif !important; border:1.5px solid var(--bd) !important; margin:0 2px !important; color:var(--tx-2) !important; transition:background .12s, color .12s !important; }
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-  background:var(--c-g) !important; border-color:var(--c-dark) !important; color:#fff !important;
-}
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current) {
-  background:var(--c-cream) !important; color:var(--c-dark) !important; border-color:var(--c-light) !important;
-}
-.dataTables_wrapper .dataTables_info {
-  font-size:12px !important; color:var(--tx-3) !important; font-family:"Urbanist",sans-serif !important;
-}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover { background:var(--g-1) !important; border-color:var(--c-dark) !important; color:#fff !important; }
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current) { background:var(--c-cream) !important; color:var(--c-dark) !important; border-color:var(--c-light) !important; }
+.dataTables_wrapper .dataTables_info { font-size:12px !important; color:var(--tx-3) !important; font-family:"Urbanist",sans-serif !important; }
 
-/* ─── 10. BADGE & STATUS ─────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   10. BADGE & STATUS — dari PmwebFigma AdminDashboard statusStyles
+       PmwebFigma: fontSize 11px, padding "3px 9px", radius "50px", fontWeight 700
+   ───────────────────────────────────────────────────────────── */
 .badge {
   font-family:"Urbanist",sans-serif !important; font-weight:700 !important;
-  border-radius:var(--r-pill) !important; padding:3px 10px !important;
+  border-radius:50px !important; padding:3px 9px !important;
   font-size:11px !important; display:inline-block !important; white-space:nowrap !important;
 }
-.badge-brand {
-  background:var(--c-mid-soft) !important; color:var(--c-dark) !important;
-  border:1px solid rgba(121,85,72,.20) !important;
-}
+.badge-brand { background:rgba(121,85,72,.12) !important; color:var(--c-dark) !important; border:1px solid rgba(121,85,72,.20) !important; }
 
-/* Status pesanan — terpusat */
-.badge-pending,   .badge.bg-warning, .badge.bg-warning.text-dark { background:var(--s-pending-bg)   !important; color:var(--s-pending-tx)   !important; }
-.badge-paid,      .badge.bg-info     { background:var(--s-paid-bg)      !important; color:var(--s-paid-tx)      !important; }
-.badge-shipped,   .badge.bg-primary  { background:var(--s-shipped-bg)   !important; color:var(--s-shipped-tx)   !important; }
-.badge-completed, .badge.bg-success  { background:var(--s-completed-bg) !important; color:var(--s-completed-tx) !important; }
-.badge-cancelled, .badge.bg-danger   { background:var(--s-cancelled-bg) !important; color:var(--s-cancelled-tx) !important; }
+/* PmwebFigma statusStyles exact values */
+.badge-pending,  .badge.bg-warning,.badge.bg-warning.text-dark { background:#FEF9C3 !important; color:#854D0E !important; }
+.badge-paid,     .badge.bg-info     { background:#DBEAFE !important; color:#1E40AF !important; }
+.badge-shipped,  .badge.bg-primary  { background:#EDE9FE !important; color:#6D28D9 !important; }
+.badge-completed,.badge.bg-success  { background:#DCFCE7 !important; color:#166534 !important; }
+.badge-cancelled,.badge.bg-danger   { background:#FEE2E2 !important; color:#991B1B !important; }
 .badge.bg-secondary { background:#F1F5F9 !important; color:#475569 !important; }
 
-.status-badge { display:inline-block !important; padding:3px 10px !important; border-radius:var(--r-pill) !important; font-size:11px !important; font-weight:700 !important; }
-.status-pending   { background:var(--s-pending-bg)   !important; color:var(--s-pending-tx)   !important; }
-.status-paid      { background:var(--s-paid-bg)      !important; color:var(--s-paid-tx)      !important; }
-.status-shipped   { background:var(--s-shipped-bg)   !important; color:var(--s-shipped-tx)   !important; }
-.status-completed { background:var(--s-completed-bg) !important; color:var(--s-completed-tx) !important; }
-.status-cancelled { background:var(--s-cancelled-bg) !important; color:var(--s-cancelled-tx) !important; }
+.status-badge { display:inline-block !important; padding:3px 9px !important; border-radius:50px !important; font-size:11px !important; font-weight:700 !important; }
+.status-pending   { background:#FEF9C3 !important; color:#854D0E !important; }
+.status-paid      { background:#DBEAFE !important; color:#1E40AF !important; }
+.status-shipped   { background:#EDE9FE !important; color:#6D28D9 !important; }
+.status-completed { background:#DCFCE7 !important; color:#166534 !important; }
+.status-cancelled { background:#FEE2E2 !important; color:#991B1B !important; }
 
-.chip { display:inline-flex !important; align-items:center !important; padding:3px 10px !important; border-radius:var(--r-pill) !important; font-size:11px !important; font-weight:700 !important; }
-.chip-red   { background:var(--red-lt)   !important; color:var(--red)   !important; }
-.chip-amber { background:var(--amber-lt) !important; color:var(--amber) !important; }
+/* PmwebFigma chip (dot + label) */
+.pmo-chip {
+  display:inline-flex !important; align-items:center !important;
+  gap:5px !important; padding:4px 10px !important;
+  border-radius:50px !important; font-size:11.5px !important; font-weight:700 !important;
+}
+.pmo-chip-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.pmo-chip-success { background:#DCFCE7; color:#166534; }
+.pmo-chip-success .pmo-chip-dot { background:#166534; }
+.pmo-chip-pending { background:#FEF9C3; color:#854D0E; }
+.pmo-chip-pending .pmo-chip-dot { background:#854D0E; }
+.pmo-chip-cancel  { background:#FEE2E2; color:#991B1B; }
+.pmo-chip-cancel  .pmo-chip-dot { background:#991B1B; }
+.pmo-chip-ship    { background:#EDE9FE; color:#6D28D9; }
+.pmo-chip-ship    .pmo-chip-dot { background:#6D28D9; }
+.pmo-chip-paid    { background:#DBEAFE; color:#1E40AF; }
+.pmo-chip-paid    .pmo-chip-dot { background:#1E40AF; }
+.pmo-chip-brand   { background:rgba(121,85,72,.10); color:var(--c-dark); }
+.pmo-chip-brand   .pmo-chip-dot { background:var(--c-mid); }
 
-/* ─── 11. TOGGLE SWITCH ──────────────────────────────────── */
-.checktoggle { background:#D1D5DB !important; transition:background .2s !important; }
-.check:checked + .checktoggle { background:var(--c-mid) !important; }
+/* ─────────────────────────────────────────────────────────────
+   11. ALERT — dari PmwebFigma AdminDashboard alert banner
+       bg #FFF9F5, borderLeft 4px #795548, radius 12px,
+       shadow "0 1px 4px rgba(93,64,55,0.06)"
+   ───────────────────────────────────────────────────────────── */
+.alert { border-radius:var(--radius-lg) !important; font-size:13px !important; font-weight:500 !important; }
+.alert-brand {
+  background:#FFF9F5 !important; border:1px solid var(--c-cream-dk) !important;
+  border-left:4px solid var(--c-mid) !important;
+  box-shadow:0 1px 4px rgba(93,64,55,.06) !important;
+  color:var(--tx-2) !important;
+}
+.alert-success { background:#F0FDF6 !important; border-left:4px solid #16A34A !important; border-color:#BBF7D0 !important; color:#14532D !important; }
+.alert-danger  { background:#FEF2F2 !important; border-left:4px solid var(--red) !important; border-color:#FECACA !important; color:#7F1D1D !important; }
+.alert-warning { background:var(--amber-lt) !important; border-left:4px solid var(--amber) !important; border-color:#FDE68A !important; color:#78350F !important; }
+.alert-info    { background:#EFF6FF !important; border-left:4px solid var(--blue) !important; border-color:#BFDBFE !important; color:#1E3A5F !important; }
 
-/* ─── 12. QUICK ACCESS ITEM ──────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   12. MODAL — radius 16px (PmwebFigma card radius xl)
+   ───────────────────────────────────────────────────────────── */
+.modal-content { border-radius:var(--radius-xl) !important; border:1px solid var(--bd) !important; box-shadow:var(--sh-lg) !important; overflow:hidden !important; }
+.modal-header { background:var(--sidebar) !important; border-bottom:none !important; padding:18px 22px !important; }
+.modal-title { font-weight:700 !important; font-size:15px !important; color:#fff !important; }
+.modal-header .btn-close { filter:brightness(0) invert(1) !important; }
+.modal-body  { padding:22px !important; background:var(--surf) !important; }
+.modal-footer { border-top:1px solid var(--bd-lt) !important; padding:14px 22px !important; background:var(--surf) !important; }
+
+/* ─────────────────────────────────────────────────────────────
+   13. SWEETALERT2 — radius selaras PmwebFigma
+   ───────────────────────────────────────────────────────────── */
+.swal2-popup { font-family:"Urbanist",sans-serif !important; border-radius:var(--radius-xl) !important; border:1px solid var(--bd) !important; box-shadow:var(--sh-lg) !important; }
+.swal2-title,.swal2-html-container { font-family:"Urbanist",sans-serif !important; color:var(--tx-1) !important; }
+.swal2-confirm { background:var(--g-1) !important; border-color:var(--c-dark) !important; color:#fff !important; border-radius:var(--radius-sm) !important; font-weight:700 !important; font-family:"Urbanist",sans-serif !important; padding:10px 26px !important; }
+.swal2-cancel  { background:var(--c-cream) !important; border-color:var(--c-cream-dk) !important; color:var(--tx-2) !important; border-radius:var(--radius-sm) !important; font-family:"Urbanist",sans-serif !important; }
+
+/* ─────────────────────────────────────────────────────────────
+   14. KOMPONEN PMO (dari AdminDashboard & AdminSidebar)
+   ───────────────────────────────────────────────────────────── */
+
+/* Gradient Header (AdminDashboard greeting style) */
+.pmo-gradient-header {
+  background:var(--g-1); border-radius:var(--radius-xl);
+  padding:20px 22px; color:#fff; margin-bottom:20px;
+  position:relative; overflow:hidden;
+  box-shadow:0 4px 18px rgba(93,64,55,.28);
+}
+.pmo-gradient-header::before { content:""; position:absolute; right:-20px; top:-20px; width:100px; height:100px; border-radius:50%; background:rgba(255,255,255,.08); pointer-events:none; }
+.pmo-gradient-header::after  { content:""; position:absolute; right:30px; bottom:-30px; width:70px; height:70px; border-radius:50%; background:rgba(255,255,255,.05); pointer-events:none; }
+.pmo-gh-avatar { width:48px; height:48px; border-radius:50%; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.pmo-gh-avatar svg { width:26px; height:26px; color:#fff; }
+.pmo-gh-subtitle { font-size:12px; color:rgba(255,255,255,.72); margin:0; }
+.pmo-gh-title { font-size:18px; font-weight:800; color:#fff; margin:2px 0 0; }
+
+/* InfoCard (info_card.dart style) */
+.pmo-info-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-xl); padding:18px 14px;
+  text-align:center; box-shadow:0 1px 6px rgba(93,64,55,.06);
+  transition:box-shadow .2s ease, transform .2s ease; flex:1;
+}
+.pmo-info-card:hover { box-shadow:var(--sh-sm); transform:translateY(-3px); }
+.pmo-ic-avatar { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; }
+.pmo-ic-avatar svg { width:22px; height:22px; }
+.pmo-ic-value { font-size:22px; font-weight:800; color:var(--tx-1); line-height:1.2; margin:0 0 4px; }
+.pmo-ic-label { font-size:12px; color:var(--tx-3); font-weight:500; margin:0; }
+.pmo-ic-brand .pmo-ic-avatar { background:rgba(121,85,72,.12); } .pmo-ic-brand .pmo-ic-avatar svg { color:var(--c-mid); } .pmo-ic-brand .pmo-ic-value { color:var(--c-dark); }
+.pmo-ic-green .pmo-ic-avatar { background:rgba(22,163,74,.10); } .pmo-ic-green .pmo-ic-avatar svg { color:#16A34A; } .pmo-ic-green .pmo-ic-value { color:#16A34A; }
+.pmo-ic-amber .pmo-ic-avatar { background:rgba(217,119,6,.10); } .pmo-ic-amber .pmo-ic-avatar svg { color:#D97706; } .pmo-ic-amber .pmo-ic-value { color:#D97706; }
+.pmo-ic-blue  .pmo-ic-avatar { background:rgba(37,99,235,.10); } .pmo-ic-blue  .pmo-ic-avatar svg { color:#2563EB; } .pmo-ic-blue  .pmo-ic-value { color:#2563EB; }
+
+.pmo-stat-row { display:flex; gap:14px; flex-wrap:nowrap; margin-bottom:20px; }
+.pmo-stat-row .pmo-info-card { min-width:0; }
+
+/* RoleMenuCard */
+.pmo-menu-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-lg); padding:14px 16px;
+  display:flex; align-items:center; gap:14px;
+  text-decoration:none !important; margin-bottom:10px;
+  box-shadow:0 1px 4px rgba(93,64,55,.06);
+  transition:box-shadow .18s ease, transform .18s ease, border-color .18s; cursor:pointer;
+}
+.pmo-menu-card:hover { box-shadow:var(--sh-sm); transform:translateY(-2px); border-color:var(--c-light); }
+.pmo-mc-icon { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.pmo-mc-icon svg { width:22px; height:22px; }
+.pmo-mc-body { flex:1; min-width:0; }
+.pmo-mc-title { font-size:14px; font-weight:700; color:var(--tx-1); margin:0 0 3px; }
+.pmo-mc-subtitle { font-size:12px; color:var(--tx-3); font-weight:400; margin:0; }
+.pmo-mc-arrow { color:var(--tx-4); flex-shrink:0; } .pmo-menu-card:hover .pmo-mc-arrow { color:var(--c-mid); }
+.pmo-mc-brand .pmo-mc-icon { background:rgba(121,85,72,.12); } .pmo-mc-brand .pmo-mc-icon svg { color:var(--c-mid); }
+.pmo-mc-green .pmo-mc-icon { background:rgba(22,163,74,.10); } .pmo-mc-green .pmo-mc-icon svg { color:#16A34A; }
+.pmo-mc-amber .pmo-mc-icon { background:rgba(217,119,6,.10); } .pmo-mc-amber .pmo-mc-icon svg { color:#D97706; }
+.pmo-mc-blue  .pmo-mc-icon { background:rgba(37,99,235,.10); } .pmo-mc-blue  .pmo-mc-icon svg { color:#2563EB; }
+.pmo-mc-purple.pmo-mc-icon { background:rgba(124,58,237,.10); } .pmo-mc-purple .pmo-mc-icon svg { color:#7C3AED; }
+
+/* ProductCard */
+.pmo-product-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:14px 16px; display:flex; align-items:center; gap:14px; margin-bottom:10px; box-shadow:0 1px 6px rgba(93,64,55,.06); transition:box-shadow .18s ease, transform .18s ease; }
+.pmo-product-card:hover { box-shadow:var(--sh-sm); transform:translateY(-2px); }
+.pmo-pc-img { width:52px; height:52px; border-radius:50%; background:rgba(121,85,72,.10); display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden; }
+.pmo-pc-img img { width:52px; height:52px; object-fit:cover; border-radius:50%; }
+.pmo-pc-img svg { width:24px; height:24px; color:var(--c-mid); }
+.pmo-pc-body { flex:1; min-width:0; }
+.pmo-pc-name { font-size:14px; font-weight:700; color:var(--tx-1); margin:0 0 3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pmo-pc-price { font-size:13px; color:var(--c-mid); font-weight:600; margin:0 0 2px; }
+.pmo-stock-ok  { color:#16A34A; font-size:12px; font-weight:600; }
+.pmo-stock-low { color:#D97706; font-size:12px; font-weight:600; }
+.pmo-stock-out { color:#DC2626; font-size:12px; font-weight:600; }
+
+/* Revenue Card */
+.pmo-revenue-card { background:var(--g-1); border-radius:var(--radius-xl); padding:20px 22px; color:#fff; position:relative; overflow:hidden; box-shadow:0 4px 16px rgba(93,64,55,.25); }
+.pmo-revenue-card::before { content:""; position:absolute; right:-14px; top:-14px; width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,.08); pointer-events:none; }
+.pmo-rc-label { font-size:13px; color:rgba(255,255,255,.78); margin:0 0 6px; display:flex; align-items:center; gap:6px; }
+.pmo-rc-value { font-size:26px; font-weight:800; color:#fff; margin:0 0 4px; letter-spacing:-.5px; }
+.pmo-rc-sub   { font-size:12px; color:rgba(255,255,255,.60); margin:0; }
+
+/* Quick access item — PmwebFigma AdminDashboard quickAccess */
 .quick-access-item {
   display:flex; align-items:center; gap:10px;
-  padding:13px 15px; border-radius:var(--r-sm);
-  background:var(--c-cream-lt); border:1.5px solid var(--bd);
+  padding:13px 15px; border-radius:var(--radius-lg);
+  background:var(--c-cream); border:1.5px solid var(--bd);
   text-decoration:none !important;
   transition:border-color .15s, background .15s, transform .18s, box-shadow .18s;
 }
-.quick-access-item:hover {
-  border-color:var(--c-mid) !important;
-  background:var(--c-cream) !important;
-  transform:translateY(-2px);
-  box-shadow:var(--sh-sm);
-}
-.quick-access-item .qi-icon {
-  width:38px; height:38px; border-radius:10px;
-  display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  background:var(--c-mid-soft); transition:background .15s;
-}
+.quick-access-item:hover { border-color:var(--c-mid) !important; background:var(--c-cream-dk) !important; transform:translateY(-2px); box-shadow:var(--sh-sm); }
+.quick-access-item .qi-icon { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(93,64,55,.08); transition:background .15s; }
 .quick-access-item:hover .qi-icon { background:var(--c-mid); }
 .quick-access-item:hover .qi-icon svg { filter:brightness(0) invert(1); }
-.quick-access-item .qi-label { font-weight:600; font-size:12.5px; color:var(--tx-2); line-height:1.2; }
-
-/* ─── 13. LIST PESANAN ───────────────────────────────────── */
-.list-unstyled li { border-bottom:1px solid var(--bd-lt) !important; transition:background .1s !important; }
-.list-unstyled li:hover { background:var(--c-cream) !important; }
-.list-unstyled li:last-child { border-bottom:none !important; }
+.quick-access-item .qi-label { font-weight:700; font-size:12.5px; color:var(--tx-2); line-height:1.2; }
 
 /* Progress bar */
-.progress-bar-item { height:7px; border-radius:50px; transition:width .5s ease; }
+.progress-bar-item { height:8px; border-radius:50px; transition:width .5s ease; }
 
+/* ─────────────────────────────────────────────────────────────
+   15. TOGGLE SWITCH & MISC
+   ───────────────────────────────────────────────────────────── */
+.checktoggle { background:#D1D5DB !important; transition:background .2s !important; }
+.check:checked + .checktoggle { background:var(--c-mid) !important; }
 
-/* ─── 14. ALERTS ─────────────────────────────────────────── */
-.alert { border-radius:var(--r-sm) !important; font-size:13px !important; font-weight:500 !important; border-left-width:3px !important; border-left-style:solid !important; }
-.alert-success { background:#F0FDF6 !important; border-color:#16A34A !important; color:#14532D !important; }
-.alert-danger  { background:#FEF2F2 !important; border-color:#DC2626 !important; color:#7F1D1D !important; }
-.alert-warning { background:var(--amber-lt) !important; border-color:var(--amber) !important; color:#78350F !important; }
-.alert-info    { background:#EFF6FF !important; border-color:var(--blue) !important; color:#1E3A5F !important; }
-.alert-brand   { background:var(--c-cream) !important; border-color:var(--c-mid) !important; color:var(--c-dark) !important; }
+img.rounded-circle,.card img.rounded-circle { border-radius:9999px !important; object-fit:cover !important; border:2.5px solid var(--bd) !important; transition:transform .2s ease !important; }
+img.rounded-circle:hover { transform:scale(1.04) !important; }
+.table img { transition:transform .22s ease !important; }
+.table img:hover { transform:scale(1.07) !important; }
 
-/* ─── 15. MODAL ──────────────────────────────────────────── */
-.modal-content {
-  border-radius:var(--r) !important; border:1px solid var(--bd) !important;
-  box-shadow:var(--sh-lg) !important; overflow:hidden !important;
-}
-.modal-header {
-  background:var(--c-dark) !important;
-  border-bottom:none !important; padding:18px 22px !important;
-}
-.modal-title { font-weight:700 !important; font-size:15px !important; color:#ffffff !important; }
-.modal-header .btn-close { filter:brightness(0) invert(1) !important; }
-.modal-body   { padding:22px !important; background:var(--surf) !important; }
-.modal-footer { border-top:1px solid var(--bd-lt) !important; padding:14px 22px !important; background:var(--surf) !important; }
-
-/* ─── 16. SWEETALERT2 ────────────────────────────────────── */
-.swal2-popup {
-  font-family:"Urbanist",sans-serif !important; border-radius:var(--r) !important;
-  border:1px solid var(--bd) !important; box-shadow:var(--sh-lg) !important;
-}
-.swal2-title, .swal2-html-container { font-family:"Urbanist",sans-serif !important; color:var(--tx-1) !important; }
-.swal2-confirm {
-  background:var(--c-g) !important; border-color:var(--c-dark) !important;
-  color:#fff !important; border-radius:var(--r-sm) !important;
-  font-weight:700 !important; font-family:"Urbanist",sans-serif !important; padding:10px 26px !important;
-}
-.swal2-cancel {
-  background:var(--c-cream) !important; border-color:var(--c-cream-dk) !important;
-  color:var(--tx-2) !important; border-radius:var(--r-sm) !important;
-  font-family:"Urbanist",sans-serif !important;
-}
-
-/* ─── 17. NAV TABS ───────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   16. NAV TABS / PAGINATION / LINKS
+   ───────────────────────────────────────────────────────────── */
 .nav-tabs .nav-link { font-family:"Urbanist",sans-serif !important; font-weight:500 !important; color:var(--tx-3) !important; transition:color .12s !important; }
 .nav-tabs .nav-link:hover  { color:var(--c-mid) !important; }
 .nav-tabs .nav-link.active { color:var(--c-dark) !important; font-weight:700 !important; border-color:var(--bd) var(--bd) #fff !important; }
 
-/* ─── 18. PAGINATION ─────────────────────────────────────── */
-.page-item.active .page-link { background:var(--c-g) !important; border-color:var(--c-dark) !important; color:#fff !important; }
-.page-link {
-  color:var(--c-mid) !important; border-color:var(--bd) !important;
-  border-radius:var(--r-xs) !important; font-size:12.5px !important;
-  font-family:"Urbanist",sans-serif !important; transition:background .12s, color .12s !important;
-}
+.page-item.active .page-link { background:var(--g-1) !important; border-color:var(--c-dark) !important; color:#fff !important; }
+.page-link { color:var(--c-mid) !important; border-color:var(--bd) !important; border-radius:var(--radius-sm) !important; font-size:12.5px !important; font-family:"Urbanist",sans-serif !important; }
 .page-link:hover { background:var(--c-cream) !important; color:var(--c-dark) !important; }
 
-/* ─── 19. LINKS scoped ───────────────────────────────────── */
-.page-wrapper a:not(.btn),
-.card a:not(.btn),
-.dropdown-menu a:not(.btn),
-.table a:not(.btn),
-.modal a:not(.btn) { color:var(--c-mid) !important; transition:color .12s !important; }
-.page-wrapper a:not(.btn):hover,
-.card a:not(.btn):hover,
-.table a:not(.btn):hover { color:var(--c-dark) !important; }
+.page-wrapper a:not(.btn),.card a:not(.btn),.table a:not(.btn),.modal a:not(.btn) { color:var(--c-mid) !important; transition:color .12s !important; }
+.page-wrapper a:not(.btn):hover,.card a:not(.btn):hover,.table a:not(.btn):hover { color:var(--c-dark) !important; }
 .menu-drop-user .dropdown-item { color:var(--tx-2) !important; }
 
-/* ─── 20. PROFILE IMAGE ──────────────────────────────────── */
-img.rounded-circle, .card img.rounded-circle {
-  border-radius:var(--r-full) !important; object-fit:cover !important;
-  border:2.5px solid var(--bd) !important; transition:transform .2s ease, box-shadow .2s ease !important;
-}
-img.rounded-circle:hover { transform:scale(1.04) !important; box-shadow:0 0 0 4px var(--c-mid-soft) !important; }
-.table img { transition:transform .22s ease !important; }
-.table img:hover { transform:scale(1.07) !important; }
-
-/* ─── 21. EMPTY STATE ────────────────────────────────────── */
-.empty-state {
-  text-align:center !important; padding:56px 20px !important;
-  border:2px dashed var(--c-cream-dk) !important; border-radius:var(--r) !important;
-  background:var(--c-cream-lt) !important;
-}
-.empty-state svg { margin:0 auto 12px !important; opacity:.4 !important; color:var(--c-light) !important; }
-.empty-state p { color:var(--tx-3) !important; font-size:13.5px !important; margin:0 !important; }
-
-/* ─── 22. SCROLLBAR ──────────────────────────────────────── */
-::-webkit-scrollbar       { width:5px; height:5px; }
-::-webkit-scrollbar-track { background:var(--c-cream-lt); }
-::-webkit-scrollbar-thumb { background:var(--c-light); border-radius:10px; }
-::-webkit-scrollbar-thumb:hover { background:var(--c-mid); }
-
-/* ─── 23. BOOTSTRAP LEAK GUARD ───────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   17. BOOTSTRAP LEAK GUARD
+   ───────────────────────────────────────────────────────────── */
 *:focus { outline-color:var(--c-mid) !important; }
 .form-control:focus { box-shadow:0 0 0 3px rgba(121,85,72,.15) !important; }
 .text-primary  { color:var(--c-mid) !important; }
-.bg-primary    { background:var(--c-g) !important; }
+.bg-primary    { background:var(--g-1) !important; }
 .link-primary  { color:var(--c-mid) !important; }
 
-/* ─── 24. UTILITIES ──────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   18. SCROLLBAR (PmwebFigma: thin, coklat tone)
+   ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:var(--c-cream); }
+::-webkit-scrollbar-thumb { background:var(--c-light); border-radius:10px; }
+::-webkit-scrollbar-thumb:hover { background:var(--c-mid); }
+
+/* ─────────────────────────────────────────────────────────────
+   19. UTILITIES
+   ───────────────────────────────────────────────────────────── */
 .fw-400{font-weight:400!important;} .fw-500{font-weight:500!important;}
 .fw-600{font-weight:600!important;} .fw-700{font-weight:700!important;} .fw-800{font-weight:800!important;}
 .text-brand       { color:var(--c-mid) !important; }
 .text-muted-brand { color:var(--tx-3) !important; }
-.bg-brand-soft    { background:var(--c-mid-soft) !important; }
+.bg-brand-soft    { background:rgba(121,85,72,.08) !important; }
 .bg-cream         { background:var(--c-cream) !important; }
 .gap-1{gap:.25rem!important;} .gap-2{gap:.5rem!important;} .gap-3{gap:.75rem!important;} .gap-4{gap:1rem!important;}
+.spin-icon { animation:hema-spin .7s linear infinite !important; }
 
-/* ─── 25. SIDEBAR AUTO-HIDE (slide) ─────────────────────── */
-.sidebar, .sidebar-inner, #sidebar {
-  transition:transform .26s cubic-bezier(.4,0,.2,1), width .2s ease !important;
-}
-body.sidebar-hidden .sidebar,
-body.sidebar-hidden #sidebar { transform:translateX(-100%) !important; }
-body.sidebar-hidden .page-wrapper { margin-left:0 !important; transition:margin-left .26s cubic-bezier(.4,0,.2,1) !important; }
-#sidebar-overlay { display:none !important; }
-
-/* ─── 26. RESPONSIVE ─────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   20. RESPONSIVE
+   ───────────────────────────────────────────────────────────── */
 @media (max-width:991px) {
-  .sidebar, .sidebar-inner, #sidebar { background:var(--c-dark) !important; }
-  body.sidebar-hidden .page-wrapper  { margin-left:0 !important; }
-}
-@media (max-width:767px) {
-  .content { padding:16px !important; }
-  .card-header { padding:12px 15px 10px !important; }
-  .card-body   { padding:14px 15px !important; }
-  .page-title h4 { font-size:18px !important; }
-}
-@media (max-width:575px) {
-  .content { padding:12px !important; }
-  .page-title h4 { font-size:16px !important; }
-  .btn { padding:8px 13px !important; font-size:12px !important; }
-}
-
-
-/* ═══════════════════════════════════════════════════════════
-   27. PMO FLUTTER DESIGN SYSTEM
-   Terinspirasi dari projectPMO Flutter (pasar_mobile):
-   • InfoCard     → .pmo-info-card
-   • RoleMenuCard → .pmo-menu-card
-   • ProductCard  → .pmo-product-card
-   • AppButton    → .pmo-app-btn
-   • GradientHeader → .pmo-gradient-header
-   • StatusChip   → .pmo-chip-*
-   • Timeline     → .pmo-timeline
-   Palet: coklat-putih Hema (disesuaikan dari biru Flutter)
-═══════════════════════════════════════════════════════════ */
-
-/* ── InfoCard — terinspirasi widgets/info_card.dart ─────── */
-.pmo-info-card {
-  background   : var(--surf);
-  border       : 1px solid var(--bd);
-  border-radius: 12px;
-  padding      : 18px 14px;
-  text-align   : center;
-  box-shadow   : 0 2px 8px rgba(93,64,55,.08);
-  transition   : box-shadow .2s ease, transform .2s ease;
-  flex         : 1;
-}
-.pmo-info-card:hover {
-  box-shadow: 0 6px 20px rgba(93,64,55,.13);
-  transform : translateY(-3px);
-}
-.pmo-info-card .pmo-ic-avatar {
-  width        : 46px;
-  height       : 46px;
-  border-radius: 50%;
-  display      : flex;
-  align-items  : center;
-  justify-content: center;
-  margin       : 0 auto 10px;
-}
-.pmo-info-card .pmo-ic-avatar svg { width:22px; height:22px; }
-.pmo-info-card .pmo-ic-value {
-  font-size  : 22px;
-  font-weight: 800;
-  color      : var(--tx-1);
-  line-height: 1.2;
-  margin     : 0 0 4px;
-}
-.pmo-info-card .pmo-ic-label {
-  font-size  : 12px;
-  color      : var(--tx-3);
-  font-weight: 500;
-  margin     : 0;
-}
-
-/* Varian warna InfoCard (ikuti palet Flutter: brand/green/amber/blue) */
-.pmo-ic-brand .pmo-ic-avatar { background: rgba(121,85,72,.12); }
-.pmo-ic-brand .pmo-ic-avatar svg { color: var(--c-mid); }
-.pmo-ic-brand .pmo-ic-value   { color: var(--c-dark); }
-.pmo-ic-green .pmo-ic-avatar { background: rgba(22,163,74,.10); }
-.pmo-ic-green .pmo-ic-avatar svg { color: var(--green); }
-.pmo-ic-green .pmo-ic-value   { color: var(--green); }
-.pmo-ic-amber .pmo-ic-avatar { background: rgba(217,119,6,.10); }
-.pmo-ic-amber .pmo-ic-avatar svg { color: var(--amber); }
-.pmo-ic-amber .pmo-ic-value   { color: var(--amber); }
-.pmo-ic-blue  .pmo-ic-avatar { background: rgba(37,99,235,.10); }
-.pmo-ic-blue  .pmo-ic-avatar svg { color: var(--blue); }
-.pmo-ic-blue  .pmo-ic-value   { color: var(--blue); }
-
-
-/* ── RoleMenuCard — terinspirasi widgets/role_menu_card.dart */
-.pmo-menu-card {
-  background   : var(--surf);
-  border       : 1px solid var(--bd);
-  border-radius: 12px;
-  padding      : 16px 18px;
-  display      : flex;
-  align-items  : center;
-  gap          : 16px;
-  text-decoration: none;
-  margin-bottom: 10px;
-  box-shadow   : 0 1px 4px rgba(93,64,55,.06);
-  transition   : box-shadow .18s ease, transform .18s ease, border-color .18s;
-  cursor       : pointer;
-}
-.pmo-menu-card:hover {
-  box-shadow  : 0 4px 16px rgba(93,64,55,.12);
-  transform   : translateY(-2px);
-  border-color: var(--c-light);
-}
-.pmo-menu-card .pmo-mc-icon {
-  width        : 46px;
-  height       : 46px;
-  border-radius: 50%;
-  display      : flex;
-  align-items  : center;
-  justify-content: center;
-  flex-shrink  : 0;
-}
-.pmo-menu-card .pmo-mc-icon svg { width:22px; height:22px; }
-.pmo-menu-card .pmo-mc-body { flex: 1; min-width: 0; }
-.pmo-menu-card .pmo-mc-title {
-  font-size  : 14px;
-  font-weight: 700;
-  color      : var(--tx-1);
-  margin     : 0 0 3px;
-}
-.pmo-menu-card .pmo-mc-subtitle {
-  font-size  : 12px;
-  color      : var(--tx-3);
-  font-weight: 400;
-  margin     : 0;
-}
-.pmo-menu-card .pmo-mc-arrow { color: var(--tx-4); flex-shrink: 0; }
-.pmo-menu-card:hover .pmo-mc-arrow { color: var(--c-mid); }
-
-/* Varian icon warna (sesuai role/section) */
-.pmo-mc-brand .pmo-mc-icon { background: rgba(121,85,72,.12); }
-.pmo-mc-brand .pmo-mc-icon svg { color: var(--c-mid); }
-.pmo-mc-green .pmo-mc-icon { background: rgba(22,163,74,.10); }
-.pmo-mc-green .pmo-mc-icon svg { color: var(--green); }
-.pmo-mc-amber .pmo-mc-icon { background: rgba(217,119,6,.10); }
-.pmo-mc-amber .pmo-mc-icon svg { color: var(--amber); }
-.pmo-mc-blue  .pmo-mc-icon { background: rgba(37,99,235,.10); }
-.pmo-mc-blue  .pmo-mc-icon svg { color: var(--blue); }
-.pmo-mc-purple .pmo-mc-icon { background: rgba(124,58,237,.10); }
-.pmo-mc-purple .pmo-mc-icon svg { color: var(--purple); }
-.pmo-mc-red .pmo-mc-icon { background: rgba(220,38,38,.10); }
-.pmo-mc-red .pmo-mc-icon svg { color: var(--red); }
-
-
-/* ── ProductCard — terinspirasi widgets/product_card.dart ── */
-.pmo-product-card {
-  background   : var(--surf);
-  border       : 1px solid var(--bd);
-  border-radius: 12px;
-  padding      : 14px 16px;
-  display      : flex;
-  align-items  : center;
-  gap          : 14px;
-  margin-bottom: 10px;
-  box-shadow   : 0 1px 6px rgba(93,64,55,.06);
-  transition   : box-shadow .18s ease, transform .18s ease;
-}
-.pmo-product-card:hover {
-  box-shadow: 0 4px 16px rgba(93,64,55,.12);
-  transform : translateY(-2px);
-}
-.pmo-product-card .pmo-pc-img {
-  width        : 52px;
-  height       : 52px;
-  border-radius: 50%;
-  background   : rgba(121,85,72,.10);
-  display      : flex;
-  align-items  : center;
-  justify-content: center;
-  flex-shrink  : 0;
-  overflow     : hidden;
-}
-.pmo-product-card .pmo-pc-img img {
-  width:52px; height:52px; object-fit:cover; border-radius:50%;
-}
-.pmo-product-card .pmo-pc-img svg { width:24px; height:24px; color:var(--c-mid); }
-.pmo-product-card .pmo-pc-body { flex:1; min-width:0; }
-.pmo-product-card .pmo-pc-name {
-  font-size:14px; font-weight:700; color:var(--tx-1);
-  margin:0 0 3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.pmo-product-card .pmo-pc-price {
-  font-size:13px; color:var(--c-mid); font-weight:600; margin:0 0 2px;
-}
-.pmo-product-card .pmo-pc-stock {
-  font-size:12px; font-weight:500; margin:0;
-}
-.pmo-product-card .pmo-pc-stock.in-stock  { color: var(--green); }
-.pmo-product-card .pmo-pc-stock.out-stock { color: var(--red); }
-.pmo-product-card .pmo-pc-arrow { color:var(--tx-4); flex-shrink:0; }
-.pmo-product-card:hover .pmo-pc-arrow { color:var(--c-mid); }
-
-/* ── AppButton — terinspirasi widgets/app_button.dart ────── */
-.pmo-app-btn {
-  width          : 100%;
-  height         : 48px;
-  display        : flex;
-  align-items    : center;
-  justify-content: center;
-  gap            : 8px;
-  border         : none;
-  border-radius  : 10px;
-  font-family    : "Urbanist", sans-serif;
-  font-size      : 15px;
-  font-weight    : 600;
-  cursor         : pointer;
-  transition     : opacity .18s ease, transform .12s ease, box-shadow .18s ease;
-  text-decoration: none;
-  white-space    : nowrap;
-}
-.pmo-app-btn:active { transform: translateY(1px) !important; }
-.pmo-app-btn:disabled { opacity:.55 !important; cursor:not-allowed !important; }
-
-/* Varian warna AppButton */
-.pmo-app-btn-brand {
-  background : var(--c-g);
-  color      : #fff;
-  box-shadow : 0 3px 10px rgba(93,64,55,.28);
-}
-.pmo-app-btn-brand:hover { opacity:.87; box-shadow:0 5px 18px rgba(93,64,55,.36); color:#fff; }
-.pmo-app-btn-green {
-  background : var(--green);
-  color      : #fff;
-  box-shadow : 0 3px 10px rgba(22,163,74,.25);
-}
-.pmo-app-btn-green:hover { background:#15803D; color:#fff; }
-.pmo-app-btn-amber {
-  background : var(--amber);
-  color      : #1e1410;
-  box-shadow : 0 3px 10px rgba(217,119,6,.22);
-}
-.pmo-app-btn-amber:hover { background:#B45309; }
-.pmo-app-btn-outline {
-  background  : transparent;
-  border      : 1.5px solid var(--c-mid);
-  color       : var(--c-mid);
-}
-.pmo-app-btn-outline:hover { background:var(--c-mid); color:#fff; }
-
-/* Spinner dalam AppButton */
-.pmo-app-btn .pmo-btn-spinner {
-  width:20px; height:20px; border-radius:50%;
-  border:2.5px solid rgba(255,255,255,.30);
-  border-top-color:#fff;
-  animation:hema-spin .7s linear infinite;
-  flex-shrink:0;
-}
-
-
-/* ── GradientHeader — terinspirasi customer_dashboard_page ─ */
-.pmo-gradient-header {
-  background   : linear-gradient(135deg, var(--c-dark) 0%, var(--c-mid) 100%);
-  border-radius: 16px;
-  padding      : 20px 22px;
-  color        : #fff;
-  margin-bottom: 22px;
-  position     : relative;
-  overflow     : hidden;
-  box-shadow   : 0 4px 18px rgba(93,64,55,.28);
-}
-.pmo-gradient-header::before {
-  content      : "";
-  position     : absolute;
-  right        : -20px; top:-20px;
-  width        : 100px; height:100px;
-  border-radius: 50%;
-  background   : rgba(255,255,255,.08);
-  pointer-events:none;
-}
-.pmo-gradient-header::after {
-  content      : "";
-  position     : absolute;
-  right        : 30px; bottom:-30px;
-  width        : 70px; height:70px;
-  border-radius: 50%;
-  background   : rgba(255,255,255,.05);
-  pointer-events:none;
-}
-.pmo-gradient-header .pmo-gh-avatar {
-  width:48px; height:48px; border-radius:50%;
-  background:rgba(255,255,255,.18);
-  display:flex; align-items:center; justify-content:center;
-  flex-shrink:0;
-}
-.pmo-gradient-header .pmo-gh-avatar svg { width:26px; height:26px; color:#fff; }
-.pmo-gradient-header .pmo-gh-subtitle { font-size:12px; color:rgba(255,255,255,.72); margin:0; }
-.pmo-gradient-header .pmo-gh-title { font-size:18px; font-weight:800; color:#fff; margin:2px 0 0; }
-
-/* ── Revenue Card — terinspirasi admin_dashboard deepPurple ─ */
-.pmo-revenue-card {
-  background   : linear-gradient(135deg, var(--c-dark) 0%, #6D4C41 100%);
-  border-radius: 14px;
-  padding      : 20px 22px;
-  color        : #fff;
-  position     : relative;
-  overflow     : hidden;
-  box-shadow   : 0 4px 16px rgba(93,64,55,.25);
-}
-.pmo-revenue-card::before {
-  content:""; position:absolute; right:-14px; top:-14px;
-  width:80px; height:80px; border-radius:50%;
-  background:rgba(255,255,255,.08); pointer-events:none;
-}
-.pmo-revenue-card .pmo-rc-label {
-  font-size:13px; color:rgba(255,255,255,.78); margin:0 0 6px;
-  display:flex; align-items:center; gap:6px;
-}
-.pmo-revenue-card .pmo-rc-value {
-  font-size:26px; font-weight:800; color:#fff; margin:0 0 4px; letter-spacing:-.5px;
-}
-.pmo-revenue-card .pmo-rc-sub { font-size:12px; color:rgba(255,255,255,.60); margin:0; }
-
-/* ── Timeline — terinspirasi customer_tracking_page.dart ─── */
-.pmo-timeline { list-style:none; padding:0; margin:0; }
-.pmo-timeline li {
-  display:flex; align-items:flex-start; gap:14px; padding-bottom:22px;
-  position:relative;
-}
-.pmo-timeline li:last-child { padding-bottom:0; }
-.pmo-timeline .pmo-tl-dot {
-  width:24px; height:24px; border-radius:50%; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-  font-size:11px; font-weight:700; position:relative; z-index:1;
-}
-.pmo-timeline .pmo-tl-dot.done {
-  background:var(--green); color:#fff;
-}
-.pmo-timeline .pmo-tl-dot.done svg { width:13px; height:13px; }
-.pmo-timeline .pmo-tl-dot.pending {
-  background:var(--bd); color:var(--tx-4);
-}
-.pmo-timeline .pmo-tl-dot.current {
-  background:var(--c-mid); color:#fff;
-  box-shadow:0 0 0 4px rgba(121,85,72,.20);
-}
-/* Vertical connector line */
-.pmo-timeline li:not(:last-child) .pmo-tl-dot::after {
-  content    :""; position:absolute;
-  top:24px; left:50%; transform:translateX(-50%);
-  width:2px; height:calc(100% + 22px - 24px);
-  background:var(--bd); z-index:0;
-}
-.pmo-timeline li:not(:last-child) .pmo-tl-dot.done::after { background:var(--green); }
-.pmo-timeline .pmo-tl-content { flex:1; padding-top:2px; }
-.pmo-timeline .pmo-tl-title {
-  font-size:13.5px; font-weight:600; color:var(--tx-1); margin:0 0 2px;
-}
-.pmo-timeline .pmo-tl-title.active { color:var(--c-mid); font-weight:700; }
-.pmo-timeline .pmo-tl-meta { font-size:12px; color:var(--tx-3); margin:0; }
-
-/* ── StatusChip — versi Flutter adaptasi ─────────────────── */
-.pmo-chip {
-  display     : inline-flex;
-  align-items : center;
-  gap         : 5px;
-  padding     : 4px 11px;
-  border-radius: 20px;
-  font-size   : 11.5px;
-  font-weight : 700;
-  white-space : nowrap;
-}
-.pmo-chip .pmo-chip-dot {
-  width:6px; height:6px; border-radius:50%; flex-shrink:0;
-}
-.pmo-chip-success { background:var(--s-completed-bg); color:var(--s-completed-tx); }
-.pmo-chip-success .pmo-chip-dot { background:var(--s-completed-tx); }
-.pmo-chip-pending { background:var(--s-pending-bg); color:var(--s-pending-tx); }
-.pmo-chip-pending .pmo-chip-dot { background:var(--s-pending-tx); }
-.pmo-chip-cancel  { background:var(--s-cancelled-bg); color:var(--s-cancelled-tx); }
-.pmo-chip-cancel  .pmo-chip-dot { background:var(--s-cancelled-tx); }
-.pmo-chip-ship    { background:var(--s-shipped-bg); color:var(--s-shipped-tx); }
-.pmo-chip-ship    .pmo-chip-dot { background:var(--s-shipped-tx); }
-.pmo-chip-paid    { background:var(--s-paid-bg); color:var(--s-paid-tx); }
-.pmo-chip-paid    .pmo-chip-dot { background:var(--s-paid-tx); }
-.pmo-chip-brand   { background:var(--c-mid-soft); color:var(--c-dark); }
-.pmo-chip-brand   .pmo-chip-dot { background:var(--c-mid); }
-
-/* ── Stock Badge — terinspirasi product_card stok habis ─── */
-.pmo-stock-ok   { color:var(--green); font-size:12px; font-weight:600; }
-.pmo-stock-low  { color:var(--amber); font-size:12px; font-weight:600; }
-.pmo-stock-out  { color:var(--red);   font-size:12px; font-weight:600; }
-
-/* ── Stat Row — InfoCard baris horizontal dashboard ──────── */
-.pmo-stat-row {
-  display:flex; gap:14px; flex-wrap:nowrap;
-  margin-bottom:22px;
-}
-.pmo-stat-row .pmo-info-card { min-width:0; }
-
-@media (max-width:767px) {
+  .sidebar,.sidebar-inner,#sidebar { background:var(--sidebar) !important; }
+  .page-wrapper .content { padding:16px !important; }
   .pmo-stat-row { flex-wrap:wrap; }
   .pmo-stat-row .pmo-info-card { min-width:calc(50% - 7px); }
-  .pmo-gradient-header .pmo-gh-title { font-size:16px; }
-  .pmo-revenue-card .pmo-rc-value { font-size:22px; }
+}
+@media (max-width:767px) {
+  .card-header { padding:12px 15px !important; }
+  .card-body   { padding:14px 15px !important; }
+  .page-title h4 { font-size:17px !important; }
 }
 @media (max-width:575px) {
+  .page-wrapper .content { padding:12px !important; }
+  .page-title h4 { font-size:16px !important; }
   .pmo-stat-row .pmo-info-card { min-width:100%; }
 }
-
-
-/* ─── 5b. PAGE HEADER & BREADCRUMB ──────────────────────── */
-.page-header {
-  display        : flex !important;
-  align-items    : center !important;
-  justify-content: space-between !important;
-  flex-wrap      : wrap !important;
-  gap            : 10px !important;
-  margin-bottom  : 16px !important;
-  padding-bottom : 12px !important;
-  border-bottom  : 1px solid var(--bd) !important;
-  flex-shrink    : 0 !important;
-}
-.page-title h4 {
-  color:var(--tx-1) !important; font-weight:800 !important;
-  font-size:19px !important; margin:0 0 2px !important; letter-spacing:-.3px !important;
-}
-.page-title h6 {
-  color:var(--tx-3) !important; font-size:12px !important;
-  font-weight:400 !important; margin:0 !important;
-}
-.breadcrumb-admin {
-  display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:4px;
-}
-.breadcrumb-admin a { font-size:12px; color:var(--tx-3); text-decoration:none; transition:color .12s; }
-.breadcrumb-admin a:hover { color:var(--c-mid); }
-.breadcrumb-admin span.sep { font-size:11px; color:var(--tx-4); }
-.breadcrumb-admin span.current { font-size:12px; color:var(--tx-2); font-weight:600; }
