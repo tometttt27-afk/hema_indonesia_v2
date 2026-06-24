@@ -380,126 +380,113 @@ body.mini-sidebar.expand-menu #toggle_btn::after  { border-right:none !important
 
 /* ─── 5. PAGE WRAPPER & HEADER — FULL SCREEN LAYOUT ────── */
 /*
-   Prinsip:
-   • html, body, .main-wrapper → 100vh, overflow hidden
-   • .header (topbar) → fixed top, tinggi --tb-h
-   • .sidebar → fixed left, top: --tb-h, tinggi sisa viewport, scroll internal
-   • .page-wrapper → margin-left: --sb-w, margin-top: --tb-h,
-                       tinggi sisa viewport, overflow hidden
-   • .content → 100% tinggi page-wrapper, overflow-y: auto (scroll internal)
-   Tidak ada scroll di level browser/body sama sekali.
+   STRATEGI: Ikuti pola style.css (margin + padding untuk page-wrapper)
+   Bukan position:fixed agar tidak konflik dengan sidebar template.
+
+   style.css bawaan:
+     .sidebar { position:fixed; top:60px; bottom:0; left:0; width:260px }
+     .page-wrapper { margin:0 0 0 260px; padding:60px 0 0 }
+     .page-wrapper .content { padding:25px }
+
+   Kita override agar:
+     • html, body            → 100vh, overflow:hidden (hapus scroll browser)
+     • .main-wrapper         → 100vh, overflow:hidden
+     • .header               → height pas --tb-h, tidak lebih
+     • .sidebar              → top:var(--tb-h), height:calc(100vh - --tb-h),
+                               overflow-y:auto (scroll sidebar sendiri)
+     • .page-wrapper         → margin-left:var(--sb-w), margin-top:0, padding:0,
+                               height:calc(100vh - var(--tb-h)),
+                               overflow:hidden (tidak scroll ke browser)
+     • .page-wrapper .content → height:100%, overflow-y:auto (scroll konten)
 */
 
 html {
-  height: 100% !important;
-  overflow: hidden !important;
+  height   : 100vh !important;
+  max-height: 100vh !important;
+  overflow  : hidden !important;
 }
 
 body {
-  height: 100% !important;
-  overflow: hidden !important;
+  height   : 100vh !important;
+  max-height: 100vh !important;
+  overflow  : hidden !important;
 }
 
 .main-wrapper {
-  display        : flex !important;
-  flex-direction : column !important;
-  height         : 100vh !important;
-  overflow       : hidden !important;
-  position       : relative !important;
+  height   : 100vh !important;
+  max-height: 100vh !important;
+  overflow  : hidden !important;
 }
 
-/* ── Topbar: fixed di atas ── */
-.header {
-  position       : fixed !important;
-  top            : 0 !important;
-  left           : 0 !important;
-  right          : 0 !important;
-  z-index        : 999 !important;
-  height         : var(--tb-h) !important;
-  flex-shrink    : 0 !important;
-}
-
-/* ── Sidebar: fixed di kiri, mulai di bawah topbar ── */
+/* ── Sidebar: tinggi sisa layar, scroll internal ── */
 .sidebar,
+.sidebar-inner,
 #sidebar {
-  position   : fixed !important;
-  top        : var(--tb-h) !important;
-  left       : 0 !important;
-  bottom     : 0 !important;
-  height     : calc(100vh - var(--tb-h)) !important;
-  width      : var(--sb-w) !important;
-  overflow-y : auto !important;
-  overflow-x : hidden !important;
-  z-index    : 998 !important;
-  /* scroll dalam sidebar — tipis & custom */
+  top       : var(--tb-h) !important;
+  bottom    : 0 !important;
+  height    : calc(100vh - var(--tb-h)) !important;
+  width     : var(--sb-w) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  /* Scrollbar tipis khusus sidebar */
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,.20) transparent;
 }
-.sidebar::-webkit-scrollbar       { width: 3px; }
-.sidebar::-webkit-scrollbar-track { background: transparent; }
-.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.22); border-radius: 10px; }
+.sidebar::-webkit-scrollbar        { width: 3px !important; }
+.sidebar::-webkit-scrollbar-track  { background: transparent !important; }
+.sidebar::-webkit-scrollbar-thumb  { background: rgba(255,255,255,.25) !important; border-radius: 10px !important; }
 
-.sidebar-inner {
-  height      : 100% !important;
-  overflow    : visible !important;
-  padding-top : 0 !important;
-}
-
-/* ── Page wrapper: mengisi sisa ruang di kanan sidebar ── */
+/* ── Page wrapper: ikuti pola margin template, tapi height pas ── */
 .page-wrapper {
-  position    : fixed !important;
-  top         : var(--tb-h) !important;
-  left        : var(--sb-w) !important;
-  right       : 0 !important;
-  bottom      : 0 !important;
-  overflow    : hidden !important;
-  background  : var(--bg) !important;
-  transition  : left .24s cubic-bezier(.4,0,.2,1) !important;
+  /* Ikuti pola style.css: margin-left = lebar sidebar */
+  margin-left : var(--sb-w) !important;
+  margin-top  : 0 !important;
+  /* Hapus padding-top bawaan template (padding:60px 0 0) */
+  padding-top : var(--tb-h) !important;
+  padding-left : 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+  /* Tinggi pas viewport — tidak overflow ke browser */
+  height     : 100vh !important;
+  max-height : 100vh !important;
+  overflow   : hidden !important;
+  /* Background */
+  background : var(--bg) !important;
+  /* Transisi saat mini-sidebar */
+  transition : margin-left .24s cubic-bezier(.4,0,.2,1),
+               padding-left .24s cubic-bezier(.4,0,.2,1) !important;
 }
 
-/* ── Content: scroll internal di dalam page-wrapper ── */
-.content {
-  height     : 100% !important;
+/* ── Content: tinggi penuh sisa, scroll internal ── */
+.page-wrapper .content {
+  height     : calc(100vh - var(--tb-h)) !important;
+  max-height : calc(100vh - var(--tb-h)) !important;
   overflow-y : auto !important;
   overflow-x : hidden !important;
   padding    : 22px !important;
-  /* scroll konten — halus & tipis */
+  /* Scrollbar konten yang halus */
   scrollbar-width: thin;
   scrollbar-color: var(--c-light) var(--bd-lt);
 }
-.content::-webkit-scrollbar       { width: 5px; }
-.content::-webkit-scrollbar-track { background: var(--bd-lt); }
-.content::-webkit-scrollbar-thumb { background: var(--c-light); border-radius: 10px; }
-.content::-webkit-scrollbar-thumb:hover { background: var(--c-mid); }
+.page-wrapper .content::-webkit-scrollbar        { width: 5px !important; }
+.page-wrapper .content::-webkit-scrollbar-track  { background: var(--bd-lt) !important; }
+.page-wrapper .content::-webkit-scrollbar-thumb  { background: var(--c-light) !important; border-radius: 10px !important; }
+.page-wrapper .content::-webkit-scrollbar-thumb:hover { background: var(--c-mid) !important; }
 
-/* ── Mini-sidebar: sidebar menyempit, content melebar ── */
+/* ── Mini-sidebar: page-wrapper geser ke kiri ── */
 body.mini-sidebar .page-wrapper {
-  left: 80px !important;
-}
-body.mini-sidebar .sidebar,
-body.mini-sidebar #sidebar {
-  width: 80px !important;
+  margin-left : 80px !important;
 }
 
-/* ── Mobile: sidebar hilang, content full-width ── */
+/* ── Mobile ── */
 @media (max-width: 991px) {
   .page-wrapper {
-    left: 0 !important;
-  }
-  .sidebar, #sidebar {
-    transform: translateX(-100%) !important;
-    transition: transform .24s cubic-bezier(.4,0,.2,1) !important;
-  }
-  .sidebar.open-sidebar, #sidebar.open-sidebar {
-    transform: translateX(0) !important;
+    margin-left : 0 !important;
+    padding-top : var(--tb-h) !important;
   }
 }
-
-/* ── Header-left (logo area) tetap sejajar topbar ── */
-.header .header-left {
-  height: var(--tb-h) !important;
-  display: flex !important;
-  align-items: center !important;
+@media (max-width: 575px) {
+  .page-wrapper .content { padding: 14px !important; }
 }
 
 /* ─── 6. CARD ────────────────────────────────────────────── */

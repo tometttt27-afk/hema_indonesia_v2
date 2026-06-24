@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" style="height:100%;overflow:hidden;">
+<html lang="id">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -22,8 +22,103 @@
     <link rel="stylesheet" href="{{ asset('library/sweetalert/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/hema-admin.css') }}">
+
+    {{-- ══ FULL-SCREEN OVERRIDE ══
+         Dipasang di <head> agar spesifisitasnya paling tinggi dan
+         tidak bisa di-override oleh style.css / script.js template.
+         Hanya mengubah layout — logika JS tidak terpengaruh.
+    ══════════════════════════════ --}}
+    <style>
+        /* Variabel layout */
+        :root {
+            --_tb : 62px;   /* tinggi topbar  */
+            --_sb : 240px;  /* lebar sidebar  */
+        }
+
+        /* ── 1. Cegah scroll di level browser ── */
+        html, body {
+            height: 100vh !important;
+            max-height: 100vh !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .main-wrapper {
+            height: 100vh !important;
+            max-height: 100vh !important;
+            overflow: hidden !important;
+        }
+
+        /* ── 2. Topbar tetap di atas ── */
+        .header {
+            position: fixed !important;
+            top: 0 !important; left: 0 !important; right: 0 !important;
+            height: var(--_tb) !important;
+            z-index: 1002 !important;
+        }
+
+        /* ── 3. Sidebar: mulai tepat di bawah topbar, scroll internal ── */
+        .sidebar, #sidebar {
+            position: fixed !important;
+            top: var(--_tb) !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            width: var(--_sb) !important;
+            height: calc(100vh - var(--_tb)) !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            z-index: 1001 !important;
+        }
+        /* Slimscroll wrapper ikut tinggi sidebar */
+        .sidebar .slimScrollDiv,
+        .sidebar-inner {
+            height: 100% !important;
+            max-height: 100% !important;
+        }
+
+        /* ── 4. Page wrapper: pas di kanan sidebar, bawah topbar ──
+               Ikuti pola margin style.css bukan position:fixed
+               agar JS toggle sidebar template tetap bekerja     ── */
+        .page-wrapper {
+            margin-top: 0 !important;
+            margin-left: var(--_sb) !important;
+            /* Hapus padding-top bawaan style.css (60px) */
+            padding: var(--_tb) 0 0 0 !important;
+            /* Tinggi penuh viewport — tidak bisa di-scroll dari browser */
+            height: 100vh !important;
+            max-height: 100vh !important;
+            overflow: hidden !important;
+            transition: margin-left .2s ease !important;
+        }
+
+        /* ── 5. Content area: scroll INTERNAL di sini ── */
+        .page-wrapper > .content {
+            height: calc(100vh - var(--_tb)) !important;
+            max-height: calc(100vh - var(--_tb)) !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            padding: 22px !important;
+        }
+
+        /* ── 6. Mini-sidebar (tombol toggle template) ── */
+        body.mini-sidebar .page-wrapper {
+            margin-left: 80px !important;
+        }
+        body.mini-sidebar .sidebar,
+        body.mini-sidebar #sidebar {
+            width: 80px !important;
+        }
+
+        /* ── 7. Mobile ── */
+        @media (max-width: 991px) {
+            .page-wrapper {
+                margin-left: 0 !important;
+                padding-top: var(--_tb) !important;
+            }
+        }
+    </style>
 </head>
-<body style="margin:0;padding:0;height:100%;overflow:hidden;">
+<body>
 <div class="main-wrapper">
 
     {{-- ═══ TOPBAR ═══ --}}
