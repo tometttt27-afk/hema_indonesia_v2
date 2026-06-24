@@ -176,42 +176,107 @@
                 </div>
             </li>
 
-            {{-- User dropdown --}}
+            {{-- User dropdown pojok kanan atas --}}
             <li class="nav-item dropdown has-arrow main-drop">
-                <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown" aria-label="Menu pengguna">
-                    <span class="user-img">
-                        <img src="{{ asset('uploads/profile/' . (auth()->user()->profile_img ?? 'default_profile.jpg')) }}" alt="profil">
+                <a href="javascript:void(0);"
+                   class="dropdown-toggle nav-link userset"
+                   data-bs-toggle="dropdown"
+                   aria-label="Menu pengguna"
+                   style="display:flex;align-items:center;gap:10px;padding:6px 10px;
+                          background:#f5f1eb;border-radius:10px;text-decoration:none;
+                          border:1px solid #e8ded8;cursor:pointer;transition:background .15s;">
+                    {{-- Foto profil --}}
+                    <span class="user-img" style="position:relative;flex-shrink:0;">
+                        <img src="{{ asset('uploads/profile/' . (auth()->user()->profile_img ?? 'default_profile.jpg')) }}"
+                             alt="profil"
+                             style="width:36px;height:36px;border-radius:50%;object-fit:cover;
+                                    border:2px solid #e8ded8;display:block;">
                         <span class="status online"></span>
                     </span>
+                    {{-- Nama & role --}}
+                    <span style="display:flex;flex-direction:column;line-height:1.3;">
+                        <span style="font-size:13px;font-weight:700;color:#2c1810;">
+                            {{ auth()->user()->first_name ?? auth()->user()->email }}
+                        </span>
+                        <span style="font-size:11px;color:#8d7066;font-weight:500;text-transform:capitalize;">
+                            {{ auth()->user()->role }}
+                        </span>
+                    </span>
+                    {{-- Chevron --}}
+                    <svg width="13" height="13" fill="none" viewBox="0 0 24 24"
+                         style="color:#b5a09a;flex-shrink:0;margin-left:2px;">
+                        <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                              stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+                    </svg>
                 </a>
-                <div class="dropdown-menu menu-drop-user">
-                    <div class="profilename">
-                        <div class="profileset">
-                            <div class="profilesets">
-                                <h6>{{ auth()->user()->first_name ?? auth()->user()->email }}</h6>
-                                <h5>{{ ucfirst(auth()->user()->role) }}</h5>
+
+                {{-- Dropdown menu --}}
+                <div class="dropdown-menu menu-drop-user dropdown-menu-end"
+                     style="min-width:220px;padding:8px 0;border-radius:12px;
+                            border:1px solid #e8ded8;box-shadow:0 8px 28px rgba(93,64,55,.13);">
+
+                    {{-- Header info admin --}}
+                    <div style="padding:12px 18px 10px;border-bottom:1px solid #f0eae4;">
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <img src="{{ asset('uploads/profile/' . (auth()->user()->profile_img ?? 'default_profile.jpg')) }}"
+                                 alt="profil"
+                                 style="width:44px;height:44px;border-radius:50%;object-fit:cover;
+                                        border:2px solid #e8ded8;flex-shrink:0;">
+                            <div>
+                                <p style="margin:0;font-weight:700;font-size:14px;color:#2c1810;">
+                                    {{ auth()->user()->first_name ?? '' }} {{ auth()->user()->last_name ?? '' }}
+                                </p>
+                                <p style="margin:0;font-size:12px;color:#8d7066;">
+                                    {{ auth()->user()->email }}
+                                </p>
+                                <span style="display:inline-block;margin-top:3px;font-size:10.5px;
+                                             font-weight:700;padding:2px 8px;border-radius:50px;
+                                             background:rgba(121,85,72,.10);color:#5d4037;text-transform:capitalize;">
+                                    {{ auth()->user()->role }}
+                                </span>
                             </div>
                         </div>
-                        <hr class="m-0">
-                        <a class="dropdown-item" href="{{ url('/profile') }}">
-                            {{-- icon person siluet --}}
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" class="me-2">
+                    </div>
+
+                    {{-- Tombol Profil Saya --}}
+                    <a class="dropdown-item" href="{{ url('/profile') }}"
+                       style="display:flex;align-items:center;gap:10px;padding:11px 18px;
+                              font-size:13px;font-weight:600;color:#3d2e26;
+                              transition:background .12s,color .12s;text-decoration:none;">
+                        <span style="width:32px;height:32px;border-radius:8px;
+                                     background:rgba(121,85,72,.10);display:flex;
+                                     align-items:center;justify-content:center;flex-shrink:0;">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"
+                                 style="color:#795548;">
                                 <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-5.33 0-8 2.67-8 4v1h16v-1c0-1.33-2.67-4-8-4z"/>
                             </svg>
-                            Profil Saya
-                        </a>
-                        <hr class="m-0">
-                        <form action="{{ route('logout') }}" method="post">
-                            @csrf
-                            <button class="dropdown-item logout" type="submit">
-                                {{-- icon logout siluet --}}
-                                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" class="me-2">
+                        </span>
+                        Profil Saya
+                    </a>
+
+                    <div style="height:1px;background:#f0eae4;margin:4px 0;"></div>
+
+                    {{-- Tombol Keluar --}}
+                    <form action="{{ route('logout') }}" method="post" style="margin:0;">
+                        @csrf
+                        <button type="submit"
+                                class="dropdown-item logout"
+                                style="display:flex;align-items:center;gap:10px;padding:11px 18px;
+                                       font-size:13px;font-weight:600;color:#dc2626;width:100%;
+                                       background:none;border:none;cursor:pointer;text-align:left;
+                                       transition:background .12s,color .12s;">
+                            <span style="width:32px;height:32px;border-radius:8px;
+                                         background:rgba(220,38,38,.08);display:flex;
+                                         align-items:center;justify-content:center;flex-shrink:0;">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"
+                                     style="color:#dc2626;">
                                     <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4a2 2 0 00-2 2v14a2 2 0 002 2h8v-2H4V5z"/>
                                 </svg>
-                                Keluar
-                            </button>
-                        </form>
-                    </div>
+                            </span>
+                            Keluar
+                        </button>
+                    </form>
+
                 </div>
             </li>
         </ul>
@@ -299,7 +364,6 @@
 
                     <li class="{{ request()->is('customer*') ? 'active' : '' }}">
                         <a href="{{ url('/customer') }}" aria-label="Pelanggan">
-                            {{-- icon people siluet --}}
                             <svg class="sb-icon" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
                             </svg>
@@ -331,33 +395,6 @@
                         </ul>
                     </li>
 
-                    {{-- ── AKUN ── --}}
-                    <li class="menu-title"><span>Akun</span></li>
-
-                    <li class="{{ request()->is('profile*') ? 'active' : '' }}">
-                        <a href="{{ url('/profile') }}" aria-label="Profil Saya">
-                            {{-- icon person siluet --}}
-                            <svg class="sb-icon" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-5.33 0-8 2.67-8 4v1h16v-1c0-1.33-2.67-4-8-4z"/>
-                            </svg>
-                            <span>Profil Saya</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <form action="{{ route('logout') }}" method="post" id="sidebar-logout-form">
-                            @csrf
-                            <a href="javascript:void(0);"
-                               onclick="document.getElementById('sidebar-logout-form').submit();"
-                               aria-label="Keluar">
-                                {{-- icon logout siluet --}}
-                                <svg class="sb-icon" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4a2 2 0 00-2 2v14a2 2 0 002 2h8v-2H4V5z"/>
-                                </svg>
-                                <span>Keluar</span>
-                            </a>
-                        </form>
-                    </li>
 
                 </ul>
             </div>
