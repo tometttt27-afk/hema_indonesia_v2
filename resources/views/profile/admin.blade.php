@@ -52,7 +52,7 @@
                 <h5 class="card-title mb-0">Informasi Akun</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('profileUpdate') }}" method="post" enctype="multipart/form-data"
+                <form action="{{ route('admin.profileUpdate') }}" method="post" enctype="multipart/form-data"
                       id="form-profile-info">
                     @csrf @method('PUT')
                     <div class="row">
@@ -150,7 +150,7 @@
                 <h5 class="card-title mb-0">Ubah Kata Sandi</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('profilePasswordUpdate') }}" method="post" id="form-change-password">
+                <form action="{{ route('admin.profilePasswordUpdate') }}" method="post" id="form-change-password">
                     @csrf @method('PUT')
                     <div class="row">
                         <div class="col-12">

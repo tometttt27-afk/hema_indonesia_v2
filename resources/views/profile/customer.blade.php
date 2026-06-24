@@ -66,7 +66,7 @@
                     <i class="fas fa-user me-2" style="color:#b17457;font-size:15px;"></i>
                     Informasi Akun
                 </h3>
-                <form action="{{ route('profileUpdate') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('customer.profileUpdate') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -148,7 +148,7 @@
                     <i class="fas fa-shield-halved me-2" style="color:#b17457;font-size:15px;"></i>
                     Ubah Kata Sandi
                 </h3>
-                <form action="{{ route('profilePasswordUpdate') }}" method="post">
+                <form action="{{ route('customer.profilePasswordUpdate') }}" method="post">
                     @csrf
                     @method('PUT')
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
