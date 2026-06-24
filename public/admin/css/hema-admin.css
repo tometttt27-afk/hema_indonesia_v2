@@ -378,28 +378,129 @@ body.mini-sidebar.expand-menu #toggle_btn::after  { border-right:none !important
 @media (max-width:991px) { .sidebar,.sidebar-inner,#sidebar { background:var(--c-dark) !important; } }
 
 
-/* ─── 5. PAGE WRAPPER & HEADER ──────────────────────────── */
-.page-wrapper { background:var(--bg) !important; }
-.content { padding:26px !important; }
+/* ─── 5. PAGE WRAPPER & HEADER — FULL SCREEN LAYOUT ────── */
+/*
+   Prinsip:
+   • html, body, .main-wrapper → 100vh, overflow hidden
+   • .header (topbar) → fixed top, tinggi --tb-h
+   • .sidebar → fixed left, top: --tb-h, tinggi sisa viewport, scroll internal
+   • .page-wrapper → margin-left: --sb-w, margin-top: --tb-h,
+                       tinggi sisa viewport, overflow hidden
+   • .content → 100% tinggi page-wrapper, overflow-y: auto (scroll internal)
+   Tidak ada scroll di level browser/body sama sekali.
+*/
 
-.page-header {
-  display:flex !important; align-items:center !important;
-  justify-content:space-between !important; flex-wrap:wrap !important;
-  gap:12px !important; margin-bottom:22px !important;
-  padding-bottom:16px !important; border-bottom:1px solid var(--bd) !important;
+html {
+  height: 100% !important;
+  overflow: hidden !important;
 }
-.page-title h4 {
-  color:var(--tx-1) !important; font-weight:800 !important;
-  font-size:21px !important; margin:0 0 3px !important; letter-spacing:-.3px !important;
-}
-.page-title h6 { color:var(--tx-3) !important; font-size:12.5px !important; font-weight:400 !important; margin:0 !important; }
 
-/* Breadcrumb */
-.breadcrumb-admin { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:4px; }
-.breadcrumb-admin a { font-size:12px; color:var(--tx-3); text-decoration:none; transition:color .12s; }
-.breadcrumb-admin a:hover { color:var(--c-mid); }
-.breadcrumb-admin span.sep { font-size:11px; color:var(--tx-4); }
-.breadcrumb-admin span.current { font-size:12px; color:var(--tx-2); font-weight:600; }
+body {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.main-wrapper {
+  display        : flex !important;
+  flex-direction : column !important;
+  height         : 100vh !important;
+  overflow       : hidden !important;
+  position       : relative !important;
+}
+
+/* ── Topbar: fixed di atas ── */
+.header {
+  position       : fixed !important;
+  top            : 0 !important;
+  left           : 0 !important;
+  right          : 0 !important;
+  z-index        : 999 !important;
+  height         : var(--tb-h) !important;
+  flex-shrink    : 0 !important;
+}
+
+/* ── Sidebar: fixed di kiri, mulai di bawah topbar ── */
+.sidebar,
+#sidebar {
+  position   : fixed !important;
+  top        : var(--tb-h) !important;
+  left       : 0 !important;
+  bottom     : 0 !important;
+  height     : calc(100vh - var(--tb-h)) !important;
+  width      : var(--sb-w) !important;
+  overflow-y : auto !important;
+  overflow-x : hidden !important;
+  z-index    : 998 !important;
+  /* scroll dalam sidebar — tipis & custom */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.20) transparent;
+}
+.sidebar::-webkit-scrollbar       { width: 3px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.22); border-radius: 10px; }
+
+.sidebar-inner {
+  height      : 100% !important;
+  overflow    : visible !important;
+  padding-top : 0 !important;
+}
+
+/* ── Page wrapper: mengisi sisa ruang di kanan sidebar ── */
+.page-wrapper {
+  position    : fixed !important;
+  top         : var(--tb-h) !important;
+  left        : var(--sb-w) !important;
+  right       : 0 !important;
+  bottom      : 0 !important;
+  overflow    : hidden !important;
+  background  : var(--bg) !important;
+  transition  : left .24s cubic-bezier(.4,0,.2,1) !important;
+}
+
+/* ── Content: scroll internal di dalam page-wrapper ── */
+.content {
+  height     : 100% !important;
+  overflow-y : auto !important;
+  overflow-x : hidden !important;
+  padding    : 22px !important;
+  /* scroll konten — halus & tipis */
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-light) var(--bd-lt);
+}
+.content::-webkit-scrollbar       { width: 5px; }
+.content::-webkit-scrollbar-track { background: var(--bd-lt); }
+.content::-webkit-scrollbar-thumb { background: var(--c-light); border-radius: 10px; }
+.content::-webkit-scrollbar-thumb:hover { background: var(--c-mid); }
+
+/* ── Mini-sidebar: sidebar menyempit, content melebar ── */
+body.mini-sidebar .page-wrapper {
+  left: 80px !important;
+}
+body.mini-sidebar .sidebar,
+body.mini-sidebar #sidebar {
+  width: 80px !important;
+}
+
+/* ── Mobile: sidebar hilang, content full-width ── */
+@media (max-width: 991px) {
+  .page-wrapper {
+    left: 0 !important;
+  }
+  .sidebar, #sidebar {
+    transform: translateX(-100%) !important;
+    transition: transform .24s cubic-bezier(.4,0,.2,1) !important;
+  }
+  .sidebar.open-sidebar, #sidebar.open-sidebar {
+    transform: translateX(0) !important;
+  }
+}
+
+/* ── Header-left (logo area) tetap sejajar topbar ── */
+.header .header-left {
+  height: var(--tb-h) !important;
+  display: flex !important;
+  align-items: center !important;
+}
 
 /* ─── 6. CARD ────────────────────────────────────────────── */
 .card {
@@ -1270,3 +1371,32 @@ body.sidebar-hidden .page-wrapper { margin-left:0 !important; transition:margin-
 @media (max-width:575px) {
   .pmo-stat-row .pmo-info-card { min-width:100%; }
 }
+
+
+/* ─── 5b. PAGE HEADER & BREADCRUMB ──────────────────────── */
+.page-header {
+  display        : flex !important;
+  align-items    : center !important;
+  justify-content: space-between !important;
+  flex-wrap      : wrap !important;
+  gap            : 10px !important;
+  margin-bottom  : 16px !important;
+  padding-bottom : 12px !important;
+  border-bottom  : 1px solid var(--bd) !important;
+  flex-shrink    : 0 !important;
+}
+.page-title h4 {
+  color:var(--tx-1) !important; font-weight:800 !important;
+  font-size:19px !important; margin:0 0 2px !important; letter-spacing:-.3px !important;
+}
+.page-title h6 {
+  color:var(--tx-3) !important; font-size:12px !important;
+  font-weight:400 !important; margin:0 !important;
+}
+.breadcrumb-admin {
+  display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:4px;
+}
+.breadcrumb-admin a { font-size:12px; color:var(--tx-3); text-decoration:none; transition:color .12s; }
+.breadcrumb-admin a:hover { color:var(--c-mid); }
+.breadcrumb-admin span.sep { font-size:11px; color:var(--tx-4); }
+.breadcrumb-admin span.current { font-size:12px; color:var(--tx-2); font-weight:600; }

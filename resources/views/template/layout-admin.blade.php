@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" style="height:100%;overflow:hidden;">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Website Hema Indonesia">
     <meta name="author" content="hema">
     <meta name="robots" content="noindex, nofollow">
@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/hema-admin.css') }}">
 </head>
-<body>
+<body style="margin:0;padding:0;height:100%;overflow:hidden;">
 <div class="main-wrapper">
 
     {{-- ═══ TOPBAR ═══ --}}
