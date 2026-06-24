@@ -268,7 +268,35 @@ $infoCards = [
             </div>
         </div>
 
-        {{-- Status Pesanan (admin_shipment_page timeline) --}}
+        {{-- ══ STATUS PESANAN — Bar Chart (max 7 bar, tombol geser) ══ --}}
+        @php
+        /*
+         * Siapkan data per-hari dari 7 hari terakhir.
+         * Logika $ordersByStatus tetap tidak diubah.
+         * Data chart diambil langsung dari DB per-hari.
+         */
+        $chartDays = collect();
+        for ($i = 6; $i >= 0; $i--) {
+            $date  = now()->subDays($i);
+            $label = $date->format('d M');
+
+            $dayOrders = \App\Models\OrderModel::whereDate('created_at', $date->toDateString())
+                ->select('status', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+                ->groupBy('status')
+                ->pluck('total', 'status')
+                ->toArray();
+
+            $chartDays->push([
+                'label'     => $label,
+                'selesai'   => $dayOrders['completed'] ?? 0,
+                'diproses'  => $dayOrders['paid']      ?? 0,
+                'pending'   => $dayOrders['pending']   ?? 0,
+                'dibatalkan'=> $dayOrders['cancelled'] ?? 0,
+                'dikirim'   => $dayOrders['shipped']   ?? 0,
+            ]);
+        }
+        @endphp
+
         <div class="card mb-0">
             <div class="card-header">
                 <div class="card-icon-box" style="background:rgba(121,85,72,.10);">
@@ -276,38 +304,214 @@ $infoCards = [
                         <path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/>
                     </svg>
                 </div>
-                <h5 class="card-title mb-0">Distribusi Status Pesanan</h5>
-            </div>
-            <div class="card-body">
-                @php
-                $statusMeta = [
-                    'pending'  => ['label'=>'Menunggu Bayar','color'=>'var(--s-pending-tx)',   'bg'=>'var(--s-pending-bg)'],
-                    'paid'     => ['label'=>'Sudah Dibayar', 'color'=>'var(--s-paid-tx)',      'bg'=>'var(--s-paid-bg)'],
-                    'shipped'  => ['label'=>'Dikirim',       'color'=>'var(--s-shipped-tx)',   'bg'=>'var(--s-shipped-bg)'],
-                    'completed'=> ['label'=>'Selesai',       'color'=>'var(--s-completed-tx)', 'bg'=>'var(--s-completed-bg)'],
-                    'cancelled'=> ['label'=>'Dibatalkan',    'color'=>'var(--s-cancelled-tx)', 'bg'=>'var(--s-cancelled-bg)'],
-                ];
-                $grandTotal = max(array_sum($ordersByStatus), 1);
-                @endphp
-                @foreach($statusMeta as $key => $meta)
-                @php $count = $ordersByStatus[$key] ?? 0; $pct = round($count / $grandTotal * 100); @endphp
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span style="font-size:12.5px;font-weight:600;color:var(--tx-2);">{{ $meta['label'] }}</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <span style="font-size:12px;font-weight:700;color:{{ $meta['color'] }};">{{ $count }}</span>
-                            <span class="pmo-chip" style="background:{{ $meta['bg'] }};color:{{ $meta['color'] }};padding:2px 8px;font-size:10.5px;">
-                                {{ $pct }}%
-                            </span>
-                        </div>
-                    </div>
-                    <div style="height:8px;border-radius:50px;background:var(--bd-lt);overflow:hidden;">
-                        <div style="height:100%;border-radius:50px;width:{{ $pct }}%;background:{{ $meta['color'] }};transition:width .5s ease;"></div>
-                    </div>
+                <h5 class="card-title mb-0">Status Pesanan</h5>
+                <span style="font-size:12px;color:var(--tx-4);margin-left:4px;">7 hari terakhir</span>
+
+                {{-- Tombol geser kiri / kanan --}}
+                <div class="ms-auto d-flex gap-2">
+                    <button id="chart-prev"
+                            title="Geser kiri"
+                            style="width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bd);
+                                   background:var(--surf);cursor:pointer;display:flex;align-items:center;
+                                   justify-content:center;transition:border-color .15s,background .15s;">
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                             stroke-width="2.5" stroke-linecap="round" style="color:var(--tx-3);">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button id="chart-next"
+                            title="Geser kanan"
+                            style="width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bd);
+                                   background:var(--surf);cursor:pointer;display:flex;align-items:center;
+                                   justify-content:center;transition:border-color .15s,background .15s;">
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                             stroke-width="2.5" stroke-linecap="round" style="color:var(--tx-3);">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
                 </div>
-                @endforeach
+            </div>
+
+            <div class="card-body" style="padding-bottom:16px;">
+                {{-- Canvas Chart.js --}}
+                <div style="position:relative;height:240px;">
+                    <canvas id="orderStatusChart"></canvas>
+                </div>
             </div>
         </div>
+
+        {{-- ── Chart.js via CDN + logic geser ─────────────────────── --}}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+        <script>
+        (function () {
+            /* ── Data dari PHP — tidak mengubah logika apapun ── */
+            const ALL_DATA = @json($chartDays->values()->all());
+
+            const MAX_VISIBLE = 7;           // maksimal 7 bar
+            let   offset      = 0;           // indeks mulai tampil
+
+            /* ── Warna status — selaras palet coklat+putih ── */
+            const COLORS = {
+                selesai   : { bar: '#16A34A', legend: '#16A34A', label: 'Selesai'    },
+                diproses  : { bar: '#2563EB', legend: '#2563EB', label: 'Diproses'   },
+                dikirim   : { bar: '#7C3AED', legend: '#7C3AED', label: 'Dikirim'    },
+                pending   : { bar: '#D97706', legend: '#D97706', label: 'Pending'    },
+                dibatalkan: { bar: '#DC2626', legend: '#DC2626', label: 'Dibatalkan' },
+            };
+
+            const keys = ['selesai','diproses','dikirim','pending','dibatalkan'];
+
+            /* ── Iris data sesuai offset ── */
+            function getSlice() {
+                return ALL_DATA.slice(offset, offset + MAX_VISIBLE);
+            }
+
+            /* ── Build datasets Chart.js ── */
+            function buildDatasets(slice) {
+                return keys.map(k => ({
+                    label          : COLORS[k].label,
+                    data           : slice.map(d => d[k]),
+                    backgroundColor: COLORS[k].bar,
+                    borderRadius   : 4,
+                    borderSkipped  : false,
+                    maxBarThickness: 28,
+                }));
+            }
+
+            /* ── Inisialisasi chart ── */
+            const ctx = document.getElementById('orderStatusChart').getContext('2d');
+            const slice0 = getSlice();
+
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels  : slice0.map(d => d.label),
+                    datasets: buildDatasets(slice0),
+                },
+                options: {
+                    responsive        : true,
+                    maintainAspectRatio: false,
+                    interaction       : { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: {
+                            display : true,
+                            position: 'bottom',
+                            labels  : {
+                                boxWidth  : 10,
+                                boxHeight : 10,
+                                borderRadius: 3,
+                                useBorderRadius: true,
+                                padding   : 16,
+                                font      : { family: 'Urbanist, sans-serif', size: 12 },
+                                color     : '#7a6255',
+                            },
+                        },
+                        tooltip: {
+                            backgroundColor: '#ffffff',
+                            titleColor     : '#1e1410',
+                            bodyColor      : '#4a3728',
+                            borderColor    : '#e8ded8',
+                            borderWidth    : 1,
+                            padding        : 12,
+                            boxPadding     : 4,
+                            titleFont      : { family: 'Urbanist, sans-serif', weight: '700', size: 13 },
+                            bodyFont       : { family: 'Urbanist, sans-serif', size: 12 },
+                            cornerRadius   : 10,
+                            callbacks: {
+                                label: function (ctx) {
+                                    return '  ' + ctx.dataset.label + ' : ' + ctx.parsed.y;
+                                },
+                                labelColor: function (ctx) {
+                                    return {
+                                        borderColor    : ctx.dataset.backgroundColor,
+                                        backgroundColor: ctx.dataset.backgroundColor,
+                                        borderRadius   : 3,
+                                    };
+                                },
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            stacked  : false,
+                            grid     : { display: false },
+                            border   : { display: false },
+                            ticks    : {
+                                font : { family: 'Urbanist, sans-serif', size: 11 },
+                                color: '#b5a09a',
+                            },
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color    : '#f0eae4',
+                                lineWidth: 1,
+                            },
+                            border : { display: false, dash: [4,4] },
+                            ticks  : {
+                                font : { family: 'Urbanist, sans-serif', size: 11 },
+                                color: '#b5a09a',
+                                stepSize: 1,
+                                precision: 0,
+                            },
+                        },
+                    },
+                },
+            });
+
+            /* ── Helper update chart saat geser ── */
+            function updateChart() {
+                const slice = getSlice();
+                chart.data.labels   = slice.map(d => d.label);
+                chart.data.datasets = buildDatasets(slice);
+                chart.update('active');
+                syncButtons();
+            }
+
+            /* ── Disable/enable tombol di ujung data ── */
+            function syncButtons() {
+                const prevBtn = document.getElementById('chart-prev');
+                const nextBtn = document.getElementById('chart-next');
+
+                const atStart = offset <= 0;
+                const atEnd   = offset + MAX_VISIBLE >= ALL_DATA.length;
+
+                prevBtn.disabled = atStart;
+                nextBtn.disabled = atEnd;
+                prevBtn.style.opacity = atStart ? '0.35' : '1';
+                nextBtn.style.opacity = atEnd   ? '0.35' : '1';
+                prevBtn.style.cursor  = atStart ? 'not-allowed' : 'pointer';
+                nextBtn.style.cursor  = atEnd   ? 'not-allowed' : 'pointer';
+            }
+
+            /* ── Hover style tombol ── */
+            ['chart-prev','chart-next'].forEach(function(id){
+                const btn = document.getElementById(id);
+                btn.addEventListener('mouseenter', function(){
+                    if (!this.disabled) {
+                        this.style.borderColor = '#795548';
+                        this.style.background  = '#f5f1eb';
+                    }
+                });
+                btn.addEventListener('mouseleave', function(){
+                    this.style.borderColor = '#e8ded8';
+                    this.style.background  = '#ffffff';
+                });
+            });
+
+            /* ── Klik tombol geser ── */
+            document.getElementById('chart-prev').addEventListener('click', function () {
+                if (offset > 0) { offset--; updateChart(); }
+            });
+            document.getElementById('chart-next').addEventListener('click', function () {
+                if (offset + MAX_VISIBLE < ALL_DATA.length) { offset++; updateChart(); }
+            });
+
+            /* ── Init state tombol ── */
+            syncButtons();
+
+        }());
+        </script>
     </div>
 
 </div>{{-- /row 3 --}}
