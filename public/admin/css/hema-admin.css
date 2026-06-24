@@ -339,90 +339,135 @@ body.mini-sidebar.expand-menu #toggle_btn::after  { border-right:none !important
   box-shadow : 0 2px 8px rgba(93,64,55,.20) !important;
 }
 
-/* sb-icon dalam item */
-.sidebar-menu > ul > li > a .sb-icon { background:rgba(255,255,255,.08) !important; color:rgba(255,255,255,.80) !important; }
-.sidebar-menu > ul > li > a:hover .sb-icon { background:rgba(255,255,255,.15) !important; color:#fff !important; }
-/* Active icon — PmwebFigma: bg rgba(93,64,55,0.12) */
-.sidebar-menu > ul > li.active > a .sb-icon { background:rgba(93,64,55,.12) !important; color:var(--c-dark) !important; }
+/* ── FIX 1: Icon tanpa background kotak ── */
+.sidebar-menu > ul > li > a .sb-icon { background:transparent !important; color:rgba(255,255,255,.70) !important; }
+.sidebar-menu > ul > li > a:hover .sb-icon { background:transparent !important; color:#fff !important; }
+.sidebar-menu > ul > li.active > a .sb-icon { background:transparent !important; color:var(--c-dark) !important; }
+.sidebar-menu > ul > li.submenu.subdrop > a .sb-icon { background:transparent !important; color:#fff !important; }
 
-/* chevron */
+/* ── FIX 2: Chevron via FontAwesome (fa-chevron-right → rotate saat buka) ── */
 .menu-arrow {
   margin-left:auto !important; width:16px !important; height:16px !important;
   background:transparent !important; border:none !important;
   display:flex !important; align-items:center !important;
   justify-content:center !important; flex-shrink:0 !important;
 }
-.menu-arrow::after {
-  content:"" !important; display:block !important;
-  width:6px !important; height:6px !important;
-  border-right:1.5px solid rgba(255,255,255,.40) !important;
-  border-top:1.5px solid rgba(255,255,255,.40) !important;
-  transform:rotate(45deg) !important;
-  transition:border-color .15s, transform .2s !important;
+.menu-arrow::after { display:none !important; }
+.menu-arrow::before {
+  content    : "\f054" !important;
+  font-family: "Font Awesome 6 Free", "Font Awesome 5 Free", "FontAwesome" !important;
+  font-weight: 900 !important;
+  font-size  : 11px !important;
+  color      : rgba(255,255,255,.45) !important;
+  display    : block !important;
+  transition : color .15s ease, transform .22s cubic-bezier(.4,0,.2,1) !important;
 }
-.sidebar-menu > ul > li > a:hover .menu-arrow::after { border-color:rgba(255,255,255,.80) !important; }
-.sidebar-menu > ul > li.active > a .menu-arrow::after { border-color:var(--c-dark) !important; }
-.sidebar-menu > ul > li.subdrop > a .menu-arrow::after,
-.sidebar-menu > ul > li.submenu.open > a .menu-arrow::after { transform:rotate(135deg) !important; }
+.sidebar-menu > ul > li > a:hover .menu-arrow::before { color:rgba(255,255,255,.80) !important; }
+.sidebar-menu > ul > li.active > a .menu-arrow::before { color:var(--c-dark) !important; }
+.sidebar-menu > ul > li.subdrop > a .menu-arrow::before,
+.sidebar-menu > ul > li.submenu.open > a .menu-arrow::before { transform:rotate(90deg) !important; color:rgba(255,255,255,.80) !important; }
 
 /* subdrop parent */
 .sidebar-menu > ul > li.submenu.subdrop > a { background:rgba(255,255,255,.10) !important; color:#fff !important; }
-.sidebar-menu > ul > li.submenu.subdrop > a .sb-icon { background:rgba(255,255,255,.15) !important; color:#fff !important; }
 
-/* submenu container — PmwebFigma: rgba(0,0,0,0.15), radius 10px, paddingLeft 16px */
+/* ── FIX 3: Hapus kotak/shape yang membungkus submenu ── */
 .sidebar .sidebar-inner .sidebar-menu ul li ul,
 #sidebar .sidebar-inner .sidebar-menu ul li ul,
 .sidebar .sub-menu, ul.sub-menu {
-  background   : rgba(0,0,0,.15) !important;
-  border-radius: 10px !important;
-  margin       : 3px 8px 4px !important;
-  padding      : 4px 0 4px 16px !important;
-  overflow     : hidden !important;
+  background   : transparent !important;
+  border-radius: 0 !important;
+  margin       : 2px 0 4px 0 !important;
+  padding      : 2px 0 4px 0 !important;
+  overflow     : visible !important;
   box-shadow   : none !important;
+  border       : none !important;
 }
 
-/* sub-item — PmwebFigma: 12.5px, padding 8px 10px, gap 8px, radius 8px */
+/* sub-item link */
 .sidebar .sidebar-inner .sidebar-menu ul li ul a,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a,
 .sidebar .sub-menu a, ul.sub-menu li a {
-  color          : rgba(255,255,255,.50) !important;
+  color          : rgba(255,255,255,.55) !important;
   font-size      : 12.5px !important;
   font-weight    : 400 !important;
-  padding        : 8px 10px !important;
+  padding        : 7px 10px 7px 38px !important;
   display        : flex !important;
   align-items    : center !important;
-  gap            : 8px !important;
+  gap            : 0 !important;
   text-decoration: none !important;
   background     : transparent !important;
   border-radius  : 8px !important;
-  margin         : 1px 6px 1px 0 !important;
+  margin         : 1px 8px !important;
   transition     : background .12s, color .12s !important;
   position       : relative !important;
 }
-/* bullet dot — PmwebFigma: 5px, rgba(255,255,255,0.35) → #F5F1EB saat active */
+
+/* ── FIX 4: Matikan ::after dari style.css template (bullet ke-2)
+   style.css line 4178:
+   .sidebar .sidebar-menu > ul > li.submenu ul li a::after { border:1px solid #a1a1a1 }
+   Override dengan selector identik + semua property dimatikan ── */
+.sidebar .sidebar-menu > ul > li.submenu ul li a::after,
+.sidebar .sidebar-menu > ul > li.submenu ul li a:hover::after,
+.sidebar .sidebar-inner .sidebar-menu ul li ul a::after,
+#sidebar .sidebar-inner .sidebar-menu ul li ul a::after,
+.sidebar .sub-menu a::after,
+ul.sub-menu li a::after {
+  display    : none !important;
+  content    : none !important;
+  border     : none !important;
+  background : none !important;
+  width      : 0 !important;
+  height     : 0 !important;
+  opacity    : 0 !important;
+}
+
+/* Sisakan SATU bullet titik kecil via ::before */
 .sidebar .sidebar-inner .sidebar-menu ul li ul a::before,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a::before,
 .sidebar .sub-menu a::before, ul.sub-menu li a::before {
-  content:"" !important; display:inline-block !important;
-  width:5px !important; height:5px !important;
-  border-radius:50% !important; background:rgba(255,255,255,.35) !important;
-  flex-shrink:0 !important; transition:background .12s !important;
+  content      : "" !important;
+  display      : block !important;
+  width        : 4px !important;
+  height       : 4px !important;
+  border-radius: 50% !important;
+  background   : rgba(255,255,255,.35) !important;
+  border       : none !important;
+  flex-shrink  : 0 !important;
+  position     : absolute !important;
+  left         : 20px !important;
+  top          : 50% !important;
+  transform    : translateY(-50%) !important;
+  transition   : background .12s !important;
 }
+
+/* Hover sub-item */
 .sidebar .sidebar-inner .sidebar-menu ul li ul a:hover,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a:hover,
 .sidebar .sub-menu a:hover, ul.sub-menu li a:hover {
-  background:rgba(255,255,255,.08) !important; color:rgba(255,255,255,.80) !important;
+  background: rgba(255,255,255,.07) !important;
+  color     : rgba(255,255,255,.85) !important;
 }
 .sidebar .sidebar-inner .sidebar-menu ul li ul a:hover::before,
-.sidebar .sub-menu a:hover::before { background:var(--c-cream) !important; }
-/* active sub-item — PmwebFigma: rgba(245,241,235,0.15) bg, color #F5F1EB */
+#sidebar .sidebar-inner .sidebar-menu ul li ul a:hover::before,
+.sidebar .sub-menu a:hover::before, ul.sub-menu li a:hover::before {
+  background: rgba(255,255,255,.70) !important;
+}
+
+/* Active sub-item */
 .sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a,
+#sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a,
 .sidebar .sub-menu li.active > a {
-  color:var(--c-cream) !important; font-weight:700 !important;
-  background:rgba(245,241,235,.15) !important;
+  color      : var(--c-cream) !important;
+  font-weight: 600 !important;
+  background : rgba(255,255,255,.08) !important;
 }
 .sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a::before,
-.sidebar .sub-menu li.active > a::before { background:var(--c-cream) !important; }
+#sidebar .sidebar-inner .sidebar-menu ul li ul li.active > a::before,
+.sidebar .sub-menu li.active > a::before {
+  background: var(--c-cream) !important;
+  width     : 5px !important;
+  height    : 5px !important;
+}
 
 /* override Bootstrap biru */
 .sidebar a, .sidebar a:link, .sidebar a:visited,
