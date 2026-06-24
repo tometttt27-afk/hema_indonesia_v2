@@ -442,13 +442,26 @@ body.mini-sidebar.expand-menu #toggle_btn::after  { border-right:none !important
   position       : relative !important;
 }
 
-/* ── FIX 4: Satu bullet titik kecil — bersih tanpa list-style ── */
-/* Hapus ::after jika ada dari template */
+/* ── FIX 4: MATIKAN ::after dari style.css template secara spesifik ──
+   style.css line 4178:
+   .sidebar .sidebar-menu > ul > li.submenu ul li a::after { border:1px solid #a1a1a1; ... }
+   Ini bullet ke-2 yang muncul — di-override dengan selector IDENTIK + !important
+── */
+.sidebar .sidebar-menu > ul > li.submenu ul li a::after,
 .sidebar .sidebar-inner .sidebar-menu ul li ul a::after,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a::after,
-.sidebar .sub-menu a::after, ul.sub-menu li a::after {
-  display: none !important;
+.sidebar .sub-menu a::after,
+ul.sub-menu li a::after,
+.sidebar .sidebar-menu > ul > li.submenu ul li a:hover::after {
+  display    : none !important;
+  content    : none !important;
+  border     : none !important;
+  background : none !important;
+  width      : 0 !important;
+  height     : 0 !important;
+  opacity    : 0 !important;
 }
+
 /* Sisakan SATU bullet dot kecil via ::before */
 .sidebar .sidebar-inner .sidebar-menu ul li ul a::before,
 #sidebar .sidebar-inner .sidebar-menu ul li ul a::before,
@@ -459,6 +472,7 @@ body.mini-sidebar.expand-menu #toggle_btn::after  { border-right:none !important
   height       : 4px !important;
   border-radius: 50% !important;
   background   : rgba(255,255,255,.35) !important;
+  border       : none !important;
   flex-shrink  : 0 !important;
   position     : absolute !important;
   left         : 20px !important;
