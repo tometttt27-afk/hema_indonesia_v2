@@ -239,7 +239,7 @@
                     </div>
 
                     {{-- Tombol Profil Saya --}}
-                    <a class="dropdown-item" href="{{ url('/profile') }}"
+                    <a class="dropdown-item" href="{{ url('/admin/profile') }}"
                        style="display:flex;align-items:center;gap:10px;padding:11px 18px;
                               font-size:13px;font-weight:600;color:#3d2e26;
                               transition:background .12s,color .12s;text-decoration:none;">
@@ -289,7 +289,7 @@
                 </svg>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="{{ url('/profile') }}">Profil Saya</a>
+                <a class="dropdown-item" href="{{ url('/admin/profile') }}">Profil Saya</a>
                 <hr class="my-1">
                 <form action="{{ route('logout') }}" method="post">
                     @csrf

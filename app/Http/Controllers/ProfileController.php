@@ -41,7 +41,10 @@ class ProfileController extends Controller
             'profile_img.max' => 'Ukuran gambar maksimal 1MB.',
         ]);
 
-        if ($validator->fails()) return redirect('/profile')->withErrors($validator)->withInput();
+        // Arahkan kembali ke URL profil sesuai role
+        $profileUrl = $data->role === 'admin' ? '/admin/profile' : '/profile';
+
+        if ($validator->fails()) return redirect($profileUrl)->withErrors($validator)->withInput();
 
         $nama_profile = $data->profile_img;
         if ($request->hasFile('profile_img')) {
@@ -61,7 +64,7 @@ class ProfileController extends Controller
             'profile_img' => $nama_profile ?? 'default_profile.jpg',
         ]);
 
-        return redirect('/profile')->with('success', 'Profil berhasil diperbarui');
+        return redirect($profileUrl)->with('success', 'Profil berhasil diperbarui');
     }
 
     public function updatePassword(Request $request)
@@ -78,17 +81,19 @@ class ProfileController extends Controller
             'password.confirmed' => 'Konfirmasi password baru tidak cocok',
         ]);
 
-        if ($validator->fails()) return redirect('/profile')->withErrors($validator)->withInput();
+        $profileUrl = $data->role === 'admin' ? '/admin/profile' : '/profile';
+
+        if ($validator->fails()) return redirect($profileUrl)->withErrors($validator)->withInput();
 
         if (!Hash::check($request->current_password, $data->password)) {
             Session::flash('error', 'Password lama anda salah');
-            return redirect('/profile');
+            return redirect($profileUrl);
         }
 
         $data->update([
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect('/profile')->with('success', 'Password berhasil diubah');
+        return redirect($profileUrl)->with('success', 'Password berhasil diubah');
     }
 }

@@ -53,11 +53,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/dashboard', [MainAdminController::class, 'index']);
 
-    // FIX: Nama route profil admin diberi prefix 'admin.' agar tidak konflik
-    // dengan route profil customer di bawah
-    Route::get('/profile',          [ProfileController::class, 'index'])->name('admin.profile');
-    Route::put('/profile',          [ProfileController::class, 'update'])->name('admin.profileUpdate');
-    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('admin.profilePasswordUpdate');
+    // Profil admin — URL berbeda dari customer agar tidak konflik
+    Route::get('/admin/profile',          [ProfileController::class, 'index'])->name('admin.profile');
+    Route::put('/admin/profile',          [ProfileController::class, 'update'])->name('admin.profileUpdate');
+    Route::put('/admin/profile/password', [ProfileController::class, 'updatePassword'])->name('admin.profilePasswordUpdate');
 
     // About / Profil Perusahaan
     Route::get('/about-company', [DataMasterController::class, 'aboutCompanyIndex']);
