@@ -490,6 +490,36 @@ ul.sub-menu li a::after {
 #sidebar .sidebar-menu ul li.submenu:not(.subdrop) > ul { display:none !important; }
 #sidebar .sidebar-menu ul li.submenu.subdrop > ul { display:block !important; }
 
+/* ── Mini-sidebar: tutup penuh ke kiri (override style.css 80px) ── */
+body.mini-sidebar .sidebar,
+body.mini-sidebar #sidebar {
+  width: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+body.mini-sidebar .page-wrapper {
+  margin-left: 0 !important;
+}
+body.mini-sidebar .header .header-left {
+  width: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+/* Expand saat hover (tetap fungsional) */
+body.mini-sidebar.expand-menu .sidebar,
+body.mini-sidebar.expand-menu #sidebar {
+  width: var(--sb-w) !important;
+  overflow-y: auto !important;
+}
+body.mini-sidebar.expand-menu .page-wrapper {
+  margin-left: var(--sb-w) !important;
+}
+body.mini-sidebar.expand-menu .header .header-left {
+  width: var(--sb-w) !important;
+  padding: 0 20px !important;
+  overflow: visible !important;
+}
+
 @media (max-width:991px) { .sidebar,.sidebar-inner,#sidebar { background:var(--sidebar) !important; } }
 
 

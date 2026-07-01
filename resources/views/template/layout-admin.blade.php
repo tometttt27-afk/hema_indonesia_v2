@@ -101,13 +101,21 @@
             padding: 22px !important;
         }
 
-        /* ── 6. Mini-sidebar (tombol toggle template) ── */
-        body.mini-sidebar .page-wrapper {
-            margin-left: 80px !important;
-        }
+        /* ── 6. Mini-sidebar (tombol toggle) — tutup penuh ke kiri ── */
         body.mini-sidebar .sidebar,
         body.mini-sidebar #sidebar {
-            width: 80px !important;
+            width: 0 !important;
+            overflow: hidden !important;
+            padding: 0 !important;
+        }
+        body.mini-sidebar .page-wrapper {
+            margin-left: 0 !important;
+        }
+        /* Header-left ikut menyempit */
+        body.mini-sidebar .header .header-left {
+            width: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
         }
 
         /* ── 7. Mobile ── */
