@@ -191,39 +191,51 @@ svg   { flex-shrink: 0; }
 
 .bar-icon span { background: var(--c-mid) !important; }
 
-/* toggle_btn — PmwebFigma: rounded full, bg gradient, double chevron */
+/* toggle_btn — lingkaran bulat kecil solid */
 #toggle_btn {
-  display:inline-flex !important; align-items:center !important;
-  justify-content:center !important;
-  width:28px !important; height:28px !important;
-  border-radius:9999px !important;
-  background:var(--c-mid) !important; border:none !important;
-  box-shadow:0 2px 8px rgba(93,64,55,.28) !important;
-  cursor:pointer !important; flex-shrink:0 !important;
-  position:relative !important; overflow:hidden !important;
-  transition:background .15s, transform .12s !important;
-  text-decoration:none !important;
+  display        : inline-flex !important;
+  align-items    : center !important;
+  justify-content: center !important;
+  width          : 28px !important;
+  height         : 28px !important;
+  border-radius  : 9999px !important;
+  background     : rgba(255,255,255,0.22) !important;
+  border         : 2.5px solid rgba(255,255,255,0.55) !important;
+  box-shadow     : 0 2px 8px rgba(93,64,55,.30) !important;
+  cursor         : pointer !important;
+  flex-shrink    : 0 !important;
+  transition     : background .18s, transform .12s, border-color .18s !important;
+  text-decoration: none !important;
+  position       : relative !important;
 }
-#toggle_btn:hover  { background:var(--c-dark) !important; transform:scale(1.07) !important; }
-#toggle_btn:active { transform:scale(0.93) !important; }
-#toggle_btn::before {
-  content:"" !important; position:absolute !important;
-  width:5px !important; height:5px !important;
-  border-left:2px solid #fff !important; border-top:2px solid #fff !important;
-  transform:rotate(-45deg) !important;
-  left:8px !important; top:50% !important; margin-top:-2.5px !important;
+#toggle_btn::before,
+#toggle_btn::after { display:none !important; content:none !important; }
+
+/* Titik bulat di dalam (inti lingkaran) */
+#toggle_btn span.toggle-dot {
+  display      : block !important;
+  width        : 9px !important;
+  height       : 9px !important;
+  border-radius: 9999px !important;
+  background   : #ffffff !important;
+  transition   : background .18s, transform .18s !important;
+  flex-shrink  : 0 !important;
 }
-#toggle_btn::after {
-  content:"" !important; position:absolute !important;
-  width:5px !important; height:5px !important;
-  border-left:2px solid #fff !important; border-top:2px solid #fff !important;
-  transform:rotate(-45deg) !important;
-  left:14px !important; top:50% !important; margin-top:-2.5px !important;
+#toggle_btn:hover {
+  background  : rgba(255,255,255,0.35) !important;
+  border-color: rgba(255,255,255,0.85) !important;
+  transform   : scale(1.10) !important;
 }
-body.mini-sidebar #toggle_btn::before  { border-left:none !important; border-top:none !important; border-right:2px solid #fff !important; border-bottom:2px solid #fff !important; left:8px !important; }
-body.mini-sidebar #toggle_btn::after   { border-left:none !important; border-top:none !important; border-right:2px solid #fff !important; border-bottom:2px solid #fff !important; left:14px !important; }
-body.mini-sidebar.expand-menu #toggle_btn::before { border-right:none !important; border-bottom:none !important; border-left:2px solid #fff !important; border-top:2px solid #fff !important; left:8px !important; }
-body.mini-sidebar.expand-menu #toggle_btn::after  { border-right:none !important; border-bottom:none !important; border-left:2px solid #fff !important; border-top:2px solid #fff !important; left:14px !important; }
+#toggle_btn:active { transform: scale(0.92) !important; }
+
+/* Saat sidebar tertutup (mini-sidebar): beri tanda visual berbeda */
+body.mini-sidebar #toggle_btn {
+  background  : rgba(255,255,255,0.15) !important;
+  border-color: rgba(255,255,255,0.40) !important;
+}
+body.mini-sidebar #toggle_btn span.toggle-dot {
+  background: rgba(255,255,255,0.70) !important;
+}
 
 /* matikan overlay bawaan template */
 .sidebar-overlay, .sidebar-overlay.opened { display:none !important; pointer-events:none !important; }
@@ -501,11 +513,17 @@ body.mini-sidebar .page-wrapper {
   margin-left: 0 !important;
 }
 body.mini-sidebar .header .header-left {
-  width: 0 !important;
+  width: 52px !important;
+  min-width: 52px !important;
   padding: 0 !important;
-  overflow: hidden !important;
+  overflow: visible !important;
+  justify-content: center !important;
 }
-/* Expand saat hover (tetap fungsional) */
+body.mini-sidebar .header .header-left .logo,
+body.mini-sidebar .header .header-left .logo-small {
+  display: none !important;
+}
+/* Expand saat hover — sidebar muncul kembali */
 body.mini-sidebar.expand-menu .sidebar,
 body.mini-sidebar.expand-menu #sidebar {
   width: var(--sb-w) !important;
@@ -516,8 +534,9 @@ body.mini-sidebar.expand-menu .page-wrapper {
 }
 body.mini-sidebar.expand-menu .header .header-left {
   width: var(--sb-w) !important;
-  padding: 0 20px !important;
-  overflow: visible !important;
+  padding: 0 12px !important;
+  overflow: hidden !important;
+  justify-content: flex-start !important;
 }
 
 @media (max-width:991px) { .sidebar,.sidebar-inner,#sidebar { background:var(--sidebar) !important; } }

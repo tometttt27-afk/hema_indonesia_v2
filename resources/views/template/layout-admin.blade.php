@@ -101,21 +101,38 @@
             padding: 22px !important;
         }
 
-        /* ── 6. Mini-sidebar (tombol toggle) — tutup penuh ke kiri ── */
+        /* ── 6. Mini-sidebar: sidebar tutup penuh, tombol TETAP terlihat ── */
+
+        /* Sidebar menutup ke kiri dengan transisi */
         body.mini-sidebar .sidebar,
         body.mini-sidebar #sidebar {
             width: 0 !important;
             overflow: hidden !important;
             padding: 0 !important;
         }
+
+        /* Page wrapper geser ke kiri penuh */
         body.mini-sidebar .page-wrapper {
             margin-left: 0 !important;
         }
-        /* Header-left ikut menyempit */
+
+        /* Header-left: sisakan lebar pas untuk tombol toggle saja */
         body.mini-sidebar .header .header-left {
-            width: 0 !important;
+            width: 52px !important;
+            min-width: 52px !important;
             padding: 0 !important;
-            overflow: hidden !important;
+            overflow: visible !important;
+            justify-content: center !important;
+        }
+        /* Sembunyikan logo saat mini */
+        body.mini-sidebar .header .header-left .logo,
+        body.mini-sidebar .header .header-left .logo-small {
+            display: none !important;
+        }
+        /* Toggle btn tetap tampil & centered */
+        body.mini-sidebar .header .header-left #toggle_btn {
+            display: inline-flex !important;
+            margin: 0 !important;
         }
 
         /* ── 7. Mobile ── */
@@ -140,7 +157,9 @@
             <a href="{{ url('dashboard') }}" class="logo-small">
                 <img src="{{ asset('admin/img/logo-small.png') }}" alt="Hema">
             </a>
-            <a id="toggle_btn" href="javascript:void(0);" aria-label="Toggle sidebar"></a>
+            <a id="toggle_btn" href="javascript:void(0);" aria-label="Toggle sidebar">
+                <span class="toggle-dot"></span>
+            </a>
         </div>
 
         {{-- Mobile hamburger --}}
